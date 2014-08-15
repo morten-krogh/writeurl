@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>keyboard events</title>
+	<style>
+		#editor {
+			width : 500px;
+			height : 500px;
+		}
+	</style>
+</head>
+<body>
+
+<div id="editor" contentEditable="true">Hej</div>
+
+<script>
+	var el = document.getElementById('editor');
+
+	el.addEventListener('keydown', function (event) {
+		//console.log('keydown', el.textContent.length, event);
+		//event.preventDefault();
+	}, false);
+
+	el.addEventListener('keypress', function (event) {
+		console.log('keypress', el.textContent.length, event.isChar, event.ctrlKey, event.metaKey, event.charCode, event.char, event.which, event);
+		//event.preventDefault();
+	}, false);
+
+	el.addEventListener('keyup', function (event) {
+		//console.log('keyup', el.textContent.length, event);
+	}, false);
+
+	el.addEventListener('textInput', function (event) {
+		console.log('textInput', el.textContent.length, event);
+	}, false);
+</script>
+</body>
+</html>

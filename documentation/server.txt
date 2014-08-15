@@ -1,0 +1,9 @@
+/edit/doc-id/write-password
+/live/doc-id/read-password
+/read/id
+
+directory  doc-id
+
+config  -- passwords, other info
+operations
+state

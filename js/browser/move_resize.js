@@ -1,0 +1,1 @@
+../../../browser/move_resize.js

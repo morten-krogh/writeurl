@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" href="http://www.writeurl.com/style.css" type="text/css">
+	<script src="http://www.writeurl.localhost/script.js"></script>
+</head>
+<body>
+<div>A header</div>
+<div id="editor_place"></div>
+<div>A footer</div>
+
+<script>
+
+var ids = {
+	id : 'id5',
+	read : 'read'
+};
+
+nbe.site.embed_read('editor_place', ids);
+
+
+setInterval(function () {
+	//el.scrollTop = el.scrollHeight;
+	//window.scrollY = window.scrollMaxY;
+	//document.body.scrollTop = document.body.scrollHeight;
+	//console.log('scroll');
+}, 5000);
+
+</script>
+</body>
+</html>

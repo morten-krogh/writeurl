@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Nosy Bee Editor</title>
+	<link rel="stylesheet" href="../css/editor.css" type="text/css">
+	<link rel="stylesheet" href="../css/inputs.css" type="text/css">
+	<link rel="stylesheet" href="../css/buttons.css" type="text/css">
+	<link rel="stylesheet" href="../../css/ui.css" type="text/css">
+</head>
+<body>
+
+<aside>
+	<div id="font"></div>
+	<div id="format"></div>
+	<div id="color"></div>
+	<div id="script"></div>
+	<div id="indent"></div>
+	<div id="do"></div>
+	<div id="paragraph"></div>
+	<div id="list"></div>
+	<div id="insert"></div>
+</aside>
+
+<div style="float : left" id="editor1"></div>
+
+<script>
+var kite = {browser : {}};
+var nbe = {
+	lib : {},
+	doc : {},
+	state : {},
+	inputs : {},
+	line : {},
+	words : {
+		lib : {},
+		text : {},
+		img : {},
+		link : {}
+	},
+	format : {},
+	func : {},
+	location : {},
+	events : {},
+	triggers : {},
+	ops : {},
+	nodes : {},
+	elements : {
+		text : {},
+		newline : {},
+		link : {}
+	},
+	editor : {
+		state : {},
+		events : {},
+		actions : {},
+		cursor : {}
+	},
+	paste : {}
+};
+</script>
+<script src="../js/lib/clone.js"></script>
+<script src="../js/lib/partial_copy.js"></script>
+<script src="../js/lib/get_attributes.js"></script>
+<script src="../js/lib/set_attributes.js"></script>
+<script src="../js/lib/new_id.js"></script>
+<script src="../js/lib/random_string.js"></script>
+
+<script src="../js/doc/create.js"></script>
+<script src="../js/doc/comm.js"></script>
+<script src="../js/doc/editors.js"></script>
+<script src="../js/doc/local_storage.js"></script>
+<script src="../js/doc/merge.js"></script>
+<script src="../js/doc/operations_ids_create.js"></script>
+<script src="../js/doc/ws.js"></script>
+
+<script src="../js/state/initial.js"></script>
+<script src="../js/state/init.js"></script>
+<script src="../js/state/clean.js"></script>
+<script src="../js/state/ops.js"></script>
+<script src="../js/state/element.js"></script>
+<script src="../js/state/mutate_element.js"></script>
+<script src="../js/state/default_formats.js"></script>
+<script src="../js/state/text_formats.js"></script>
+<script src="../js/state/line_font_size.js"></script>
+<script src="../js/state/reset_counter.js"></script>
+<script src="../js/state/copy_text_format.js"></script>
+<script src="../js/state/copy_line_format.js"></script>
+<script src="../js/state/line_val_merge.js"></script>
+<script src="../js/state/cmp_value_format.js"></script>
+<script src="../js/state/cmp_text_format.js"></script>
+<script src="../js/state/set_format.js"></script>
+<script src="../js/state/line_classes.js"></script>
+<script src="../js/state/invert_ops.js"></script>
+<script src="../js/state/invert_oploc.js"></script>
+<script src="../js/state/left_margin.js"></script>
+<script src="../js/state/serialize.js"></script>
+<script src="../js/state/deserialize.js"></script>
+
+<script src="../js/location/get.js"></script>
+<script src="../js/location/set.js"></script>
+<script src="../js/location/focus.js"></script>
+<script src="../js/location/scroll.js"></script>
+<script src="../js/location/blur.js"></script>
+<script src="../js/location/format.js"></script>
+<script src="../js/location/format_img_link.js"></script>
+<script src="../js/location/get_format.js"></script>
+<script src="../js/location/previous_node.js"></script>
+<script src="../js/location/next_node.js"></script>
+<script src="../js/location/insert_after.js"></script>
+<script src="../js/location/parent_line.js"></script>
+<script src="../js/location/op_remove.js"></script>
+<script src="../js/location/loc_previous.js"></script>
+<script src="../js/location/loc_end.js"></script>
+<script src="../js/location/line.js"></script>
+<script src="../js/location/next_sibling.js"></script>
+<script src="../js/location/previous_sibling.js"></script>
+<script src="../js/location/in_text.js"></script>
+<script src="../js/location/in_link.js"></script>
+<script src="../js/location/previous_location.js"></script>
+<script src="../js/location/first_child.js"></script>
+<script src="../js/location/last_child.js"></script>
+<script src="../js/location/split_merge_point.js"></script>
+<script src="../js/location/loc_to_point.js"></script>
+<script src="../js/location/item_to_loc.js"></script>
+
+<script src="../js/ops/append.js"></script>
+<script src="../js/ops/insert_before.js"></script>
+<script src="../js/ops/insert_after.js"></script>
+<script src="../js/ops/remove.js"></script>
+<script src="../js/ops/text.js"></script>
+<script src="../js/ops/link.js"></script>
+<script src="../js/ops/line.js"></script>
+<script src="../js/ops/root.js"></script>
+<script src="../js/ops/modified.js"></script>
+
+<script src="../js/events/add_event_listeners.js"></script>
+<script src="../js/events/observer.js"></script>
+<script src="../js/events/subtree.js"></script>
+
+<script src="../js/triggers/trigger.js"></script>
+<script src="../js/triggers/text_format.js"></script>
+<script src="../js/triggers/line_format.js"></script>
+<script src="../js/triggers/font_size.js"></script>
+<script src="../js/triggers/text.js"></script>
+<script src="../js/triggers/text_collapsed.js"></script>
+<script src="../js/triggers/del.js"></script>
+<script src="../js/triggers/newline.js"></script>
+<script src="../js/triggers/img.js"></script>
+<script src="../js/triggers/link.js"></script>
+<script src="../js/triggers/paste.js"></script>
+<script src="../js/triggers/cut.js"></script>
+<script src="../js/triggers/select.js"></script>
+<script src="../js/triggers/insertion.js"></script>
+<script src="../js/triggers/observer.js"></script>
+<script src="../js/triggers/subtree.js"></script>
+
+<script src="../js/editor/create.js"></script>
+<script src="../js/editor/inputs.js"></script>
+<script src="../js/editor/undo.js"></script>
+
+<script src="../js/paste/clipboard.js"></script>
+<script src="../js/paste/insertion.js"></script>
+<script src="../js/paste/traverse.js"></script>
+<script src="../js/paste/div.js"></script>
+<script src="../js/paste/span.js"></script>
+<script src="../js/paste/link.js"></script>
+<script src="../js/paste/img.js"></script>
+<script src="../js/paste/text.js"></script>
+<script src="../js/paste/br.js"></script>
+<script src="../js/paste/remaining.js"></script>
+
+<script src="../../browser/dom.js"></script>
+<script src="../../browser/ui.js"></script>
+<script src="../../browser/move_resize.js"></script>
+<script src="../../browser/animation.js"></script>
+
+<script src="../js/inputs/color_menu.js"></script>
+<script src="../js/inputs/input.js"></script>
+<script src="../js/inputs/button.js"></script>
+<script src="../js/inputs/bold.js"></script>
+<script src="../js/inputs/italic.js"></script>
+<script src="../js/inputs/underline.js"></script>
+<script src="../js/inputs/strikethrough.js"></script>
+<script src="../js/inputs/color.js"></script>
+<script src="../js/inputs/background_color.js"></script>
+<script src="../js/inputs/vertical_align.js"></script>
+<script src="../js/inputs/left_margin.js"></script>
+<script src="../js/inputs/undo.js"></script>
+<script src="../js/inputs/drop_down.js"></script>
+<script src="../js/inputs/heading.js"></script>
+<script src="../js/inputs/font_family.js"></script>
+<script src="../js/inputs/font_size.js"></script>
+<script src="../js/inputs/text_align.js"></script>
+<script src="../js/inputs/line_spacing.js"></script>
+<script src="../js/inputs/list.js"></script>
+<script src="../js/inputs/special_characters.js"></script>
+<script src="../js/inputs/insert_link.js"></script>
+<script src="../js/inputs/edit_link.js"></script>
+<script src="../js/inputs/insert_image.js"></script>
+<script src="../js/inputs/edit_image.js"></script>
+
+<script>
+	var ops1 = [
+		{domop : 'append', id : 'text1.2', parent : 'line', type : 'text', val : {text : 'Hi there!'}},
+		{domop : 'mutate', id : 'text1.2', before : {text : 'Hi there!'}, after : {text : 'Hi there after mutation!', bold : 'on'}},
+		{domop : 'remove', id : 'text1.2', parent : 'line', type : 'text', val : {text : 'Hi there after mutation!', bold : 'on'}},
+		//{domop : 'append', id : 'text1.2', parent : 'line', type : 'text', val : {text : 'Hi there after insertion!', underline : 'on'}},
+		//{domop : 'insert', id : 'text1.1', before : 'text1.2', type : 'text', val : {text : 'Insertion before ', strikethrough : 'on'}},
+		{domop : 'append', id : 'text1.3', parent : 'line', type : 'text', val : {text : 'Some norqmal text.'}},
+		{domop : 'append', id : 'text1.4', parent : 'line', type : 'text', val : {text : 'Helloo', bold : 'on'}},
+	];
+
+	var ops2 = [
+		{domop : 'append', id : 'line2', parent : 'root', type : 'line', val : {}},
+		{domop : 'append', id : 'line3', parent : 'root', type : 'line', val : {}},
+		{domop : 'append', id : 'line4', parent : 'root', type : 'line', val : {font_size : '18px'}},
+		{domop : 'append', id : 'line5', parent : 'root', type : 'line', val : {}},
+		{domop : 'append', id : 'line6', parent : 'root', type : 'line', val : {}},
+		{domop : 'append', id : 'line7', parent : 'root', type : 'line', val : {}},
+		{domop : 'append', id : 'text7.1', parent : 'line7', type : 'text', val : {text : 'Line 7!'}},
+		{domop : 'append', id : 'text2.1', parent : 'line2', type : 'text', val : {text : 'Line 2', font_size : '18px'}},
+		{domop : 'remove', id : 'text2.1', parent : 'line2', type : 'text', val : {text : 'Line 2', font_size : '18px'}},
+		{domop : 'append', id : 'text2.1', parent : 'line2', type : 'text', val : {text : 'Line 2'}},
+		{domop : 'append', id : 'line8', parent : 'root', type : 'line', val : {list : 'ordered'}},
+		{domop : 'append', id : 'line9', parent : 'root', type : 'line', val : {list : 'ordered'}},
+		{domop : 'append', id : 'line10', parent : 'root', type : 'line', val : {}},
+		{domop : 'append', id : 'line11', parent : 'root', type : 'line', val : {list : 'ordered'}},
+		{domop : 'append', id : 'line12', parent : 'root', type : 'line', val : {list : 'ordered'}},
+		{domop : 'append', id : 'img1', parent : 'line5', type : 'img', val : {src : 'http://www.amberbio.com/front_page_picture6.png', width : '20', height : '20', title : 'Picture from Amber\'s home page'}},
+		{domop : 'append', id : 'text5.1', parent : 'line5', type : 'text', val : {text : 'Line 5'}},
+		{domop : 'append', id : 'link1', parent : 'line5', type : 'link', val : {href : 'http://www.amberbio.com'}},
+		{domop : 'append', id : 'link2', parent : 'line5', type : 'link', val : {href : 'http://www.nosybee.com'}},
+		{domop : 'append', id : 'link1.1', parent : 'link1', type : 'text', val : {text : 'Amber Helloo Biosciences'}},
+		{domop : 'append', id : 'link2.1', parent : 'link2', type : 'text', val : {text : 'Nosy '}},
+		{domop : 'append', id : 'link2.2', parent : 'link2', type : 'text', val : {text : 'Bee', bold : 'on'}},
+		{domop : 'append', id : 'text11.1', parent : 'line11', type : 'text', val : {text : 'Text in ordered list'}},
+		{domop : 'append', id : 'line13', parent : 'root', type : 'line', val : {text_align : 'right'}},
+		{domop : 'append', id : 'text13.1', parent : 'line13', type : 'text', val : {text : 'Text in right centered line.'}},
+		{domop : 'append', id : 'line14', parent : 'root', type : 'line', val : {}},
+		{domop : 'append', id : 'text14.1', parent : 'line14', type : 'text', val : {text : 'Color ', color : 'rgb(0, 0, 255)'}},
+		{domop : 'append', id : 'text14.2', parent : 'line14', type : 'text', val : {text : 'Background color ', background_color : 'rgb(200, 200, 0)'}},
+		{domop : 'append', id : 'text14.3', parent : 'line14', type : 'text', val : {text : 'Italic ', italic : 'on'}},
+		{domop : 'append', id : 'text14.4', parent : 'line14', type : 'text', val : {text : 'Font size ', font_size : '18px'}},
+		{domop : 'append', id : 'text14.5', parent : 'line14', type : 'text', val : {text : 'All four ', bold : 'on', italic : 'on', underline : 'on', strikethrough : 'on'}},
+		{domop : 'append', id : 'line15', parent : 'root', type : 'line', val : {left_margin : 40}},
+		{domop : 'append', id : 'text15.1', parent : 'line15', type : 'text', val : {text : 'Left margin 40, verdana    ', font_family : 'verdana'}},
+		{domop : 'append', id : 'text15.2', parent : 'line15', type : 'text', val : {text : '2'}},
+		{domop : 'append', id : 'text15.3', parent : 'line15', type : 'text', val : {text : '10', vertical_align : 'super'}},
+		{domop : 'append', id : 'text15.4', parent : 'line15', type : 'text', val : {text : ' = 1024'}},
+		{domop : 'append', id : 'line16', parent : 'root', type : 'line', val : {line_spacing : 'line_spacing_20'}},
+		{domop : 'append', id : 'line17', parent : 'root', type : 'line', val : {line_spacing : 'line_spacing_20'}},
+		{domop : 'append', id : 'text16.1', parent : 'line16', type : 'text', val : {text : 'Line with line spacing = 2'}},
+		{domop : 'append', id : 'text17.1', parent : 'line17', type : 'text', val : {text : 'Line with line spacing = 2'}},
+	];
+
+	var doc_id = 'doc_id';
+	var doc_password = 'doc_passsword';
+	var new_doc = true;
+	var use_local_storage = !true;
+	//var server_url = 'ws://127.0.0.1:8043';
+	var server_url = null;
+
+	var callback_status = function (key, value) {
+		//console.log(key, value);
+	};
+
+	var doc = nbe.doc.create(doc_id, doc_password, new_doc, use_local_storage, server_url, callback_status);
+
+	doc.add_ops(null, ops1);
+	doc.add_ops(null, ops2);
+
+	var display_editors = function () {
+
+		var options1 = {editable : true};
+		var editor1 = doc.editors.add('editor1', options1);
+		document.getElementById('editor1').appendChild(editor1.el_editor);
+		options2 = {editable : false};
+		var editor2 = doc.editors.add('editor2', options2);
+		//document.getElementById('editor2').appendChild(editor2.el_editor);
+
+		var buttons = {};
+		var trigger = function (type, value) {
+			editor1.trigger(type, value);
+		};
+
+		var el_font = document.getElementById('font');
+		buttons.heading = nbe.inputs.heading(trigger, 'Heading', {none : 'No heading', heading1 : 'Heading 1', heading2 : 'Heading 2', heading3 : 'Heading 3', heading4 : 'Heading 4', heading5 : 'Heading 5', heading6 : 'Heading 6'}, el_font, nbe.state.default_formats.heading);
+		buttons.font_family = nbe.inputs.font_family(trigger, 'Font', {arial : 'Arial', helvetica : 'Helvetica', times : 'Times', verdana : 'Verdana'}, el_font, nbe.state.default_formats.font_family);
+		buttons.font_size = nbe.inputs.font_size(trigger, 'Font size', {'10px' : '10', '11px' : '11', '12px' : '12', '13px' : '13', '14px' : '14', '15px' : '15', '16px' : '16', '17px' : '17', '18px' : '18'}, el_font, nbe.state.default_formats.font_size);
+
+		var el_format = document.getElementById('format');
+		buttons.bold = nbe.inputs.bold(trigger, 'Bold', el_format, nbe.state.default_formats.bold);
+		buttons.italic = nbe.inputs.italic(trigger, 'Italic', el_format, nbe.state.default_formats.italic);
+		buttons.underline = nbe.inputs.underline(trigger, 'Underline', el_format, nbe.state.default_formats.underline);
+		buttons.strikethrough = nbe.inputs.strikethrough(trigger, 'Strikethrough', el_format, nbe.state.default_formats.strikethrough);
+
+		var el_color = document.getElementById('color');
+		buttons.color = nbe.inputs.color(trigger, 'Text color', el_color, nbe.state.default_formats.color);
+		buttons.background_color = nbe.inputs.background_color(trigger, 'Line color', el_color, nbe.state.default_formats.background_color);
+
+		buttons.vertical_align = nbe.inputs.vertical_align(trigger, document.getElementById('script'), nbe.state.default_formats.vertical_align);
+
+		buttons.left_margin = nbe.inputs.left_margin(trigger, document.getElementById('indent'), nbe.state.default_formats.left_margin);
+
+		var el_paragraph = document.getElementById('paragraph');
+		buttons.text_align = nbe.inputs.text_align(trigger, 'Text align', {left : 'Left', center : 'Center', right : 'Right', justify : 'Justify'}, el_paragraph, nbe.state.default_formats.text_align);
+		buttons.line_spacing = nbe.inputs.line_spacing(trigger, 'Line spacing', {'line_spacing_05' : '0.5', 'line_spacing_06' : '0.6', 'line_spacing_07' : '0.7', 'line_spacing_08' : '0.8', 'line_spacing_09' : '0.9', 'line_spacing_10' : '1', 'line_spacing_11' : '1.1', 'line_spacing_12' : '1.2', 'line_spacing_13' : '1.3', 'line_spacing_14' : '1.4', 'line_spacing_15' : '1.5', 'line_spacing_16' : '1.6 (default)', 'line_spacing_17' : '1.7', 'line_spacing_18' : '1.8', 'line_spacing_19' : '1.9', 'line_spacing_20' : '2'}, el_paragraph, nbe.state.default_formats.line_spacing);
+
+		buttons.list = nbe.inputs.list(trigger, 'List', {none : 'none', disc : '•', 'square' : '▀', ordered : '1. 2. 3.', 'lower-alpha' : 'a. b. c.', 'upper-alpha' : 'A. B. C.', 'lower-roman' : 'i. ii. iii.', 'upper-roman' : 'I. II. III.'}, document.getElementById('list'), nbe.state.default_formats.list);
+
+		var el_insert = document.getElementById('insert');
+		buttons.special_characters = nbe.inputs.special_characters(trigger, 'Special characters', el_insert, null);
+		buttons.insert_link = nbe.inputs.insert_link(trigger, 'Insert link', el_insert);
+		buttons.edit_link = nbe.inputs.edit_link(trigger, 'Edit link', el_insert, null);
+		buttons.insert_img = nbe.inputs.insert_image(trigger, 'Insert image', el_insert);
+		buttons.edit_img = nbe.inputs.edit_image(trigger, 'Edit image', el_insert, null);
+
+		input_keys = ['bold', 'italic', 'underline', 'strikethrough', 'vertical_align', 'font_family', 'font_size', 'color', 'background_color', 'text_align', 'heading', 'left_margin', 'line_spacing', 'list', 'special_characters', 'insert_img', 'edit_img', 'insert_link', 'edit_link'];
+		for (var ii = 0; ii < input_keys.length; ii++) {
+			editor1.inputs.add(input_keys[ii], buttons[input_keys[ii]]);
+		}
+
+		buttons.undo = nbe.inputs.undo(editor1.trigger, document.getElementById('do'));
+		editor1.undo.add_button(buttons.undo);
+	};
+	display_editors();
+</script>
+</body>
+</html>

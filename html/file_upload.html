@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>file upload</title>
+
+	<script src="/js/site/first.js"></script>
+	<script src="/js/config.js"></script>
+	<script src="/js/lib/xhr.js"></script>
+	<script src="/js/lib/file_upload.js"></script>
+
+	<style>
+		#dropzone {
+			width : 250px;
+			height : 250px;
+			border : solid;
+		}
+	</style>
+</head>
+<body>
+
+<div>
+	Upload a file :
+	<input id="inp" type="file" />
+</div>
+<div id="dropzone">
+	Drop a file :
+</div>
+
+<script>
+	document.getElementById('inp').addEventListener('change', function (event) {
+		var file;
+
+		file = event.target.files[0];
+		console.log(file);
+
+		nbe.lib.file_upload(file, function (url) {
+			console.log(url);
+		});
+	}, false);
+
+	document.getElementById('dropzone').addEventListener('dragover', function (event) {
+		event.preventDefault();
+	}, false);
+
+	document.getElementById('dropzone').addEventListener('dragenter', function (event) {
+		event.preventDefault();
+	}, false);
+
+	document.getElementById('dropzone').addEventListener('drop', function (event) {
+		var files, i, file;
+
+		event.stopPropagation();
+		event.preventDefault();
+
+		files = event.dataTransfer.files;
+		for (i = 0; i < files.length; i++) {
+			file = files[i];
+			nbe.lib.file_upload(file, function (url) {
+				console.log(url);
+			});
+		}
+	}, false);
+</script>
+</body>
+</html>

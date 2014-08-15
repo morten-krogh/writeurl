@@ -1,0 +1,23 @@
+@media print {
+	html {
+		height : 100%;
+	}
+
+	aside, div.panel_bg, .circle_button {
+		display : none !important;
+	}
+
+	.wu-editor {
+		position : static !important;
+		overflow : visible !important;
+		background-image : none !important;
+	}
+
+	.wu-root {
+		box-shadow : none !important;
+	}
+
+	.editor_container {
+		top : 0 !important;
+	}
+}

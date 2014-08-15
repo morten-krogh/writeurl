@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Untitled</title>
+	<style>
+		#editor {
+			margin : 20px;
+		}
+
+		div.list {
+			display : list-item;
+			list-style : inside;
+			counter-increment : item;
+		}
+
+		div.disc {
+			list-style-type : disc;
+		}
+
+		div.decimal {
+			list-style-type : decimal;
+		}
+
+		div.lower-alpha {
+			display : block;
+		}
+
+		div.lower-alpha:before {
+			content : counter(item, lower-alpha) ". "
+		}
+
+		div.lower-roman {
+			list-style-type : lower-roman;
+		}
+
+		div.square {
+			list-style-type : square;
+		}
+
+		div.upper-alpha {
+			list-style-type : upper-alpha;
+		}
+
+		div.upper-roman {
+			list-style-type : upper-roman;
+		}
+
+		div.tab1 {
+			margin-left : 20px;
+		}
+
+		div.tab2 {
+			margin-left : 40px;
+		}
+
+		div.tab3 {
+			margin-left : 60px;
+		}
+
+		div.tab4 {
+			margin-left : 60px;
+		}
+
+
+		div.ordered {
+			display : block;
+		}
+
+		div.ordered:before {
+			counter-increment : item;
+			content : counter(item) ". "
+		}
+
+	</style>
+</head>
+<body>
+
+<div id="editor" contentEditable="true">
+	<div>bla</div>
+
+	<div class="list decimal">List item 1</div>
+	<div class="list decimal">List item 2</div>
+	<div class="list decimal">List item 3</div>
+	<div class="list tab1">Sub list 1 item 1</div>
+	<div class="list tab1">Sub list 1 item 2</div>
+	<div class="list tab1">Sub list 1 item 3</div>
+	<div class="list tab2 square">Sub list 2 item 1</div>
+	<div class="list tab2 square">Sub list 2 item 2</div>
+	<div class="list tab2 square">Sub list 2 item 3</div>
+	<div class="list tab3 decimal">Sub list 3 item 1</div>
+	<div>bla</div>
+	<div>bla</div>
+	<div class="list lower-alpha" style="counter-reset : item;">List item 1</div>
+	<div class="list lower-alpha">List item 2</div>
+	<div class="list lower-alpha">List item 3</div>
+	<div>bla</div>
+	<div class="ordered tab1" style="counter-reset : item;">List item 1</div>
+	<div class="ordered tab1">List item 2</div>
+	<div class="ordered tab1">List item 3</div>
+	<div class="ordered tab2" style="counter-reset : item 0;">List item 1</div>
+	<div class="ordered tab2">List item 2</div>
+	<div class="ordered tab2">List item 3</div>
+	<div class="ordered tab1" style="counter-reset : item 3;">List item 1</div>
+	<div class="ordered tab1">List item 2</div>
+	<div class="ordered tab1">List item 3</div>
+</div>
+
+</body>
+</html>

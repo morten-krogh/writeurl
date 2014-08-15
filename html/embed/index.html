@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>Embed online text editor - WriteURL</title>
+	<meta name="description" content="Embed WriteURL documents on your website to let users write or publish real-time updated read URLs.">
+	<meta name="keywords" content="embed,embedding,text,editor,documents,publish,collaborate,collaborative,real-time,online">
+	<meta name="author" content="Morten Krogh, Elias Moberger">
+	<meta name="application-name" content="WriteURL">
+	<script>
+	document.createElement('header');
+	document.createElement('aside');
+	document.createElement('article');
+	document.createElement('section');
+	document.createElement('footer');
+	</script>
+	<link rel="stylesheet" href="/css/site.css" type="text/css">
+	<link rel="stylesheet" href="/css/frontpage.css" type="text/css">
+	<link rel="stylesheet" href="/css/embed.css" type="text/css">
+	<link rel="stylesheet" href="/css/wu-title.css" type="text/css">
+	<link rel="stylesheet" href="/css/wu-editor.css" type="text/css">
+	<link rel="stylesheet" href="/css/wu-format.css" type="text/css">
+	<link rel="stylesheet" href="/css/panels.css" type="text/css">
+	<link rel="stylesheet" href="/css/wu-format-panel.css" type="text/css">
+	<link rel="stylesheet" href="/css/wu-inputs.css" type="text/css">
+	<link rel="stylesheet" href="/css/buttons.css" type="text/css">
+	<link rel="stylesheet" href="/css/windows.css" type="text/css">
+	<link rel="stylesheet" href="/css/ui.css" type="text/css">
+	<link rel="stylesheet" href="/css/print.css" type="text/css">
+	<link rel="stylesheet" href="/css/media_queries.css" type="text/css">
+</head>
+<body>
+<aside id="panel">
+	<a href="/" id="home" class="circle_button" title="Home"></a>
+	<a id="feedback" class="circle_button" title="Feedback">!</a>
+	<a id="faq" class="circle_button" href="/publish/faq" title="FAQ">?</a>
+</aside>
+<article id="frontpage" style="display : block;">
+	<header class="l-header">
+		<h1>WriteURL</h1>
+		<a href="/new" id="new_doc" title="Create a New Document" target="blank">NEW DOCUMENT</a>
+	</header>
+	<section>
+		<h1>How to embed a text editor on your website</h1>
+		<h2>Embed content on your website from real-time updated read URLs.<br>
+		Let people write from within your website with embedded write URLs.</h2>
+	</section>
+	<section>
+		<h1>CSS and Javascript includes</h1>
+		<p>Please include the following CSS and Javascript files in the head-section of your HTML-file:</p>
+		<pre class="wu-code">
+&lt;link rel="stylesheet" href="http://www.writeurl.com/style.css" type="text/css"&gt;
+&lt;script src="http://www.writeurl.com/script.js"&gt;&lt;/script&gt;</pre>
+	</section>
+	<section>
+		<h1>Simple Embedding</h1>
+		<h2>Write URL</h2>
+		<p>Appends a writable document to the specified DOM element or DOM id with the given document ids.</p>
+		<pre class="wu-code">
+nbe.site.embed_write(element or DOM id, {
+	id : 'document id',
+	read : 'read id',
+	write : 'write id'
+});</pre>
+		<p><a href="/embed/write.html">Write URL example</a></p>
+		<h2>Read URL</h2>
+		<p>Appends a readable document to the specified DOM element or DOM id with the given document ids.</p>
+		<pre class="wu-code">
+nbe.site.embed_read(element or DOM id, {
+	id : 'document id',
+	read : 'read id'
+});</pre>
+		<p><a href="/embed/read.html">Read URL example</a></p>
+		<h2>New Write URL</h2>
+		<p>Appends a new document and returns the document ids.</p>
+		<pre class="wu-code">
+var ids = nbe.site.embed_new(element or DOM id);</pre>
+		<p><a href="/embed/new_write.html">New write URL example</a></p>
+	</section>
+
+	<section>
+		<h1>General Embedding</h1>
+		<p>A more general approach of embedding is using the embed-funtion with a number of options.</p>
+		<h2>Function</h2>
+		<pre class="wu-code">
+nbe.site.embed(text, title, panel, ids, new_doc, ws_url, local_storage, html_title, callback);</pre>
+		<p><a href="/embed/embed.html">General embedding example</a></p>
+
+		<h2>Placeholders</h2>
+		<p>The placeholders are DOM elements or DOM ids where parts of the document will be appended. Specify null to not append a given part.</p>
+		<p><b>text</b> - the text content of the document.<br>
+		<b>title</b> - the title of the document.<br>
+		<b>panel</b> - the format panel of the document.</p>
+		<h3>Possible values</h3>
+		<pre class="wu-code">
+DOM element or DOM id or null</pre>
+
+		<h2>Document Ids</h2>
+		<p>An object with the ids of the document to be displayed. The values are strings of characters [a-z0-9]. If write is null, the editor is a read only editor.</p>
+		<pre class="wu-code">
+var ids = {
+	id : 'document id',
+	read : 'read id',
+	write : 'write id' or null
+}</pre>
+
+		<h2>New document</h2>
+		<p>A boolean that designates whether the document with the ids is new or not. If it is not new, a document with the specified ids must exist on the server.</p>
+		<pre class="wu-code">
+var new_doc = true or false;</pre>
+
+		<h2>Websocket URL</h2>
+		<p>The url for the web socket. The writeurl server uses 'ws://www.writeurl.com:8043'.</p>
+		<pre class="wu-code">
+var ws_url = 'ws://www.writeurl.com:8043';</pre>
+
+		<h2>Local storage</h2>
+		<p>A boolean that controls the use of local storage to store the document.</p>
+		<pre class="wu-code">
+var local_storage = true or false;</pre>
+
+		<h2>HTML title</h2>
+		<p>A boolean that tells whether the html page title should be set to the title of the document.</p>
+		<pre class="wu-code">
+var html_title = true or false;</pre>
+
+		<h2>Callback</h2>
+		<p>A function that is called at certain events. The important keys are:</p>
+		<p><b>nunsaved</b> - the number of unsaved operations. The important point is whether the value is zero or not.<br>
+		<b>network</b> - the value connected means that there is a connection to the server, anythng else that there is no connection.</p>
+		<pre class="wu-code">
+var callback = function (key, value) {};</pre>
+	</section>
+
+	<section>
+		<h1>CSS Classes</h1>
+		<p>The WriteURL CSS classes in www.writeurl.com/style.css are prefixed with wu-. Here are some examples of main classes and what elements they style:</p>
+		<p><b>.wu-editor</b> - styles the text element.</p>
+		<p><b>.wu-root</b> - styles the element containing text lines.</p>
+		<p><b>.wu-title</b> - styles the title input element in a write URL.</p>
+		<p><b>.wu-format-panel</b> - styles the format panel element.</p>
+	</section>
+
+	<footer class="l-footer">
+		<h1>Contact</h1>
+		<div>
+			<h2>English/dansk</h2>
+			<p style="line-height: 22px;" itemscope itemtype="http://schema.org/Person"><b itemprop="name">Morten Krogh</b><br>
+			<a id="morten" itemprop="email"></a><br>
+			<span itemprop="telephone">+46 (0) 761 - 88 01 43</span></p>
+		</div>
+		<div>
+			<h2>Svenska</h2>
+			<p style="line-height: 22px;" itemscope itemtype="http://schema.org/Person"><b itemprop="name">Elias Moberger</b><br>
+			<a id="elias" itemprop="email"></a><br>
+			<span itemprop="telephone">+46 (0) 704 - 68 06 46</span></p>
+		</div>
+		<div itemscope itemtype="http://schema.org/Organization">
+			<h2>Company</h2>
+			<p>WriteURL is owned by <span itemprop="name">Amber Biosciences AB</span></p>
+			<p itemprop="address" itemscope itemtype="http://schema.org/Organization"><span itemprop="streetAddress">Skrivarevägen 9</span><br>
+			<span itemprop="postalCode">226 57</span> <span itemprop="addressLocality">Lund</span><br>
+			<span itemprop="addressCountry">Sweden</span></p>
+			<p>Org. no.: 556755-7763</p>
+		</div>
+	</footer>
+</article>
+
+<script>
+(function () {
+	var w, mt, m, me, e, ee;
+
+	w = '@' + 'writ' + 'eur' + 'l.c' + 'om';
+	mt = 'mai' + 'lto:';
+	m = 'mor' + 'ten' + w;
+	me = document.getElementById('morten');
+	me.href = mt + m;
+	me.textContent = m;
+	e = 'eli' + 'as' + w;
+	ee = document.getElementById('elias');
+	ee.href = mt + e;
+	ee.textContent = e;
+}());
+</script>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Untitled</title>
+	<style>
+	div {
+		background-color : red;
+		margin-bottom : 20px;
+	}
+
+	div {
+		font-size : 12px;
+		line-height : 160%;
+	}
+
+	div > span {
+		/* default font size */
+		font-size : 12px;
+
+		background-color : yellow;
+	}
+
+	div.lineheight_5, div.lineheight_5 > span {
+		line-height : 500%;
+	}
+	</style>
+</head>
+<body>
+
+<div style="line-height : 500%;">
+	<span>abc</span><span style="font-size : 32px;"> def</span><span> ghi</span>
+</div>
+
+<div>
+	<span>abc</span><span style="font-size : 32px; line-height : 500%;"> def</span><span> ghi</span>
+</div>
+
+<div class="lineheight_5">
+	<span>abc</span><span style="font-size : 32px;"> def</span><span> ghi</span>
+</div>
+
+<div class="lineheight_5">
+	<br>
+</div>
+
+
+</body>
+</html>

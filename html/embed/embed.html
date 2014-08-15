@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Example of an embedded online text editor - WriteURL</title>
+	<meta name="description" content="Embed an online text editor on your website to let users write and collaborate.">
+	<meta name="keywords" content="embed,embedding,text,editor,collaborate,collaborative,real-time,online">
+	<link rel="stylesheet" href="http://www.writeurl.com/style.css" type="text/css">
+	<script src="http://www.writeurl.com/script.js"></script>
+</head>
+<body>
+<div id="panel"></div>
+<div id="title"></div>
+<div id="text"></div>
+<script>
+nbe.site.embed(document.getElementById('text'), document.getElementById('title'), document.getElementById('panel'), {
+	id : 'n18dkh5ck3tfmbacgxpl',
+	read : 'smy363nik7s9vwereozu',
+	write : 'srdl0ub33eror0wuzzpt'
+}, false, 'ws://www.writeurl.com:8043', false, true, function (key, value) {
+	//console.log(key, value);
+});
+</script>
+</body>
+</html>

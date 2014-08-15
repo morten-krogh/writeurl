@@ -1,0 +1,13 @@
+.wu-title-container {
+	height : 30px;
+}
+
+input.wu-title {
+	width : 100%;
+	border-width : 0;
+	font-size : 16px;
+	font-family : Helvetica, sans-serif;
+	outline : 0;
+	padding : 5px 5px 5px 0;
+	border-bottom : 2px solid rgb(220,220,220);
+}

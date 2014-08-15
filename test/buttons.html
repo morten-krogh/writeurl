@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link rel="stylesheet" href="../css/inputs.css" type="text/css">
+<script>
+var kite = {browser : {}};
+var nbe = {
+	lib : {},
+	nodes : {},
+	elements : {
+		text : {},
+		newline : {},
+		link : {}
+	},
+	editor : {
+		state : {},
+		events : {},
+		actions : {},
+		cursor : {}
+	},
+	inputs : {}
+};
+</script>
+
+<script src="../../browser/dom.js"></script>
+<script src="../js/inputs/input.js"></script>
+<script src="../js/inputs/button.js"></script>
+<script src="../js/inputs/bold.js"></script>
+<script src="../js/inputs/italic.js"></script>
+<script src="../js/inputs/underline.js"></script>
+<script src="../js/inputs/strikethrough.js"></script>
+<script src="../js/inputs/color.js"></script>
+<script src="../js/inputs/background_color.js"></script>
+<script src="../js/inputs/superscript.js"></script>
+<script src="../js/inputs/subscript.js"></script>
+<script src="../js/inputs/increase_indent.js"></script>
+<script src="../js/inputs/decrease_indent.js"></script>
+<script src="../js/inputs/undo.js"></script>
+<script src="../js/inputs/redo.js"></script>
+<script src="../js/inputs/drop_down.js"></script>
+<script src="../js/inputs/font_family.js"></script>
+<script src="../js/inputs/font_size.js"></script>
+<script src="../js/inputs/text_align.js"></script>
+<script src="../js/inputs/line_spacing.js"></script>
+
+</head>
+<body>
+
+<aside>
+	<div id="font"></div>
+	<div id="format"></div>
+	<div id="color"></div>
+	<div id="script"></div>
+	<div id="indent"></div>
+	<div id="do"></div>
+	<div id="paragraph"></div>
+	<div id="list"></div>
+</aside>
+
+<div id="editor" contentEditable="true"></div>
+
+<script>
+(function () {
+	var buttons, editor, editor2;
+
+	buttons = {};
+
+	editor = {
+		trigger : function (type, value) {
+			console.log('editor1', type, value);
+			if (buttons[type]) {
+				buttons[type].set_value(value);
+			}
+		}
+	};
+	editor2 = {
+		trigger : function (type, value) {
+			console.log('editor2', type, value);
+		}
+	};
+
+	el_font = document.getElementById('font');
+	buttons.font_family = nbe.inputs.font_family(editor, 'Font', ['Arial', 'Helvetica', 'Times', 'Verdana'], el_font, {});
+	buttons.font_family.set_value('Helvetica');
+	buttons.font_size = nbe.inputs.font_size(editor, 'Font size', ['10pt', '11pt', '12pt', '13pt', '14pt', '15pt', '16pt', '17pt', '18pt'], el_font, {});
+	buttons.font_size.set_value('12pt');
+
+	el_format = document.getElementById('format');
+	buttons.bold = nbe.inputs.bold(editor, 'Bold', el_format, {});
+	//buttons.bold.add_editor(editor2);
+	//bold.remove_editor(editor2);
+	buttons.italic = nbe.inputs.italic(editor, 'Italic', el_format, {});
+	buttons.underline = nbe.inputs.underline(editor, 'Underline', el_format, {});
+	buttons.strikethrough = nbe.inputs.strikethrough(editor, 'Strikethrough', el_format, {});
+
+	el_color = document.getElementById('color');
+	nbe.inputs.color(editor, 'Text color', el_color, {});
+	nbe.inputs.background_color(editor, 'Line color', el_color, {});
+
+	el_script = document.getElementById('script');
+	buttons.superscript = nbe.inputs.superscript(editor, 'Superscript', el_script, {});
+	buttons.subscript = nbe.inputs.subscript(editor, 'Subscript', el_script, {});
+
+	el_indent = document.getElementById('indent');
+	nbe.inputs.decrease_indent(editor, 'Decrease indent', el_indent, {});
+	nbe.inputs.increase_indent(editor, 'Increase indent', el_indent, {});
+
+	el_do = document.getElementById('do');
+	nbe.inputs.undo(editor, 'Undo', el_do, {});
+	nbe.inputs.redo(editor, 'Redo', el_do, {});
+
+	el_paragraph = document.getElementById('paragraph');
+	buttons.text_align = nbe.inputs.text_align(editor, 'Text align', ['left', 'center', 'right', 'justify'], el_paragraph, {});
+	buttons.line_spacing = nbe.inputs.line_spacing(editor, 'Line spacing', ['0.5','0.6','0.7','0.8','0.9','1','1.1','1.2','1.3','1.4','1.5','1.6','1.7','1.8','1.9','2'], el_paragraph, {});
+	buttons.line_spacing.set_value('1');
+
+	el_list = document.getElementById('list');
+	buttons.list = nbe.inputs.text_align(editor, 'List', ['none', 'bulleted', 'numbered'], el_list, {});
+
+	document.getElementById('editor').focus();
+})();
+
+</script>
+
+</body>
+</html>

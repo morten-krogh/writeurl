@@ -1,0 +1,181 @@
+
+div.nbe_window button {
+	font-size : 14px;
+}
+
+div.nbe_window {
+	overflow : hidden;
+	padding : 20px;
+	background-color : white;
+	font-size : 14px;
+}
+
+div.nbe_window img {
+	float : left;
+	margin-bottom : 20px;
+	width : 28px;
+	height : 32px;
+}
+
+div.nbe_window h1 {
+	float : left;
+	font-size : 22px;
+	margin : 0 0 20px 20px;
+}
+
+div.nbe_window > p {
+	clear : left;
+	font-size : 18px;
+}
+
+div.nbe_window h2 {
+	font-size : 18px;
+	margin : 30px 0 10px 0;
+}
+
+div.nbe_window h2 span {
+	padding-left : 20px;
+	font-size : 14px;
+	font-weight : normal;
+}
+
+div.nbe_window h3 {
+	font-size : 16px;
+	margin : 20px 0 0 0;
+}
+
+/****************************************************
+  Share window
+****************************************************/
+
+div.nbe_window.share {
+	max-width : 720px;
+}
+
+div.nbe_window.share > p {
+	border-bottom : 1px solid rgb(200,200,200);
+	padding-bottom : 20px;
+}
+
+div.nbe_window.share > div > a {
+	font-size : 16px;
+	text-decoration : none;
+	word-break : break-word;
+}
+
+div.nbe_window.share > div > a.visible {
+	display : inline-block;
+	margin-right : 20px;
+}
+
+div.nbe_window.share > div > a.hidden {
+	display : none;
+}
+
+div.nbe_window.share > div > a:hover {
+	text-decoration : underline;
+}
+
+div.nbe_window.share > div > button {
+	margin : 0 20px 0 0;
+}
+
+div.nbe_window.share > div > div {
+	margin-top : 5px;
+	font-style : italic;
+}
+
+div.nbe_window.share div.share_email {
+	overflow : hidden;
+	border-top : 1px solid rgb(200,200,200);
+	border-bottom : 1px solid rgb(200,200,200);
+	padding-bottom : 20px;
+	margin : 20px 0;
+}
+
+div.nbe_window.share div.share_email h2 {
+	margin-top : 20px;
+}
+
+div.nbe_window.share div.share_email > div, div.nbe_window.share div.share_email > input, div.nbe_window.share div.share_email > button {
+	float : left;
+	display : block;
+	margin-top : 10px;
+	margin-right : 10px;
+}
+
+div.nbe_window.share div.share_email > input, div.nbe_window.share div.share_email > textarea {
+	max-width : 270px;
+	width : 100%;
+	height : 40px;
+	float : left;
+	margin-top : 10px;
+	font-size : 16px;
+}
+
+div.nbe_window.share div.share_email > div {
+	width : 140px;
+	clear : left;
+}
+
+div.nbe_window.share div.share_email > button {
+	float : left;
+}
+
+div.nbe_window.share div.share_email button.send {
+	display : block;
+	clear : left;
+	margin : 10px 0 0 150px;
+}
+
+div.nbe_window.share div.share_email span {
+	display : block;
+	float : left;
+	margin-top : 10px;
+	margin-left : 10px;
+	line-height : 21px;
+}
+
+div.nbe_window.share > button {
+	display : block;
+	clear : both;
+}
+
+div.nbe_window.share button.active {
+	color : green;
+}
+
+/****************************************************
+  feedback window
+****************************************************/
+
+div.nbe_window.feedback div:first-child {
+	float : left;
+	font-size : 32px;
+	line-height : 32px;
+	margin-bottom : 20px;
+}
+
+div.nbe_window.feedback textarea, div.nbe_window.feedback input {
+	width : 98%;
+	font-size : 14px;
+	padding : 5px;
+}
+
+div.nbe_window.feedback textarea {
+	height : 100px;
+}
+
+div.nbe_window.feedback footer > div {
+	float : left;
+	margin-top : 20px;
+}
+
+div.nbe_window.feedback button {
+	float : right;
+}
+
+div.nbe_window.feedback button:first-child {
+	float : left;
+	margin-right : 20px;
+}

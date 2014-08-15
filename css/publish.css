@@ -1,0 +1,18 @@
+body {
+	margin : 0;
+}
+
+div.editor {
+	white-space : pre-wrap;
+	word-wrap : break-word;
+	font-size : 16px;
+	font-family : Arial;
+	line-height : 120%;
+	line-height : 160%;
+	padding : 30px 50px;
+}
+
+div.editor span {
+	font-size : 16px;
+	font-family : Arial;
+}
