@@ -1,9 +1,9 @@
 'use strict';
 
 var http = require('http');
-var buffer = require('../../../buffer/buffer.js');
-var mail = require('../../../mail/mail.js');
-var response = require('../../../server/response.js');
+var buffer = require('./buffer.js');
+var mail = require('./mail.js');
+var response = require('./response.js');
 var mod_publish = require('./mod_publish.js');
 
 var host = null;
