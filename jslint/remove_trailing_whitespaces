@@ -1,0 +1,31 @@
+#! /usr/local/bin/node
+'use strict';
+
+var fs = require('fs');
+
+var args = process.argv.splice(2);
+
+var remove_trailing_whitespace_string = function (str) {
+	var output, input, i;
+
+	output = [];
+	input = str.split('\n');
+	for (i = 0; i < input.length; i++) {
+		output.push(input[i].replace(/\s*$/g, ''));
+	}
+
+	return output.join('\n');
+};
+
+var process_file = function (pathname) {
+	fs.readFile(pathname, function (err, data) {
+		if (!err) {
+			fs.writeFile(pathname, remove_trailing_whitespace_string(data.toString()));
+		}
+	});
+};
+
+var i;
+for (i = 0; i < args.length; i++) {
+	process_file(args[i]);
+}

@@ -1,0 +1,150 @@
+#!/usr/local/bin/node
+
+'use strict';
+
+var fs = require('fs');
+var child_process = require('child_process');
+var fulljslint = require('./fulljslint.js');
+
+var option = {
+	predef : ['config', 'http', 'window', 'Window', 'nbe', 'kite', 'main', 'require', 'exports', 'process', 'Buffer', 'FileReader', 'localStorage', 'escape', 'unescape', '__dirname', 'L', 'XDomainRequest', 'nb', 'survey', 'output', 'DOMException', 'respondents', 'Blob', 'WebSocket', 'MozWebSocket', 'Uint8Array', 'chrome'],
+	white : true,
+	browser : true,
+	devel : true,
+	onevar : true,
+	undef : true,
+	nomen : false,
+	eqeqeq : true,
+	plusplus : false,
+	bitwise : true,
+	regexp : false,
+	strict : true,
+	newcap : true,
+	immed : true,
+	indent : 8,
+	evil : true
+};
+
+var report_errors = function (file, errors) {
+	var i, error;
+
+	if (errors && errors.length !== 0) {
+		console.log('errors in ' + file);
+		for (i = 0; i < errors.length; i++) {
+			error = errors[i];
+			if (error) {
+				console.log('line: ' + error.line);
+				console.log('character: ' + error.character);
+				console.log('reason: ' + error.reason);
+				console.log('evidence: ' + error.evidence);
+				console.log(' ');
+			} else {
+				console.log('fatal error');
+			}
+		}
+	}
+
+	return Boolean(errors);
+};
+
+var report_unuseds = function (file, functions) {
+	var unuseds, i, func;
+
+	unuseds = false;
+	for (i = 0; i < functions.length; i++) {
+		func = functions[i];
+		if (func.unused) {
+			unuseds = true;
+			console.log('unused variables ' + func.unused.join(', ') + ' in function ' + func.name + ' in file ' + file);
+		}
+	}
+
+	return unuseds;
+};
+
+var verify_files = function (files) {
+	var i, jslint_data, errors, unuseds;
+
+	for (i = 0; i < files.length; i++) {
+		fulljslint.JSLINT(fs.readFileSync(files[i], 'utf8'), option);
+		jslint_data = fulljslint.JSLINT.data();
+		errors = report_errors(files[i], ('errors' in jslint_data) ? jslint_data.errors : null);
+		unuseds = report_unuseds(files[i], jslint_data.functions);
+		if (errors || unuseds) {
+			return false;
+		}
+	}
+
+	console.log('no jslint errors');
+	return true;
+};
+
+var get_js_files = function (path) {
+	var stats, paths, res, i;
+
+	res = [];
+	stats = fs.statSync(path);
+	if (stats.isFile() && path.slice(-3) === '.js') {
+		res.push(path);
+	} else if (stats.isDirectory()) {
+		try {
+			paths = fs.readdirSync(path);
+			for (i = 0; i < paths.length; i++) {
+				if (paths[i][0] !== '.') {
+					res = res.concat(get_js_files(path + (path[path.length - 1] === '/' ? '' : '/') + paths[i]));
+				}
+			}
+		} catch (e) {
+		}
+	}
+	return res;
+};
+
+var get_all_js_files = function (paths) {
+	var res, i;
+
+	res = [];
+	for (i = 0; i < paths.length; i++) {
+		res = res.concat(get_js_files(paths[i]));
+	}
+
+	res = res.filter(function (name) {
+		return !name.match('/public/script.js');
+	});
+	return res;
+};
+
+var verify_all = function (args) {
+	var validated;
+
+	validated = verify_files(get_all_js_files(args));
+	process.exit(validated ? 0 : 1);
+};
+
+var args = process.argv.splice(2);
+
+var kite_dir = __dirname.split('/').slice(0, -1).join('/') + '/';
+
+var filter_dirs = function (args) {
+	return args.filter(function (dir) {
+		return [].indexOf(dir) === -1;
+	});
+};
+
+if (args.length === 0) {
+	args = ['js', 'server'].map(function (x) {
+		return kite_dir + x;
+	});
+	verify_all(args);
+} else if (args.length === 1 && args[0] === 'git') {
+	child_process.exec('git diff-index --cached --name-only --diff-filter=[ACMR] HEAD', function (error, stdout, stderr) {
+		args = filter_dirs(stdout.split('\n'));
+		args.pop();
+		args = args.map(function (x) {
+			return kite_dir + x;
+		});
+		verify_all(args);
+	});
+} else {
+	verify_all(args);
+}
