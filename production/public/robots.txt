@@ -1,2 +1,3 @@
 User-agent: *
 Disallow: www.writeurl.com:8043
+Disallow: /publish/
