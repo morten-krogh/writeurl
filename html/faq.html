@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>Embed online text editor - WriteURL</title>
+	<meta name="description" content="Embed WriteURL documents on your website to let users write or publish real-time updated read URLs.">
+	<meta name="keywords" content="embed,embedding,text,editor,documents,publish,collaborate,collaborative,real-time,online">
+	<meta name="author" content="Morten Krogh, Elias Moberger">
+	<meta name="application-name" content="WriteURL">
+	<script>
+	document.createElement('header');
+	document.createElement('aside');
+	document.createElement('article');
+	document.createElement('section');
+	document.createElement('footer');
+	</script>
+	<link rel="stylesheet" href="/css/site.css" type="text/css">
+	<link rel="stylesheet" href="/css/frontpage.css" type="text/css">
+	<link rel="stylesheet" href="/css/embed.css" type="text/css">
+	<link rel="stylesheet" href="/css/wu-title.css" type="text/css">
+	<link rel="stylesheet" href="/css/wu-editor.css" type="text/css">
+	<link rel="stylesheet" href="/css/wu-format.css" type="text/css">
+	<link rel="stylesheet" href="/css/panels.css" type="text/css">
+	<link rel="stylesheet" href="/css/wu-format-panel.css" type="text/css">
+	<link rel="stylesheet" href="/css/wu-inputs.css" type="text/css">
+	<link rel="stylesheet" href="/css/buttons.css" type="text/css">
+	<link rel="stylesheet" href="/css/windows.css" type="text/css">
+	<link rel="stylesheet" href="/css/ui.css" type="text/css">
+	<link rel="stylesheet" href="/css/print.css" type="text/css">
+	<link rel="stylesheet" href="/css/media_queries.css" type="text/css">
+</head>
+<body>
+<aside id="panel">
+	<a href="/" id="home" class="circle_button" title="Home"></a>
+	<a id="feedback" class="circle_button" title="Feedback">!</a>
+	<a id="faq" class="circle_button" href="/publish/faq" title="FAQ">?</a>
+</aside>
+<article id="frontpage" style="display : block;">
+	<header class="l-header">
+		<h1>FAQ for WriteURL - a Collaborative Real-time Online Text editor</h1>
+		<a href="/new" id="new_doc" title="Create a New Document" target="blank">NEW DOCUMENT</a>
+	</header>
+	<section>
+		<h1>What is WriteURL?</h1>
+		<p>WriteURL is an online web browser based rich text editor. A group of people can work on the same document simultaneously without mailing a file back and forth, and without coordinating the work. You always have access to the latest version of  the document. The document is shared just by emailing the url to collaborators. Other people can get read access to the document, and can follow all changes without having the right to change the content.</p>
+	</section>
+	<section>
+		<h1>Do I need to register?</h1>
+		<p>No, there is no registration. Your collaborators do not need to register either. They just need the url.</p>
+	</section>
+	<section>
+		<h1>What does it cost to use the editor?</h1>
+		<p>It is free. If you want a customized version of it, please contact us.</p>
+	</section>
+	<section>
+		<h1>Which web browsers are supported?</h1>
+		<p>All browsers that have implemented enough of the html5 standards. We have tested the application in Firefox, Chrome, Safari,  and Opera. It should also work in IE10 but not in older versions of IE.</p>
+	</section>
+	<section>
+		<h1>What is the url structure?</h1>
+		<p>A document has an id, a read password, and a write password. The id is used to identify the document, the read password is used to get access to a readable version of the document, and the write password is needed to edit the document. The url to edit the document, the writeurl looks like:
+        <br><b>www.writeurl.com/text/id/read-password/write-password</b></p>
+
+        <p>The readable, non writeable, version of the document is found on the url:
+        <br><b>www.writeurl.com/text/id/read-password</b></p>
+
+        <p>A new document can be created with the url:
+        <br><b>www.writeurl.com/text/id/read-password/write-password/new</b></p>
+
+        <p>The id and the two passwords must be at least 3 characters long, and composed of lower case letters, a-z, and digits 0-9. When you click new document on the home page, the three strings are generated automatically, and are basically impossible to guess. You are free to choose your own id, and passwords, but you take the risk that someone else can guess them if they are too simple.</p>
+
+        <p>A new document with automatically generated ids can be created with the url:
+        <br><b>www.writeurl.com/new</b></p>
+
+        <p>The urls can easily be shared with your collaborators by using the share button.</p>
+	</section>
+	<section>
+		<h1>Can I publish a document?</h1>
+		<p>A snapshot of the document can be stored as a html document on our server by clicking the publish button in the share window. The published document is the available at the url:
+        <br><b>www.writeurl.com/publish/id</b></p>
+	</section>
+	<section>
+		<h1>Can I work offline?</h1>
+		<p>Yes. We use the html5 manifest, which is a way for a web page to be stored on the local computer and displayed even in case the user is offline. The text of the document is stored in local storage, another html5 way of storing data locally. If You are offline, you can continue writing in the document, and when the internet connection returns, the application will automatically send it to the server. The icons next to the share button show whether there is an internet connection to the server, and whether there are unsaved changes. The html5 manifest and local storage also makes the application load faster even in cases with an internet connection. The startup time is like that of a locally installed application.</p>
+	</section>
+	<section>
+		<h1>Are there keyboard shortcuts?</h1>
+		<p>Yes, there are a few.</p>
+
+        <p>copy : ctrl-c
+        <br>paste : ctrl-v
+        <br>cut : ctrl-x
+        <br>undo : ctrl-z
+        <br>redo : ctrl-shift-z</p>
+	</section>
+	<section>
+		<h1>How do I keep track of all my documents?</h1>
+		<p>You need to remember the urls somehow, exactly like you do with ordinary files. you could keep them in a text file, save the emails where you got the invitation. We could make a separate document handler application with user names and login for keeping track of documents if there is interest for that.</p>
+	</section>
+	<section>
+		<h1>How do you communicate changes in the document to the other collaborators so fast?</h1>
+		<p>We use the html5 technique web sockets. They are open connections between the browser and the server. Whenever a document is changed in a browser, a message is sent to the server, which then notifies the other online browsers.</p>
+	</section>
+	<section>
+		<h1>Are my documents secure?</h1>
+		<p>As long as no unauthorized person gets the url, the document is safe. The security is that no one can guess the id and passwords. If you work on a public computer, you might want to deny the application access to local storage or clear the local storage after use. Even if you do not clear the local storage, it is very unlikely that anyone would search the computer for your document. If you have extreme needs for security, you should not use an online based editor to start with. If you are interested in a local server installation of WriteURL, please contact us.</p>
+	</section>
+	<section>
+		<h1>Can we get a local server installation of the editor?</h1>
+		<p>Yes, please contact us.</p>
+	</section>
+	<section>
+		<h1>Can I print a WriteURL document?</h1>
+		<p>Yes, just use the browser's print command.</p>
+	</section>
+	<section>
+		<h1>How do I export the document to other formats?</h1>
+		<p>The easiest method is to copy/paste the document into another editor. You can get a html version of the document by publishing it, and downloading the published html page. A pdf version can be obtained from the browsers print command.</p>
+	</section>
+	<section>
+		<h1>Can I insert equations, tables or videos?</h1>
+		<p>There is no equation editor at the moment. You can always write a simple equation with characters like this</p>
+		<p>∫ x<sup>2</sup> dx = 1/3 x<sup>3</sup></p>
+		<p>Tables and videos can not be inserted right now, but we could easily implement it. Please give us feedback.</p>
+	</section>
+	<section>
+		<h1>Which programming language is WriteURL written in?</h1>
+		<p>Most of the WriteURL program runs in the browser and is written in Javascript. The server program is also written in Javascript for node.js. The web server nginx is used to serve static content, even though node.js could have done that  as well.</p>
+	</section>
+	<section>
+		<h1>Embedding of the editor</h1>
+		<p>The editor can be embedded in other web sites through the embed functions as explained on <a href="/embed">writeurl embedding</a>.</p>
+	</section>
+	<footer class="l-footer">
+		<h1>Contact</h1>
+		<div>
+			<h2>English/dansk</h2>
+			<p style="line-height: 22px;" itemscope itemtype="http://schema.org/Person"><b itemprop="name">Morten Krogh</b><br>
+			<a id="morten" itemprop="email"></a><br>
+			<span itemprop="telephone">+46 (0) 761 - 88 01 43</span></p>
+		</div>
+		<div>
+			<h2>Svenska</h2>
+			<p style="line-height: 22px;" itemscope itemtype="http://schema.org/Person"><b itemprop="name">Elias Moberger</b><br>
+			<a id="elias" itemprop="email"></a><br>
+			<span itemprop="telephone">+46 (0) 704 - 68 06 46</span></p>
+		</div>
+		<div itemscope itemtype="http://schema.org/Organization">
+			<h2>Company</h2>
+			<p>WriteURL is owned by <span itemprop="name">Amber Biosciences AB</span></p>
+			<p itemprop="address" itemscope itemtype="http://schema.org/Organization"><span itemprop="streetAddress">Skrivarevägen 9</span><br>
+			<span itemprop="postalCode">226 57</span> <span itemprop="addressLocality">Lund</span><br>
+			<span itemprop="addressCountry">Sweden</span></p>
+			<p>Org. no.: 556755-7763</p>
+		</div>
+	</footer>
+</article>
+
+<script>
+(function () {
+	var w, mt, m, me, e, ee;
+
+	w = '@' + 'writ' + 'eur' + 'l.c' + 'om';
+	mt = 'mai' + 'lto:';
+	m = 'mor' + 'ten' + w;
+	me = document.getElementById('morten');
+	me.href = mt + m;
+	me.textContent = m;
+	e = 'eli' + 'as' + w;
+	ee = document.getElementById('elias');
+	ee.href = mt + e;
+	ee.textContent = e;
+}());
+</script>
+
+</body>
+</html>
