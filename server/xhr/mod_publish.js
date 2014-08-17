@@ -13,7 +13,7 @@ var verify_write = function (id, write) {
 	var ids, valid;
 
 	try {
-		ids = JSON.parse(fs.readFileSync(docs_dir + '/' + id + '/ids', 'utf8'));
+		ids = JSON.parse(fs.readFileSync(docs_dir + '/' + id[0] + '/' + id[1] + '/' + id + '/ids', 'utf8'));
 		valid = write === ids.write;
 	} catch (e) {
 		valid = false;

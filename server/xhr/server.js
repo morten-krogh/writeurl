@@ -124,7 +124,7 @@ var init = function () {
 		}
 	}).listen(port, host);
 
-        console.log('mailform server running at ' + host + ':' + port);
+        console.log('mailform and publish server running at ' + host + ':' + port);
 };
 
 init();
