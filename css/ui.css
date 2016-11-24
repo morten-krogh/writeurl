@@ -1,1 +1,253 @@
-../../css/ui.css
+
+div.window {
+	position: fixed;
+	top: 50px;
+	border-radius: 8px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	z-index: 30;
+	overflow: hidden;
+	box-shadow: 0px 0px 16px rgba(0,0,0,0.8);
+	-moz-box-shadow: 0px 0px 16px rgba(0,0,0,0.8);
+	-webkit-box-shadow: 0px 0px 16px rgba(0,0,0,0.8);
+}
+
+div.window_dark {
+	background-image: url('/public/inlund/img/opacity3.png');
+}
+
+div.window_light {
+	border: 10px solid rgba(0,0,0,0.7);
+	background-color: rgba(0,0,0,0.7);
+	background-clip: padding-box;
+	overflow-y: auto;
+}
+
+/* header */
+div.window_header {
+	height: 18px;
+	background-repeat: repeat-x;
+	padding: 0px;
+	text-align: center;
+	cursor: move;
+
+	border-top-left-radius: 3px;
+	-moz-border-radius-topleft: 3px;
+	border-top-right-radius: 3px;
+	-moz-border-radius-topright: 3px;
+}
+
+div.header_dark {
+	background-color: rgb(99,99,99);
+	background-image: url('/public/inlund/img/bg_window_header.gif');
+	color: white;
+	font-weight: bold;
+}
+
+div.header_light {
+	background-image: url('/public/inlund/img/bg_window_header_light.gif');
+	background-color: rgb(245,245,245);
+	color: black;
+	text-shadow: rgba(255,255,255,0.5) 0px 1px;
+}
+
+/* container */
+div.container {
+	background-color: rgb(245,245,245);
+	color: black;
+	overflow-x: hidden;
+	width: 100%;
+	border-radius: 3px;
+}
+
+div.container_dark {
+	background-color: rgb(70,70,70);
+	color: white;
+}
+
+div.container_radius_bottom {
+	background-color: rgb(70,70,70);
+	padding: 5px;
+	color: white;
+	border-bottom-left-radius: 8px;
+	-moz-border-radius-bottomleft: 8px;
+	border-bottom-right-radius: 8px;
+	-moz-border-radius-bottomright: 8px;
+}
+
+div.container_radius {
+	background-color: rgb(70,70,70);
+	padding: 5px;
+	color: white;
+	border-radius: 8px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+}
+
+div.container_radius_no_padding {
+	background-color: rgb(70,70,70);
+	padding: 0px;
+	color: white;
+	border-radius: 8px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+}
+
+div.close_div {
+	float: right;
+	margin-right: 2px;
+}
+
+img.close_button {
+	width: 17px;
+	height: 17px;
+	cursor: pointer;
+	padding-top: 1px;
+}
+
+div.window_footer {
+	background-color: rgb(99,99,99);
+	height: 16px;
+
+	border-bottom-left-radius: 6px;
+	-moz-border-radius-bottomleft: 6px;
+	border-bottom-right-radius: 6px;
+	-moz-border-radius-bottomright: 6px;
+}
+
+div.window_footer_light {
+	background-color: rgb(172,172,172);
+	height: 16px;
+	border-top: 1px solid rgb(230,230,230);
+
+	border-bottom-left-radius: 6px;
+	-moz-border-radius-bottomleft: 6px;
+	border-bottom-right-radius: 6px;
+	-moz-border-radius-bottomright: 6px;
+}
+
+img.window_resize {
+	width: 11px;
+	height: 11px;
+	margin-top: 2px;
+	margin-right: 4px;
+	cursor: se-resize;
+	display: block;
+	float: right;
+}
+
+div.pop_up_arrow_space {
+	position: relative;
+	margin: auto;
+	width: 25px;
+	height: 15px;
+}
+
+div.pop_up_arrow_container {
+	position: absolute;
+	bottom: 0px;
+	height: 18px;
+}
+
+/****************************************************
+	DIALOG / CONFIRM
+****************************************************/
+
+div.dialog_cover {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	filter: alpha(opacity = 25);
+	opacity:.25;
+	z-index: 29;
+}
+
+#blockScreen {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 3;
+	background-color: black;
+	filter: alpha(opacity = 55);
+	opacity:.55;
+}
+
+#dialog {
+	position: absolute;
+	width: 350px;
+	margin-left: 50%;
+	left: -175px;
+	padding: 30px;
+	top: 200px;
+	background-color: white;
+	font-family: Lucida Grande, Verdana, Arial, Sans-serif;
+	font-size: 20px;
+	border: 3px solid rgb(50,50,50);
+	z-index: 4;
+}
+
+div.session_window_content {
+	padding: 10px;
+	font-size: 20px;
+}
+
+div.session_window_content div {
+	margin-top: 15px;
+	overflow: hidden;
+	font-size: 12px;
+}
+
+div.session_window_content input {
+	width: 200px;
+	float: left;
+}
+
+div.session_window_content button {
+	float: left;
+	margin-left: 10px;
+}
+
+div.confirm_content {
+	padding: 50px;
+	font-size: 16px;
+}
+
+/****************************************************
+	S W I T C H
+****************************************************/
+
+div.switch {
+	position: relative;
+	display: inline-block;
+	width: 50px;
+	height: 12px;
+	padding: 1px;
+	background-color: rgb(80,80,80);
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	margin-left: 10px;
+	cursor: pointer;
+}
+
+div.switch_control {
+	position: relative;
+	left: 0px;
+	top: 0px;
+	width: 23px;
+	height: 12px;
+	line-height: 11px;
+	background-color: rgb(150,150,150);
+	color: white;
+	border-radius: 1px;
+	-moz-border-radius: 1px;
+	-webkit-border-radius: 1px;
+	text-align: center;
+	font-size: 10px;
+	text-transform: uppercase;
+}
