@@ -1,7 +1,7 @@
 'use strict';
 
 var fs = require('fs');
-var uglifyjs = require('UglifyJS');
+var uglifyjs = require('uglify-js');
 
 var obfuscate = function (content) {
 	var script, obfuscated_script, ast;

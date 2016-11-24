@@ -1,0 +1,10 @@
+{
+  "name": "writeurl",
+  "version": "0.0.0",
+  "description": "A collaborative real-time online text editor",
+  "devDependencies": {
+    "uglify-js": "1.3.5",
+    "ws": "0.4.22",
+    "node-mime": "1.2.4"
+  }
+}
