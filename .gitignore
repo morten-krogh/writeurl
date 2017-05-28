@@ -1,3 +1,5 @@
-.swp
+.tup
+*.swp
+
 publish
 node_modules/
