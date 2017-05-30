@@ -14,6 +14,9 @@ namespace writeurl {
 enum class Error {
     file_no_exist,
     file_read_access_denied,
+    file_write_access_denied,
+    file_quota_exceeded,
+    file_size_limit_exceeded,
     file_unspecified_error,
 
 

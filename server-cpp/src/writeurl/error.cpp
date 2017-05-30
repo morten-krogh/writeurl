@@ -20,6 +20,12 @@ public:
                 return "File does not exist";
             case Error::file_read_access_denied:
                 return "Read access denied for file";
+            case Error::file_write_access_denied:
+                return "Write access denied for file";
+            case Error::file_quota_exceeded:
+                return "File quota exceeded";
+            case Error::file_size_limit_exceeded:
+                return "File size limit exceeded";
             case Error::file_unspecified_error:
                 return "Unspecified file error";
 
