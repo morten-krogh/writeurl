@@ -1,0 +1,5 @@
+: foreach ../test_*.cpp |> clang -std=c++14 -I ../../deps -I ../../src %f -c -o %o |> %B.o
+
+: ../../lib/*.o ../test.cpp test_*.o  |> clang++ -std=c++14 -Wall -Wextra -pedantic -Wunreachable-code -I ../../deps %f -o %o |> test
+
+

@@ -7,10 +7,16 @@
 #include <writeurl/file.hpp>
 #include <writeurl/error.hpp>
 
+#include <iostream>
+
 using namespace writeurl;
 
 bool file::file_exists(const std::string& path)
 {
+    char buf[100];
+    getcwd(buf, 100);
+    std::cout << "CWD = " << buf << std::endl;
+
     struct stat buffer;
     return (stat(path.c_str(), &buffer) == 0);
 }

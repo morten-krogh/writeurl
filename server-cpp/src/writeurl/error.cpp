@@ -43,7 +43,7 @@ const std::error_category& writeurl_error_category() noexcept
     return g_error_category;
 }
 
-std::error_code make_error_code(Error error) noexcept
+std::error_code writeurl::make_error_code(Error error) noexcept
 {
     return std::error_code(int(error), g_error_category);
 }
