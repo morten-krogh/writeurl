@@ -19,15 +19,12 @@ std::string file::read_file(const std::string& path, std::error_code& ec)
 {
     int fd = open(path.c_str(), O_RDONLY);
     if (fd == -1) {
-        if (errno == ENOENT) {
+        if (errno == ENOENT)
             ec = make_error_code(Error::file_no_exist);
-        }
-        else if (errno == EACCES) {
+        else if (errno == EACCES)
             ec = make_error_code(Error::file_read_access_denied);
-        }
-        else {
+        else
             ec = make_error_code(Error::file_unspecified_error);
-        }
 
         return "";
     }
@@ -58,30 +55,25 @@ void file::write_file(const std::string& path, const std::string& content, std::
 {
     int fd = open(path.c_str(), O_WRONLY | O_CREAT);
     if (fd == -1) {
-        if (errno == ENOENT) {
+        if (errno == ENOENT)
             ec = make_error_code(Error::file_no_exist);
-        }
-        else if (errno == EACCES) {
+        else if (errno == EACCES)
             ec = make_error_code(Error::file_write_access_denied);
-        }
-        else {
+        else
             ec = make_error_code(Error::file_unspecified_error);
-        }
 
         return;
     }
 
     ssize_t nwritten = write(fd, content.data(), content.size());
     if (nwritten == -1) {
-        if (errno == EDQUOT) {
+        if (errno == EDQUOT)
             ec = make_error_code(Error::file_quota_exceeded);
-        }
-        else if (errno == EFBIG) {
+        else if (errno == EFBIG)
             ec = make_error_code(Error::file_size_limit_exceeded);
-        }
-        else {
+        else
             ec = make_error_code(Error::file_unspecified_error);
-        }
+
         return;
     }
 
