@@ -1,3 +1,4 @@
+#include <string>
 #include <vector>
 #include <cassert>
 
@@ -6,22 +7,6 @@
 using namespace writeurl;
 
 namespace {
-
-//bool file_exists(const std::string& path)
-//{
-//
-//}
-//
-//std::string read_file(const std::string& path)
-//{
-//
-//}
-//
-//std::string write_file(const std::string& path)
-//{
-//
-//}
-//
 
 std::string resolve(const std::vector<std::string>& components)
 {
