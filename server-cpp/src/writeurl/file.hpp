@@ -13,13 +13,15 @@
 namespace writeurl {
 namespace file {
 
-bool file_exists(const std::string& path);
+std::string resolve(const std::vector<std::string>& components);
 
-std::string read_file(const std::string& path, std::error_code& ec);
+std::string resolve(const std::string& prefix, const std::string& name);
 
-void write_file(const std::string& path, const std::string& content, std::error_code& ec);
+bool exists(const std::string& path);
 
+std::string read(const std::string& path, std::error_code& ec);
 
+void write(const std::string& path, const std::string& content, std::error_code& ec);
 
 } // namespace file
 } // namespace writeurl

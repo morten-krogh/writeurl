@@ -13,7 +13,7 @@ EOF
 }
 
 case $MODE in
-    
+
     build-mac-debug)
         tup build/server-mac-debug
         ;;
@@ -22,7 +22,7 @@ case $MODE in
         build/server-mac-debug/test/test $@
         ;;
 
-        
+
     *)
         usage
         ;;

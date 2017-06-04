@@ -17,9 +17,6 @@ std::string
 
 
 
-bool file_exists(const std::string& path);
-
-
 
 
 } // namespace test

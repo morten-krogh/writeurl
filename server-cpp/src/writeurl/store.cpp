@@ -3,61 +3,43 @@
 #include <cassert>
 
 #include <writeurl/store.hpp>
+#include <writeurl/file.hpp>
 
 using namespace writeurl;
 
 namespace {
-
-std::string resolve(const std::vector<std::string>& components)
-{
-    assert(components.size() != 0);
-    std::string result = components[0];
-    for (size_t i = 1; i < components.size(); ++i) {
-        result.append(1, '/');
-        result.append(components[i]);
-    }
-    return result;
-}
-
-std::string resolve(const std::string& prefix, const std::string& name)
-{
-    std::vector<std::string> components(2);
-    components[0] = prefix;
-    components[1] = name;
-    return resolve(components);
-}
-
-std::string resolve_document_dir(const std::string& root_dir, const std::string& id)
-{
-    assert(id.size() > 2);
-    std::vector<std::string> components(4);
-    components[0] = root_dir;
-    components[1] = id[0];
-    components[2] = id[1];
-    components[3] = id[2];
-    return resolve(components);
-}
-
-std::string resolve_ids(const std::string& document_dir)
-{
-    return resolve(document_dir, "ids");
-}
-
-std::string resolve_noperation(const std::string& document_dir)
-{
-    return resolve(document_dir, "noperation");
-}
-
-std::string resolve_nstate(const std::string& document_dir)
-{
-    return resolve(document_dir, "nstate");
-}
-
+//
+//std::string resolve_document_dir(const std::string& root_dir, const std::string& id)
+//{
+//    assert(id.size() > 2);
+//    std::vector<std::string> components(4);
+//    components[0] = root_dir;
+//    components[1] = id[0];
+//    components[2] = id[1];
+//    components[3] = id[2];
+//    return file::resolve(components);
+//}
+//
+//std::string resolve_ids(const std::string& document_dir)
+//{
+//    return file::resolve(document_dir, "ids");
+//}
+//
+//std::string resolve_noperation(const std::string& document_dir)
+//{
+//    return file::resolve(document_dir, "noperation");
+//}
+//
+//std::string resolve_nstate(const std::string& document_dir)
+//{
+//    return file::resolve(document_dir, "nstate");
+//}
+//
 
 
 } // anonymous namespace
 
-document::DocumentMetaData store::read_document_meta_data(const std::string& root_dir, const std::string& id)
+document::DocumentMetaData store::read_document_meta_data(const std::string& /* root_dir */, const std::string& /* id */)
 {
     document::DocumentMetaData document_meta_data;
     

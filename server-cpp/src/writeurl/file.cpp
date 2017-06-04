@@ -3,6 +3,8 @@
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <unistd.h>
+#include <vector>
+#include <cassert>
 
 #include <writeurl/file.hpp>
 #include <writeurl/error.hpp>
@@ -11,7 +13,26 @@
 
 using namespace writeurl;
 
-bool file::file_exists(const std::string& path)
+std::string file::resolve(const std::vector<std::string>& components)
+{
+    assert(components.size() != 0);
+    std::string result = components[0];
+    for (size_t i = 1; i < components.size(); ++i) {
+        result.append(1, '/');
+        result.append(components[i]);
+    }
+    return result;
+}
+
+std::string file::resolve(const std::string& prefix, const std::string& name)
+{
+    std::vector<std::string> components(2);
+    components[0] = prefix;
+    components[1] = name;
+    return resolve(components);
+}
+
+bool file::exists(const std::string& path)
 {
     char buf[100];
     getcwd(buf, 100);
@@ -21,7 +42,7 @@ bool file::file_exists(const std::string& path)
     return (stat(path.c_str(), &buffer) == 0);
 }
 
-std::string file::read_file(const std::string& path, std::error_code& ec)
+std::string file::read(const std::string& path, std::error_code& ec)
 {
     int fd = open(path.c_str(), O_RDONLY);
     if (fd == -1) {
@@ -47,7 +68,7 @@ std::string file::read_file(const std::string& path, std::error_code& ec)
     std::string result;
     result.reserve(file_size);
 
-    ssize_t nread = read(fd, (void*) result.data(), file_size);
+    ssize_t nread = ::read(fd, (void*) result.data(), file_size);
     if (nread != ssize_t(file_size)) {
         ec = make_error_code(Error::file_unspecified_error);
         return "";
@@ -57,7 +78,7 @@ std::string file::read_file(const std::string& path, std::error_code& ec)
     return result;
 }
 
-void file::write_file(const std::string& path, const std::string& content, std::error_code& ec)
+void file::write(const std::string& path, const std::string& content, std::error_code& ec)
 {
     int fd = open(path.c_str(), O_WRONLY | O_CREAT);
     if (fd == -1) {
@@ -71,7 +92,7 @@ void file::write_file(const std::string& path, const std::string& content, std::
         return;
     }
 
-    ssize_t nwritten = write(fd, content.data(), content.size());
+    ssize_t nwritten = ::write(fd, content.data(), content.size());
     if (nwritten == -1) {
         if (errno == EDQUOT)
             ec = make_error_code(Error::file_quota_exceeded);

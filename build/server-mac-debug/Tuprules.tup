@@ -2,4 +2,5 @@ CFLAGS = -std=c++14
 CFLAGS += -pthread -fno-elide-constructors
 CFLAGS += -fPIC
 CFLAGS += -Wall -pedantic -Wextra -Wunreachable-code -Wno-nested-anon-types
+CFLAGS += -Werror
 CFLAGS += -glldb
