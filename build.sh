@@ -1,3 +1,7 @@
+WRITEURL_HOME="$(dirname $0)" || exit 1;
+export WRITEURL_HOME
+cd "$WRITEURL_HOME";
+
 MODE="$1"
 [ $# -gt 0 ] && shift
 
@@ -7,8 +11,6 @@ usage()
     Available modes are:
         build-mac-debug
         test-mac-debug
-
-
 EOF
 }
 

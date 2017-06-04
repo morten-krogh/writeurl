@@ -1,4 +1,5 @@
 #include <catch/catch.hpp>
+#include <context.hpp>
 
 #include <writeurl/file.hpp>
 
@@ -18,6 +19,9 @@ TEST_CASE("Resolve prefix and name", "file")
 
 TEST_CASE("Exists", "file")
 {
-    CHECK(!file::exists("assets/foo"));
-    CHECK(file::exists("/Users/mkrogh/writeurl/server-cpp/test/assets/file1.txt"));
+    std::string non_existing_file = file::resolve(context.assets, "non-existing");
+    CHECK(!file::exists(non_existing_file));
+
+    std::string existing_file = file::resolve(context.assets, "file1.txt");
+    CHECK(file::exists(existing_file));
 }
