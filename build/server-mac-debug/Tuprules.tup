@@ -1,5 +1,3 @@
-
-
 CFLAGS = -std=c++14 
 CFLAGS += -pthread -fno-elide-constructors
 CFLAGS += -fPIC
