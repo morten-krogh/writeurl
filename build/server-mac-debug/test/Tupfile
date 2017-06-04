@@ -1,0 +1,6 @@
+include_rules
+
+: foreach $(WRITEURL_HOME)/server-cpp/test/test_*.cpp $(WRITEURL_HOME)/server-cpp/test/test.cpp |> clang++ $(CFLAGS) -I $(WRITEURL_HOME)/server-cpp/src -I $(WRITEURL_HOME)/server-cpp/deps %f -c -o %o |> %B.o
+
+: test.o test_*.o | ../lib/libwriteurl.dylib |> clang++ -std=c++14 -Wall -Wextra -pedantic -Wunreachable-code -I $(WRITEURL_HOME)/server-cpp/deps -L ../lib -lwriteurl -Wl,-rpath,@executable_path/../lib %f -o %o |> test
+
