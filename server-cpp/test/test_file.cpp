@@ -3,6 +3,8 @@
 
 #include <writeurl/file.hpp>
 
+#include <iostream>
+
 using namespace writeurl;
 
 TEST_CASE("Resolve components", "[file]")
@@ -28,9 +30,25 @@ TEST_CASE("Exists", "[file]")
 
 TEST_CASE("Read", "[file]")
 {
-    std::error_code ec;
     std::string file_1 = file::resolve(context.assets, "file1.txt");
-    std::string content_1 = file::read(file_1, ec);
+
+    buffer::Buffer buf;
+    std::error_code ec = file::read(file_1, buf);
     CHECK(!ec);
-    CHECK(content_1 == "abc");
+    CHECK(buf.size() == 3);
+    CHECK(buf.to_string() == "abc");
+
+    std::string non_existing_file = file::resolve(context.assets, "non-existing");
+    buf.resize(0);
+    ec = file::read(non_existing_file, buf);
+    CHECK(ec);
+    CHECK(ec.value() == 1);
+    CHECK(ec.message() == "File does not exist");
+
+    std::string empty_file = file::resolve(context.assets, "empty");
+    buf.resize(0);
+    ec = file::read(empty_file, buf);
+    CHECK(!ec);
+    CHECK(buf.size() == 0);
+    CHECK(buf.to_string() == "");
 }

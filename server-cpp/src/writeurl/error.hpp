@@ -12,7 +12,7 @@
 namespace writeurl {
 
 enum class Error {
-    file_no_exist,
+    file_no_exist = 1,
     file_read_access_denied,
     file_write_access_denied,
     file_quota_exceeded,

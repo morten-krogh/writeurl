@@ -9,8 +9,6 @@
 #include <writeurl/file.hpp>
 #include <writeurl/error.hpp>
 
-#include <iostream>
-
 using namespace writeurl;
 
 std::string file::resolve(const std::vector<std::string>& components)
@@ -38,40 +36,33 @@ bool file::exists(const std::string& path)
     return (stat(path.c_str(), &buffer) == 0);
 }
 
-std::string file::read(const std::string& path, std::error_code& ec)
+std::error_code file::read(const std::string& path, buffer::Buffer& buf)
 {
     int fd = open(path.c_str(), O_RDONLY);
     if (fd == -1) {
         if (errno == ENOENT)
-            ec = make_error_code(Error::file_no_exist);
+            return make_error_code(Error::file_no_exist);
         else if (errno == EACCES)
-            ec = make_error_code(Error::file_read_access_denied);
+            return make_error_code(Error::file_read_access_denied);
         else
-            ec = make_error_code(Error::file_unspecified_error);
-
-        return "";
+            return make_error_code(Error::file_unspecified_error);
     }
 
     struct stat buffer;
     int rc = fstat(fd, &buffer);
-    if (rc == -1) {
-        ec = make_error_code(Error::file_unspecified_error);
-        return "";
-    }
+    if (rc == -1)
+        return make_error_code(Error::file_unspecified_error);
 
     size_t file_size = size_t(buffer.st_size);
 
-    std::string result;
-    result.reserve(file_size);
+    buf.reserve(file_size);
+    buf.resize(file_size);
 
-    ssize_t nread = ::read(fd, (void*) result.data(), file_size);
-    if (nread != ssize_t(file_size)) {
-        ec = make_error_code(Error::file_unspecified_error);
-        return "";
-    }
+    ssize_t nread = ::read(fd, (void*) buf.data(), file_size);
+    if (nread != ssize_t(file_size))
+        return make_error_code(Error::file_unspecified_error);
 
-    ec = std::error_code{};
-    return result;
+    return std::error_code{};
 }
 
 void file::write(const std::string& path, const std::string& content, std::error_code& ec)
