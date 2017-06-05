@@ -7,6 +7,8 @@
  *
 ************************************************************/
 
+#include <system_error>
+
 #include <writeurl/document.hpp>
 
 namespace writeurl {
@@ -23,6 +25,8 @@ namespace store {
 
 document::DocumentMetaData read_document_meta_data(const std::string& root_dir, const std::string& id);
 
+
+std::error_code create_document_dirs(const std::string& root_dir);
 
 
 } // namespace store

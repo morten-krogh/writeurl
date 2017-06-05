@@ -4,8 +4,6 @@
 #include <writeurl/file.hpp>
 #include <writeurl/error.hpp>
 
-#include <iostream>
-
 using namespace writeurl;
 
 TEST_CASE("resolve_components", "[file]")

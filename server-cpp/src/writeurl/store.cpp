@@ -8,6 +8,17 @@
 using namespace writeurl;
 
 namespace {
+
+char char_at_index(int index)
+{
+    assert(index >= 0 && index < 36);
+    if (index < 26)
+        return 'a' + index;
+    else
+        return '0' + (index - 26);
+}
+
+
 //
 //std::string resolve_document_dir(const std::string& root_dir, const std::string& id)
 //{
@@ -162,3 +173,27 @@ document::DocumentMetaData store::read_document_meta_data(const std::string& /* 
 //
 //	write(id, 'noperation', noperation + operations.length, true);
 //};
+
+std::error_code store::create_document_dirs(const std::string& root_dir)
+{
+    for (int i = 0; i < 36; ++i) {
+        char ch_1 = char_at_index(i);
+        std::string dir_1 = file::resolve(root_dir, std::string{ch_1});
+        if (!file::exists(dir_1)) {
+            std::error_code ec = file::mkdir(dir_1);
+            if (ec)
+                return ec;
+        }
+        for (int j = 0; j < 36; ++j) {
+            char ch_2 = char_at_index(j);
+            std::string dir_2 = file::resolve(dir_1, std::string{ch_2});
+            if (!file::exists(dir_2)) {
+                std::error_code ec = file::mkdir(dir_2);
+                if (ec)
+                    return ec;
+            }
+        }
+    }
+
+    return std::error_code {};
+}
