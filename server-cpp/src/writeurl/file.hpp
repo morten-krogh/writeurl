@@ -21,9 +21,11 @@ std::string resolve(const std::string& prefix, const std::string& name);
 
 bool exists(const std::string& path);
 
+std::error_code remove(const std::string& path);
+
 std::error_code read(const std::string& path, buffer::Buffer& buf);
 
-void write(const std::string& path, const std::string& content, std::error_code& ec);
+std::error_code write(const std::string& path, const char* data, size_t size);
 
 } // namespace file
 } // namespace writeurl

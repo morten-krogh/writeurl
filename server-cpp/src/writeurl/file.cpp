@@ -36,6 +36,21 @@ bool file::exists(const std::string& path)
     return (stat(path.c_str(), &buffer) == 0);
 }
 
+std::error_code file::remove(const std::string& path)
+{
+    int rc = unlink(path.c_str());
+    if (rc == -1) {
+        if (errno == ENOENT)
+            return make_error_code(Error::file_no_exist);
+        else if (errno == EACCES)
+            return make_error_code(Error::file_read_access_denied);
+        else
+            return make_error_code(Error::file_unspecified_error);
+    }
+
+    return std::error_code{};
+}
+
 std::error_code file::read(const std::string& path, buffer::Buffer& buf)
 {
     int fd = open(path.c_str(), O_RDONLY);
@@ -65,37 +80,31 @@ std::error_code file::read(const std::string& path, buffer::Buffer& buf)
     return std::error_code{};
 }
 
-void file::write(const std::string& path, const std::string& content, std::error_code& ec)
+std::error_code file::write(const std::string& path, const char* data, size_t size)
 {
-    int fd = open(path.c_str(), O_WRONLY | O_CREAT);
+    mode_t mode = 0640;
+    int fd = open(path.c_str(), O_WRONLY | O_CREAT, mode);
     if (fd == -1) {
         if (errno == ENOENT)
-            ec = make_error_code(Error::file_no_exist);
+            return make_error_code(Error::file_no_exist);
         else if (errno == EACCES)
-            ec = make_error_code(Error::file_write_access_denied);
+            return make_error_code(Error::file_write_access_denied);
         else
-            ec = make_error_code(Error::file_unspecified_error);
-
-        return;
+            return make_error_code(Error::file_unspecified_error);
     }
 
-    ssize_t nwritten = ::write(fd, content.data(), content.size());
+    ssize_t nwritten = ::write(fd, data, size);
     if (nwritten == -1) {
         if (errno == EDQUOT)
-            ec = make_error_code(Error::file_quota_exceeded);
+            return make_error_code(Error::file_quota_exceeded);
         else if (errno == EFBIG)
-            ec = make_error_code(Error::file_size_limit_exceeded);
+            return make_error_code(Error::file_size_limit_exceeded);
         else
-            ec = make_error_code(Error::file_unspecified_error);
-
-        return;
+            return make_error_code(Error::file_unspecified_error);
     }
 
-    if (size_t(nwritten) != content.size()) {
-        ec = make_error_code(Error::file_unspecified_error);
-        return;
-    }
+    if (size_t(nwritten) != size)
+        return make_error_code(Error::file_unspecified_error);
 
-    ec = std::error_code{};
-    return;
+    return std::error_code{};
 }

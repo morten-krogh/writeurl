@@ -2,6 +2,7 @@
 #include <context.hpp>
 
 #include <writeurl/file.hpp>
+#include <writeurl/error.hpp>
 
 #include <iostream>
 
@@ -51,4 +52,29 @@ TEST_CASE("Read", "[file]")
     CHECK(!ec);
     CHECK(buf.size() == 0);
     CHECK(buf.to_string() == "");
+}
+
+TEST_CASE("Write, read and remove", "[file]")
+{
+    std::string path = file::resolve(context.assets, "dummy.txt");
+
+    file::remove(path);
+    CHECK(!file::exists(path));
+
+    const std::string str = "abc";
+    std::error_code ec = file::write(path, str.data(), str.size());
+    CHECK(!ec);
+    CHECK(file::exists(path));
+
+    buffer::Buffer buf;
+    ec = file::read(path, buf);
+    CHECK(!ec);
+    CHECK(buf.size() == str.size());
+    CHECK(buf.to_string() == str);
+
+    file::remove(path);
+    CHECK(!file::exists(path));
+
+    ec = file::remove(path);
+    CHECK(Error(ec.value()) == Error::file_no_exist);
 }
