@@ -8,19 +8,19 @@
 
 using namespace writeurl;
 
-TEST_CASE("Resolve components", "[file]")
+TEST_CASE("resolve_components", "[file]")
 {
     CHECK(file::resolve(std::vector<std::string> {"abc"}) == "abc");
     CHECK(file::resolve(std::vector<std::string> {"abc", "def"}) == "abc/def");
     CHECK(file::resolve(std::vector<std::string> {"abc", "def", "ghi"}) == "abc/def/ghi");
 }
 
-TEST_CASE("Resolve prefix and name", "[file]")
+TEST_CASE("resolve prefix and name", "[file]")
 {
     CHECK(file::resolve("prefix", "name") == "prefix/name");
 }
 
-TEST_CASE("Exists", "[file]")
+TEST_CASE("exists", "[file]")
 {
     std::string non_existing_file = file::resolve(context.get_assets_dir(), "non-existing");
     CHECK(!file::exists(non_existing_file));
@@ -29,7 +29,51 @@ TEST_CASE("Exists", "[file]")
     CHECK(file::exists(existing_file));
 }
 
-TEST_CASE("Read", "[file]")
+TEST_CASE("mkdir_and_rmdir", "[file]")
+{
+    std::string root = context.get_tmp_dir();
+    CHECK(file::exists(root));
+
+    std::string dir = file::resolve(root, "dir");
+    file::mkdir(dir);
+    CHECK(file::exists(dir));
+
+    std::error_code ec = file::rmdir(dir);
+    CHECK(!ec);
+    CHECK(!file::exists(dir));
+
+    std::string dir_1 = file::resolve(root, "dir_1");
+    file::mkdir(dir_1);
+    std::string dir_2 = file::resolve(root, "dir_2");
+    file::mkdir(dir_2);
+    std::string dir_1_1 = file::resolve(dir_1, "dir_1_1");
+    file::mkdir(dir_1_1);
+    std::string dir_1_1_1 = file::resolve(dir_1_1, "dir_1_1_1");
+    file::mkdir(dir_1_1_1);
+
+    const std::string str = "abc";
+    std::string path = file::resolve(root, "path");
+    file::write(path, str.data(), str.size());
+    std::string path_1 = file::resolve(dir_1, "path_1");
+    file::write(path_1, str.data(), str.size());
+    std::string path_2 = file::resolve(dir_1, "path_2");
+    file::write(path_2, str.data(), str.size());
+    std::string path_1_1 = file::resolve(dir_1_1, "path_1_1");
+    file::write(path_1_1, str.data(), str.size());
+    std::string path_1_2 = file::resolve(dir_1_1, "path_1_2");
+    file::write(path_1_2, str.data(), str.size());
+
+    CHECK(file::exists(dir_1_1_1));
+    CHECK(file::exists(dir_2));
+    CHECK(file::exists(path_1_2));
+
+    ec = file::rmdir_recursive(root);
+    CHECK(!ec);
+    CHECK(!file::exists(dir_1_1_1));
+    CHECK(!file::exists(root));
+}
+
+TEST_CASE("read", "[file]")
 {
     std::string file_1 = file::resolve(context.get_assets_dir(), "file1.txt");
 
@@ -54,7 +98,7 @@ TEST_CASE("Read", "[file]")
     CHECK(buf.to_string() == "");
 }
 
-TEST_CASE("Write, read and unlink", "[file]")
+TEST_CASE("write_read_unlink", "[file]")
 {
     std::string path = file::resolve(context.get_assets_dir(), "dummy.txt");
 
@@ -79,7 +123,7 @@ TEST_CASE("Write, read and unlink", "[file]")
     CHECK(Error(ec.value()) == Error::file_no_exist);
 }
 
-TEST_CASE("Directory depth", "[file]")
+TEST_CASE("directory_depth", "[file]")
 {
     std::string dir = file::resolve(context.get_tmp_dir(), "dir");
     CHECK(!file::exists(dir));

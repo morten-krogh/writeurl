@@ -1,6 +1,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <sys/types.h>
+#include <fts.h>
 #include <sys/uio.h>
 #include <unistd.h>
 #include <vector>
@@ -8,6 +9,8 @@
 
 #include <writeurl/file.hpp>
 #include <writeurl/error.hpp>
+
+#include <iostream>
 
 using namespace writeurl;
 
@@ -63,6 +66,39 @@ std::error_code file::rmdir(const std::string& path)
         else
             return make_error_code(Error::file_unspecified_error);
     }
+
+    return std::error_code{};
+}
+
+std::error_code file::rmdir_recursive(const std::string& path)
+{
+    std::string path_2 = path; // copy to avoid const
+    char* const path_argv[2] = {const_cast<char*>(path_2.c_str()), nullptr};
+    int options = FTS_PHYSICAL | FTS_NOCHDIR | FTS_NOSTAT;
+    FTS* fts = fts_open(path_argv, options, nullptr);
+    if (!fts)
+        return make_error_code(Error::file_unspecified_error);
+
+    FTSENT* ftsent;
+    while ((ftsent = fts_read(fts)) != nullptr) {
+        std::string acc_path {ftsent->fts_accpath};
+        if (ftsent->fts_info == FTS_NSOK) {
+            int rc = ::unlink(ftsent->fts_accpath);
+            if (rc == -1) {
+                fts_close(fts);
+                return make_error_code(Error::file_unspecified_error);
+            }
+        }
+        if (ftsent->fts_info == FTS_DP) {
+            int rc = ::rmdir(ftsent->fts_accpath);
+            if (rc == -1) {
+                fts_close(fts);
+                return make_error_code(Error::file_unspecified_error);
+            }
+        }
+    }
+
+    fts_close(fts);
 
     return std::error_code{};
 }

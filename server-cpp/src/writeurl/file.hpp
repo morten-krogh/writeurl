@@ -23,6 +23,7 @@ bool exists(const std::string& path);
 
 std::error_code mkdir(const std::string& path);
 std::error_code rmdir(const std::string& path);
+std::error_code rmdir_recursive(const std::string& path);
 
 std::error_code unlink(const std::string& path);
 

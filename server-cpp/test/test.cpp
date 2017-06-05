@@ -17,7 +17,9 @@ int main(int argc, char** argv)
 
     context.set_writeurl_home(std::string(writeurl_home));
 
-    int result = Catch::Session().run( argc, argv );
+    int result = Catch::Session().run(argc, argv);
+
+    context.cleanup();
 
     return ( result < 0xff ? result : 0xff );
 }

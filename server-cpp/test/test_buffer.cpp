@@ -4,7 +4,7 @@
 
 using namespace writeurl;
 
-TEST_CASE("Buffer", "[buffer]")
+TEST_CASE("buffer", "[buffer]")
 {
     buffer::Buffer buf;
 

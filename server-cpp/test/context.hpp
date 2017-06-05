@@ -17,7 +17,7 @@ public:
 
     std::string get_assets_dir();
     std::string get_tmp_dir();
-    void rm_tmp_dirs();
+    void cleanup();
 private:
     std::string m_writeurl_home;
     std::string m_assets;

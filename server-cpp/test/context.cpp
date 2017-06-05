@@ -14,9 +14,8 @@ void Context::set_writeurl_home(const std::string& writeurl_home)
     m_writeurl_home = writeurl_home;
     m_assets = file::resolve(std::vector<std::string> {writeurl_home, "server-cpp", "test", "assets"});
     m_tmp = file::resolve(std::vector<std::string> {writeurl_home, "build", "tmp"});
-    file::rmdir(m_tmp);
+    file::rmdir_recursive(m_tmp);
     std::error_code ec = file::mkdir(m_tmp);
-    std::cerr << "ec = " << ec.message() << std::endl;
     assert(!ec);
 }
 
@@ -38,7 +37,7 @@ std::string Context::get_tmp_dir(uint_fast64_t counter)
     return dir;
 }
 
-void Context::rm_tmp_dirs()
+void Context::cleanup()
 {
-
+    file::rmdir_recursive(m_tmp);
 }
