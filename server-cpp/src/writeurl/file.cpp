@@ -36,9 +36,40 @@ bool file::exists(const std::string& path)
     return (stat(path.c_str(), &buffer) == 0);
 }
 
-std::error_code file::remove(const std::string& path)
+std::error_code file::mkdir(const std::string& path)
 {
-    int rc = unlink(path.c_str());
+    mode_t mode = 0750;
+    int rc = ::mkdir(path.c_str(), mode);
+    if (rc == -1) {
+        if (errno == ENOENT)
+            return make_error_code(Error::file_no_exist);
+        else if (errno == EACCES)
+            return make_error_code(Error::file_write_access_denied);
+        else
+            return make_error_code(Error::file_unspecified_error);
+    }
+
+    return std::error_code{};
+}
+
+std::error_code file::rmdir(const std::string& path)
+{
+    int rc = ::rmdir(path.c_str());
+    if (rc == -1) {
+        if (errno == ENOENT)
+            return make_error_code(Error::file_no_exist);
+        else if (errno == EACCES)
+            return make_error_code(Error::file_write_access_denied);
+        else
+            return make_error_code(Error::file_unspecified_error);
+    }
+
+    return std::error_code{};
+}
+
+std::error_code file::unlink(const std::string& path)
+{
+    int rc = ::unlink(path.c_str());
     if (rc == -1) {
         if (errno == ENOENT)
             return make_error_code(Error::file_no_exist);

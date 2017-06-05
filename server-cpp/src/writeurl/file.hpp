@@ -21,7 +21,10 @@ std::string resolve(const std::string& prefix, const std::string& name);
 
 bool exists(const std::string& path);
 
-std::error_code remove(const std::string& path);
+std::error_code mkdir(const std::string& path);
+std::error_code rmdir(const std::string& path);
+
+std::error_code unlink(const std::string& path);
 
 std::error_code read(const std::string& path, buffer::Buffer& buf);
 

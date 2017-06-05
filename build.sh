@@ -21,7 +21,7 @@ case $MODE in
         ;;
     test-mac-debug)
         tup build/server-mac-debug
-        build/server-mac-debug/test/test $@
+        build/server-mac-debug/test/test --use-colour no $@
         ;;
 
 
