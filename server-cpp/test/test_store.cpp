@@ -35,7 +35,7 @@ TEST_CASE("get_store_info_from_assets", "[store]")
     const std::string read = "vst3suh9s63v8sksjjfh";
     const std::string write = "6m57kvmdj4kcwl1otea1";
     const uint_fast64_t expected_noperation = 213;
-    //const uint_fast64_t expected_nstate = 0;
+    const uint_fast64_t expected_nstate = 0;
 
     const std::string root_dir = context.get_assets_dir();
 
@@ -50,6 +50,9 @@ TEST_CASE("get_store_info_from_assets", "[store]")
     CHECK(!ec);
     CHECK(noperation == expected_noperation);
 
+    uint_fast64_t nstate = store::get_nstate(root_dir, id, ec);
+    CHECK(!ec);
+    CHECK(nstate == expected_nstate);
 
 
 }

@@ -57,11 +57,11 @@ std::string resolve_noperation(const std::string& document_dir)
     return file::resolve(document_dir, "noperation");
 }
 
-//std::string resolve_nstate(const std::string& document_dir)
-//{
-//    return file::resolve(document_dir, "nstate");
-//}
-//
+std::string resolve_nstate(const std::string& document_dir)
+{
+    return file::resolve(document_dir, "nstate");
+}
+
 
 } // anonymous namespace
 
@@ -97,16 +97,17 @@ uint_fast64_t store::get_noperation(const std::string& root_dir, const std::stri
     return noperation;
 }
 
-//uint_fast64_t store::get_nstate(const std::string& root_dir, const std::string& id, std::error_code& ec)
-//{
-//
-//}
-//
-document::DocumentMetaData store::read_document_meta_data(const std::string& /* root_dir */, const std::string& /* id */)
+uint_fast64_t store::get_nstate(const std::string& root_dir, const std::string& id, std::error_code& ec)
 {
-    document::DocumentMetaData document_meta_data;
-    
-    return document_meta_data;
+    const std::string document_dir = resolve_document_dir(root_dir, id);
+    const std::string nstate_path = resolve_nstate(document_dir);
+    buffer::Buffer buf;
+    ec = file::read(nstate_path, buf);
+    if (ec)
+        return 0;
+
+    uint_fast64_t nstate = parse_uint(buf.to_string(), ec);
+    return nstate;
 }
 
 

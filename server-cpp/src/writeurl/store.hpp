@@ -25,17 +25,6 @@ uint_fast64_t get_noperation(const std::string& root_dir, const std::string& id,
 uint_fast64_t get_nstate(const std::string& root_dir, const std::string& id, std::error_code& ec);
 
 
-
-
-//struct DocumentMetaData {
-//    std::string id;
-//    std::string read;
-//    std::string write;
-//    uint_fast64_t noperation;
-//    uint_fast64_t nstate;
-//};
-//
-
 document::DocumentMetaData read_document_meta_data(const std::string& root_dir, const std::string& id);
 
 
