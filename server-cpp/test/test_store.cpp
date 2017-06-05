@@ -9,7 +9,7 @@ using namespace writeurl;
 
 TEST_CASE("create_document_dirs", "[store]")
 {
-    std::string root_dir = context.get_tmp_dir();
+    const std::string root_dir = context.get_tmp_dir();
     
     store::create_document_dirs(root_dir);
     CHECK(file::exists(file::resolve(std::vector<std::string>{root_dir, "a"})));
@@ -27,4 +27,29 @@ TEST_CASE("create_document_dirs", "[store]")
     file::rmdir_recursive(root_dir);
     CHECK(!file::exists(root_dir));
     CHECK(!file::exists(file::resolve(std::vector<std::string>{root_dir, "a", "9"})));
+}
+
+TEST_CASE("get_store_info_from_assets", "[store]")
+{
+    const std::string id = "o7frz2tyexl0s7ujtuv8";
+    const std::string read = "vst3suh9s63v8sksjjfh";
+    const std::string write = "6m57kvmdj4kcwl1otea1";
+    const uint_fast64_t expected_noperation = 213;
+    //const uint_fast64_t expected_nstate = 0;
+
+    const std::string root_dir = context.get_assets_dir();
+
+    std::error_code ec;
+    store::Ids ids = store::get_ids(root_dir, id, ec);
+    CHECK(!ec);
+    CHECK(ids.id == id);
+    CHECK(ids.read == read);
+    CHECK(ids.write == write);
+
+    uint_fast64_t noperation = store::get_noperation(root_dir, id, ec);
+    CHECK(!ec);
+    CHECK(noperation == expected_noperation);
+
+
+
 }

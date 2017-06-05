@@ -14,6 +14,19 @@
 namespace writeurl {
 namespace store {
 
+struct Ids {
+    std::string id;
+    std::string read;
+    std::string write;
+};
+
+Ids get_ids(const std::string& root_dir, const std::string& id, std::error_code& ec);
+uint_fast64_t get_noperation(const std::string& root_dir, const std::string& id, std::error_code& ec);
+uint_fast64_t get_nstate(const std::string& root_dir, const std::string& id, std::error_code& ec);
+
+
+
+
 //struct DocumentMetaData {
 //    std::string id;
 //    std::string read;

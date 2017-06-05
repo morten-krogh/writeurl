@@ -2,8 +2,11 @@
 #include <vector>
 #include <cassert>
 
+#include <writeurl/error.hpp>
 #include <writeurl/store.hpp>
 #include <writeurl/file.hpp>
+
+#include <iostream>
 
 using namespace writeurl;
 
@@ -18,38 +21,87 @@ char char_at_index(int index)
         return '0' + (index - 26);
 }
 
+uint_fast64_t parse_uint(const std::string str, std::error_code& ec)
+{
+    if (str.size() == 0) {
+        ec = Error::store_error;
+        return 0;
+    }
+    char* endptr;
+    uint_fast64_t result = strtoll(str.c_str(), &endptr, 10);
+    if (*endptr == '\0')
+        return result;
 
-//
-//std::string resolve_document_dir(const std::string& root_dir, const std::string& id)
-//{
-//    assert(id.size() > 2);
-//    std::vector<std::string> components(4);
-//    components[0] = root_dir;
-//    components[1] = id[0];
-//    components[2] = id[1];
-//    components[3] = id[2];
-//    return file::resolve(components);
-//}
-//
-//std::string resolve_ids(const std::string& document_dir)
-//{
-//    return file::resolve(document_dir, "ids");
-//}
-//
-//std::string resolve_noperation(const std::string& document_dir)
-//{
-//    return file::resolve(document_dir, "noperation");
-//}
-//
+    ec = Error::store_error;
+    return 0;
+}
+
+std::string resolve_document_dir(const std::string& root_dir, const std::string& id)
+{
+    assert(id.size() > 2);
+    std::vector<std::string> components(4);
+    components[0] = root_dir;
+    components[1] = id[0];
+    components[2] = id[1];
+    components[3] = id;
+    return file::resolve(components);
+}
+
+std::string resolve_ids(const std::string& document_dir)
+{
+    return file::resolve(document_dir, "ids");
+}
+
+std::string resolve_noperation(const std::string& document_dir)
+{
+    return file::resolve(document_dir, "noperation");
+}
+
 //std::string resolve_nstate(const std::string& document_dir)
 //{
 //    return file::resolve(document_dir, "nstate");
 //}
 //
 
-
 } // anonymous namespace
 
+store::Ids store::get_ids(const std::string& root_dir, const std::string& id, std::error_code& ec)
+{
+    Ids ids;
+    const std::string document_dir = resolve_document_dir(root_dir, id);
+    const std::string ids_path = resolve_ids(document_dir);
+    buffer::Buffer buf;
+    ec = file::read(ids_path, buf);
+    if (ec)
+        return ids;
+
+    std::cout << buf.to_string() << std::endl;
+
+    ids.id = id;
+    ids.read = "read";
+    ids.write = "write";
+
+    return ids;
+}
+
+uint_fast64_t store::get_noperation(const std::string& root_dir, const std::string& id, std::error_code& ec)
+{
+    const std::string document_dir = resolve_document_dir(root_dir, id);
+    const std::string noperation_path = resolve_noperation(document_dir);
+    buffer::Buffer buf;
+    ec = file::read(noperation_path, buf);
+    if (ec)
+        return 0;
+
+    uint_fast64_t noperation = parse_uint(buf.to_string(), ec);
+    return noperation;
+}
+
+//uint_fast64_t store::get_nstate(const std::string& root_dir, const std::string& id, std::error_code& ec)
+//{
+//
+//}
+//
 document::DocumentMetaData store::read_document_meta_data(const std::string& /* root_dir */, const std::string& /* id */)
 {
     document::DocumentMetaData document_meta_data;
