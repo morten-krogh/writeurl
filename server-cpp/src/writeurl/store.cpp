@@ -15,10 +15,10 @@ namespace {
 char char_at_index(int index)
 {
     assert(index >= 0 && index < 36);
-    if (index < 26)
-        return 'a' + index;
+    if (index < 10)
+        return '0' + index;
     else
-        return '0' + (index - 26);
+        return 'a' + (index - 10);
 }
 
 uint_fast64_t parse_uint(const std::string str, std::error_code& ec)

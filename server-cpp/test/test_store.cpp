@@ -23,6 +23,7 @@ TEST_CASE("create_document_dirs", "[store]")
     CHECK(file::exists(file::resolve(std::vector<std::string>{root_dir, "z", "2"})));
     CHECK(file::exists(file::resolve(std::vector<std::string>{root_dir, "9", "a"})));
     CHECK(file::exists(file::resolve(std::vector<std::string>{root_dir, "a", "9"})));
+    CHECK(!file::exists(file::resolve(std::vector<std::string>{root_dir, "aa", "9"})));
 
     file::rmdir_recursive(root_dir);
     CHECK(!file::exists(root_dir));
