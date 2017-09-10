@@ -49,7 +49,7 @@ case $MODE in
         mkdir -p ${TEST_BUILD_DIR}
         EXTRA_CFLAGS="-O3"
         WRITEURL_HOME=${WRITEURL_HOME} BUILD_DIR=${BUILD_DIR} TEST_BUILD_DIR=${TEST_BUILD_DIR} \
-            EXTRA_CFLAGS=${EXTRA_CFLAGS} make test
+            TEAST_MAIN=${TEST_MAIN} EXTRA_CFLAGS=${EXTRA_CFLAGS} make test
         ${TEST_MAIN} --use-colour no $@
         ;;
     "test-debug")
