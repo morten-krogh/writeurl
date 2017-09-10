@@ -3,3 +3,6 @@
 
 publish
 node_modules/
+
+build.release
+build.debug
