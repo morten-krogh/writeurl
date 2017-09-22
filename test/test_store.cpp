@@ -1,4 +1,4 @@
-#include <catch/catch.hpp>
+#include <catch/include/catch.hpp>
 #include <context.hpp>
 
 #include <writeurl/store.hpp>
