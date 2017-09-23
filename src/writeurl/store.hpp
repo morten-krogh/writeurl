@@ -25,7 +25,7 @@ uint_fast64_t get_noperation(const std::string& root_dir, const std::string& id,
 uint_fast64_t get_nstate(const std::string& root_dir, const std::string& id, std::error_code& ec);
 
 
-document::DocumentMetaData read_document_meta_data(const std::string& root_dir, const std::string& id);
+//document::DocumentMetaData read_document_meta_data(const std::string& root_dir, const std::string& id);
 
 
 std::error_code create_document_dirs(const std::string& root_dir);
