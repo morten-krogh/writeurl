@@ -42,7 +42,15 @@ TEST_CASE("create_and_attach_document", "[document]")
         CHECK(document.create_document("abc", "def", "ghi") == Document::CreateStatus::exist);
     }
 
+    {
+        Document document {store};
+        CHECK(document.attach_document("abc") == Document::AttachStatus::ok);
+    }
 
+    {
+        Document document {store};
+        CHECK(document.attach_document("a") == Document::AttachStatus::invalid_id);
+    }
 
 
 
