@@ -1,5 +1,0 @@
-WRITEURL_HOME = $(TUP_CWD)
-SERVER_CPP_SRC = $(WRITEURL_HOME)/server-cpp/src
-SERVER_CPP_TEST = $(WRITEURL_HOME)/server-cpp/test
-SERVER_CPP_DEPS = $(WRITEURL_HOME)/server-cpp/deps
-

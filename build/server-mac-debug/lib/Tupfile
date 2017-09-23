@@ -1,5 +1,0 @@
-include_rules
-
-: foreach $(WRITEURL_HOME)/server-cpp/src/writeurl/*.cpp |> clang++ $(CFLAGS) -I $(WRITEURL_HOME)/server-cpp/src %f -c -o %o |> %B.o
-
-: *.o |> clang++ -shared -install_name @rpath/libwriteurl.dylib %f -o %o |> libwriteurl.dylib

@@ -8,8 +8,8 @@ usage()
     Available modes are:
         build
         build-debug
-        build-mac-debug
-        test-mac-debug
+        test
+        clean
 EOF
 }
 
@@ -31,19 +31,19 @@ MODE="$1"
 case $MODE in
 
     "build")
-        BUILD_DIR=${WRITEURL_HOME}/build.release
+        BUILD_DIR=${WRITEURL_HOME}/build/release
         mkdir -p ${BUILD_DIR}
         EXTRA_CFLAGS="-O3"
         WRITEURL_HOME=${WRITEURL_HOME} BUILD_DIR=${BUILD_DIR} EXTRA_CFLAGS=${EXTRA_CFLAGS} make static_lib
         ;;
     "build-debug")
-        BUILD_DIR=${WRITEURL_HOME}/build.debug
+        BUILD_DIR=${WRITEURL_HOME}/build/debug
         mkdir -p ${BUILD_DIR}
         EXTRA_CFLAGS="-g -DDEBUG"
         WRITEURL_HOME=${WRITEURL_HOME} BUILD_DIR=${BUILD_DIR} EXTRA_CFLAGS=${EXTRA_CFLAGS} make static_lib
         ;;
     "test")
-        BUILD_DIR=${WRITEURL_HOME}/build.release
+        BUILD_DIR=${WRITEURL_HOME}/build/release
         TEST_BUILD_DIR=${BUILD_DIR}/test
         TEST_MAIN=${TEST_BUILD_DIR}/main
         mkdir -p ${TEST_BUILD_DIR}
@@ -55,17 +55,8 @@ case $MODE in
     "test-debug")
         ;;
     "clean")
-        rm -rf ${WRITEURL_HOME}/build.release
-        rm -rf ${WRITEURL_HOME}/build.debug
+        rm -rf ${WRITEURL_HOME}/build
         ;;
-    build-mac-debug)
-        tup build/server-mac-debug
-        ;;
-    test-mac-debug)
-        tup build/server-mac-debug && build/server-mac-debug/test/test --use-colour no $@
-        ;;
-
-
     *)
         usage
         ;;
