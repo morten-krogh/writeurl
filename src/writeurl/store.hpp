@@ -27,7 +27,12 @@ public:
         uint_fast64_t nstate;
     };
 
+    bool exists(const std::string& id);
     Ids get_ids(const std::string& id, std::error_code& ec);
+
+    bool create(const std::string& id,
+                const std::string& read_password,
+                const std::string& write_password);
 
 private:
     const std::string m_store_dir;

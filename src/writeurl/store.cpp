@@ -220,6 +220,12 @@ Store::Store(const std::string& store_dir):
         throw std::system_error(ec);
 }
 
+bool Store::exists(const std::string& id)
+{
+    const std::string document_dir = resolve_document_dir(m_store_dir, id);
+    return file::exists(document_dir);
+}
+
 Store::Ids Store::get_ids(const std::string& id, std::error_code& ec)
 {
     Ids ids;
@@ -240,6 +246,15 @@ Store::Ids Store::get_ids(const std::string& id, std::error_code& ec)
         return {};
 
     return ids;
+}
+
+bool Store::create(const std::string& id,
+                   const std::string& read_password,
+                   const std::string& write_password)
+{
+
+
+    return true;
 }
 
 
