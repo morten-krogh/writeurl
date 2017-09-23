@@ -40,11 +40,35 @@ uint_fast64_t parse_uint(const std::string str, std::error_code& ec)
     return 0;
 }
 
-std::string resolve_document_dir(const std::string& root_dir, const std::string& id)
+std::error_code create_document_dirs(const std::string& store_dir)
+{
+    for (int i = 0; i < 36; ++i) {
+        char ch_1 = char_at_index(i);
+        std::string dir_1 = file::resolve(store_dir, std::string{ch_1});
+        if (!file::exists(dir_1)) {
+            std::error_code ec = file::mkdir(dir_1);
+            if (ec)
+                return ec;
+        }
+        for (int j = 0; j < 36; ++j) {
+            char ch_2 = char_at_index(j);
+            std::string dir_2 = file::resolve(dir_1, std::string{ch_2});
+            if (!file::exists(dir_2)) {
+                std::error_code ec = file::mkdir(dir_2);
+                if (ec)
+                    return ec;
+            }
+        }
+    }
+
+    return std::error_code {};
+}
+
+std::string resolve_document_dir(const std::string& store_dir, const std::string& id)
 {
     assert(id.size() > 2);
     std::vector<std::string> components(4);
-    components[0] = root_dir;
+    components[0] = store_dir;
     components[1] = id[0];
     components[2] = id[1];
     components[3] = id;
@@ -69,7 +93,7 @@ std::string resolve_nstate(const std::string& document_dir)
 class IdsJSONHandler: public rapidjson::BaseReaderHandler<rapidjson::UTF8<>, IdsJSONHandler> {
 public:
 
-    IdsJSONHandler(store::Ids& ids):
+    IdsJSONHandler(Store::Ids& ids):
         m_ids {ids}
     {
     }
@@ -131,7 +155,7 @@ public:
     }
 
 private:
-    store::Ids& m_ids;
+    Store::Ids& m_ids;
 
     std::string m_key;
     std::map<std::string, std::string> m_map;
@@ -145,9 +169,7 @@ private:
     ParserState m_parser_state = ParserState::ExpectObjectStart;
 };
 
-
-
-void read_id_and_passwords(const std::string& document_dir, store::Ids& ids, std::error_code& ec)
+void read_id_and_passwords(const std::string& document_dir, Store::Ids& ids, std::error_code& ec)
 {
     const std::string ids_path = resolve_ids(document_dir);
     buffer::Buffer buf;
@@ -164,7 +186,7 @@ void read_id_and_passwords(const std::string& document_dir, store::Ids& ids, std
     }
 }
 
-void read_noperation(const std::string& document_dir, store::Ids& ids, std::error_code& ec)
+void read_noperation(const std::string& document_dir, Store::Ids& ids, std::error_code& ec)
 {
     const std::string noperation_path = resolve_noperation(document_dir);
     buffer::Buffer buf;
@@ -176,7 +198,7 @@ void read_noperation(const std::string& document_dir, store::Ids& ids, std::erro
     return;
 }
 
-void read_nstate(const std::string& document_dir, store::Ids& ids, std::error_code& ec)
+void read_nstate(const std::string& document_dir, Store::Ids& ids, std::error_code& ec)
 {
     const std::string nstate_path = resolve_nstate(document_dir);
     buffer::Buffer buf;
@@ -190,10 +212,18 @@ void read_nstate(const std::string& document_dir, store::Ids& ids, std::error_co
 
 } // anonymous namespace
 
-store::Ids store::get_ids(const std::string& root_dir, const std::string& id, std::error_code& ec)
+Store::Store(const std::string& store_dir):
+    m_store_dir {store_dir}
+{
+    std::error_code ec = create_document_dirs(store_dir);
+    if (ec)
+        throw std::system_error(ec);
+}
+
+Store::Ids Store::get_ids(const std::string& id, std::error_code& ec)
 {
     Ids ids;
-    const std::string document_dir = resolve_document_dir(root_dir, id);
+    const std::string document_dir = resolve_document_dir(m_store_dir, id);
 
     read_id_and_passwords(document_dir, ids, ec);
     if (ec)
@@ -211,6 +241,7 @@ store::Ids store::get_ids(const std::string& root_dir, const std::string& id, st
 
     return ids;
 }
+
 
 //
 //'use strict';
@@ -326,27 +357,3 @@ store::Ids store::get_ids(const std::string& root_dir, const std::string& id, st
 //
 //	write(id, 'noperation', noperation + operations.length, true);
 //};
-
-std::error_code store::create_document_dirs(const std::string& root_dir)
-{
-    for (int i = 0; i < 36; ++i) {
-        char ch_1 = char_at_index(i);
-        std::string dir_1 = file::resolve(root_dir, std::string{ch_1});
-        if (!file::exists(dir_1)) {
-            std::error_code ec = file::mkdir(dir_1);
-            if (ec)
-                return ec;
-        }
-        for (int j = 0; j < 36; ++j) {
-            char ch_2 = char_at_index(j);
-            std::string dir_2 = file::resolve(dir_1, std::string{ch_2});
-            if (!file::exists(dir_2)) {
-                std::error_code ec = file::mkdir(dir_2);
-                if (ec)
-                    return ec;
-            }
-        }
-    }
-
-    return std::error_code {};
-}

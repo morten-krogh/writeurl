@@ -19,7 +19,7 @@ namespace document {
 class Document {
 public:
 
-    Document(const writeurl::store::Ids& ids);
+    Document(const writeurl::Store::Ids& ids);
 
     const std::string& get_id() const noexcept;
 

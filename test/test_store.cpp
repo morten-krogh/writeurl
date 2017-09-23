@@ -9,25 +9,26 @@ using namespace writeurl;
 
 TEST_CASE("create_document_dirs", "[store]")
 {
-    const std::string root_dir = context.get_tmp_dir();
+    const std::string store_dir = context.get_tmp_dir();
     
-    store::create_document_dirs(root_dir);
-    CHECK(file::exists(file::resolve(std::vector<std::string>{root_dir, "a"})));
-    CHECK(file::exists(file::resolve(std::vector<std::string>{root_dir, "z"})));
-    CHECK(file::exists(file::resolve(std::vector<std::string>{root_dir, "0"})));
-    CHECK(file::exists(file::resolve(std::vector<std::string>{root_dir, "9"})));
-    CHECK(file::exists(file::resolve(std::vector<std::string>{root_dir, "a", "b"})));
-    CHECK(file::exists(file::resolve(std::vector<std::string>{root_dir, "a", "d"})));
-    CHECK(file::exists(file::resolve(std::vector<std::string>{root_dir, "0", "x"})));
-    CHECK(file::exists(file::resolve(std::vector<std::string>{root_dir, "5", "9"})));
-    CHECK(file::exists(file::resolve(std::vector<std::string>{root_dir, "z", "2"})));
-    CHECK(file::exists(file::resolve(std::vector<std::string>{root_dir, "9", "a"})));
-    CHECK(file::exists(file::resolve(std::vector<std::string>{root_dir, "a", "9"})));
-    CHECK(!file::exists(file::resolve(std::vector<std::string>{root_dir, "aa", "9"})));
+    Store store {store_dir};
 
-    file::rmdir_recursive(root_dir);
-    CHECK(!file::exists(root_dir));
-    CHECK(!file::exists(file::resolve(std::vector<std::string>{root_dir, "a", "9"})));
+    CHECK(file::exists(file::resolve(std::vector<std::string>{store_dir, "a"})));
+    CHECK(file::exists(file::resolve(std::vector<std::string>{store_dir, "z"})));
+    CHECK(file::exists(file::resolve(std::vector<std::string>{store_dir, "0"})));
+    CHECK(file::exists(file::resolve(std::vector<std::string>{store_dir, "9"})));
+    CHECK(file::exists(file::resolve(std::vector<std::string>{store_dir, "a", "b"})));
+    CHECK(file::exists(file::resolve(std::vector<std::string>{store_dir, "a", "d"})));
+    CHECK(file::exists(file::resolve(std::vector<std::string>{store_dir, "0", "x"})));
+    CHECK(file::exists(file::resolve(std::vector<std::string>{store_dir, "5", "9"})));
+    CHECK(file::exists(file::resolve(std::vector<std::string>{store_dir, "z", "2"})));
+    CHECK(file::exists(file::resolve(std::vector<std::string>{store_dir, "9", "a"})));
+    CHECK(file::exists(file::resolve(std::vector<std::string>{store_dir, "a", "9"})));
+    CHECK(!file::exists(file::resolve(std::vector<std::string>{store_dir, "aa", "9"})));
+
+    file::rmdir_recursive(store_dir);
+    CHECK(!file::exists(store_dir));
+    CHECK(!file::exists(file::resolve(std::vector<std::string>{store_dir, "a", "9"})));
 }
 
 TEST_CASE("get_store_info_from_assets", "[store]")
@@ -38,10 +39,11 @@ TEST_CASE("get_store_info_from_assets", "[store]")
     const uint_fast64_t expected_noperation = 213;
     const uint_fast64_t expected_nstate = 0;
 
-    const std::string root_dir = context.get_assets_dir();
+    const std::string store_dir = context.get_assets_dir();
 
+    Store store {store_dir};
     std::error_code ec;
-    store::Ids ids = store::get_ids(root_dir, id, ec);
+    Store::Ids ids = store.get_ids(id, ec);
     CHECK(!ec);
     CHECK(id ==  ids.id);
     CHECK(expected_read_password == ids.read_password);

@@ -2,7 +2,7 @@
 
 using namespace writeurl;
 
-document::Document::Document(const writeurl::store::Ids& ids):
+document::Document::Document(const Store::Ids& ids):
     m_id {ids.id},
     m_read_password {ids.read_password},
     m_write_password {ids.write_password},
