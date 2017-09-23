@@ -27,7 +27,7 @@ public:
         uint_fast64_t nstate;
     };
 
-    bool exists(const std::string& id);
+    bool exist(const std::string& id);
     Ids get_ids(const std::string& id, std::error_code& ec);
 
     bool create(const std::string& id,

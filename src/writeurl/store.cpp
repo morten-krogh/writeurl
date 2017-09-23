@@ -1,9 +1,12 @@
 #include <string>
+#include <sstream>
 #include <vector>
 #include <map>
 #include <cassert>
 
 #include <rapidjson/reader.h>
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
 #include <rapidjson/error/en.h>
 
 #include <writeurl/error.hpp>
@@ -210,7 +213,56 @@ void read_nstate(const std::string& document_dir, Store::Ids& ids, std::error_co
     return;
 }
 
-} // anonymous namespace
+void write_id_and_passwords(const std::string& document_dir,
+                            const std::string& id,
+                            const std::string& read_password,
+                            const std::string& write_password,
+                            std::error_code& ec)
+{
+    const std::string ids_path = resolve_ids(document_dir);
+
+    rapidjson::StringBuffer buf;
+    rapidjson::Writer<rapidjson::StringBuffer> writer {buf};
+
+    writer.StartObject();
+
+    writer.Key("prefix");
+    writer.String("text");
+
+    writer.Key("id");
+    writer.String(id.c_str());
+
+    writer.Key("read");
+    writer.String(read_password.c_str());
+
+    writer.Key("write");
+    writer.String(write_password.c_str());
+
+    writer.EndObject();
+
+    ec = file::write(ids_path, buf.GetString(), buf.GetSize());
+    return;
+}
+
+void write_noperation(const std::string& document_dir, uint_fast64_t noperation, std::error_code& ec)
+{
+    const std::string noperation_path = resolve_noperation(document_dir);
+    std::ostringstream os;
+    os << noperation;
+    ec = file::write(noperation_path, os.str().c_str(), os.str().size());
+    return;
+}
+
+void write_nstate(const std::string& document_dir, uint_fast64_t nstate, std::error_code& ec)
+{
+    const std::string nstate_path = resolve_nstate(document_dir);
+    std::ostringstream os;
+    os << nstate;
+    ec = file::write(nstate_path, os.str().c_str(), os.str().size());
+    return;
+}
+
+} // namespace
 
 Store::Store(const std::string& store_dir):
     m_store_dir {store_dir}
@@ -220,7 +272,7 @@ Store::Store(const std::string& store_dir):
         throw std::system_error(ec);
 }
 
-bool Store::exists(const std::string& id)
+bool Store::exist(const std::string& id)
 {
     const std::string document_dir = resolve_document_dir(m_store_dir, id);
     return file::exists(document_dir);
@@ -252,6 +304,31 @@ bool Store::create(const std::string& id,
                    const std::string& read_password,
                    const std::string& write_password)
 {
+    if (exist(id))
+        return false;
+
+    const std::string document_dir = resolve_document_dir(m_store_dir, id);
+
+    std::error_code ec = file::mkdir(document_dir);
+    if (ec)
+        return false;
+
+    write_id_and_passwords(document_dir, id, read_password, write_password, ec);
+    if (ec)
+        return false;
+
+    write_noperation(document_dir, 0, ec);
+    if (ec)
+        return false;
+
+    write_nstate(document_dir, 0, ec);
+    if (ec)
+        return false;
+
+
+
+
+
 
 
     return true;

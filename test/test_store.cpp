@@ -39,7 +39,7 @@ TEST_CASE("get_store_info_from_assets", "[store]")
     const uint_fast64_t expected_noperation = 213;
     const uint_fast64_t expected_nstate = 0;
 
-    const std::string store_dir = context.get_assets_dir();
+    const std::string store_dir = file::resolve(context.get_assets_dir(), "store_dir");
 
     Store store {store_dir};
     std::error_code ec;

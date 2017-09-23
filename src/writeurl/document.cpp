@@ -49,7 +49,7 @@ Document::CreateStatus Document::create_document(const std::string& id,
     if (!id_is_valid(write_password))
         return CreateStatus::invalid_write_password;
 
-    if (m_store.exists(id))
+    if (m_store.exist(id))
         return CreateStatus::exist;
 
     if (!m_store.create(id, read_password, write_password))
@@ -69,7 +69,7 @@ Document::AttachStatus Document::attach_document(const std::string& id)
     if(!id_is_valid(id))
         return AttachStatus::invalid_id;
 
-    if (!m_store.exists(id))
+    if (!m_store.exist(id))
         return AttachStatus::no_exist;
 
     std::error_code ec;
