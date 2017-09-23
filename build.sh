@@ -53,6 +53,14 @@ case $MODE in
         ${TEST_MAIN} --use-colour no $@
         ;;
     "test-debug")
+        BUILD_DIR=${WRITEURL_HOME}/build/debug
+        TEST_BUILD_DIR=${BUILD_DIR}/test
+        TEST_MAIN=${TEST_BUILD_DIR}/main
+        mkdir -p ${TEST_BUILD_DIR}
+        EXTRA_CFLAGS="-g -DDEBUG"
+        WRITEURL_HOME=${WRITEURL_HOME} BUILD_DIR=${BUILD_DIR} TEST_BUILD_DIR=${TEST_BUILD_DIR} \
+            TEAST_MAIN=${TEST_MAIN} EXTRA_CFLAGS=${EXTRA_CFLAGS} make test
+        ${TEST_MAIN} --use-colour no $@
         ;;
     "clean")
         rm -rf ${WRITEURL_HOME}/build

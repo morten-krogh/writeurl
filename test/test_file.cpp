@@ -1,4 +1,4 @@
-#include <catch/include/catch.hpp>
+#include <catch.hpp>
 #include <context.hpp>
 
 #include <writeurl/file.hpp>

@@ -7,6 +7,9 @@
  *
 ************************************************************/
 
+#ifndef WRITEURL_TEST_CONTEXT_H
+#define WRITEURL_TEST_CONTEXT_H
+
 #include <string>
 #include <system_error>
 
@@ -29,3 +32,5 @@ private:
 };
 
 extern Context context;
+
+#endif // WRITEURL_TEST_CONTEXT_H

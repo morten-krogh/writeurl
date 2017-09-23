@@ -1,5 +1,5 @@
 WRITEURL_HOME ?= ${realpath ..}
-BUILD_DIR ?= ${WRITEURL_HOME}/build.release
+BUILD_DIR ?= ${WRITEURL_HOME}/build/release
 
 # Library
 
@@ -11,11 +11,13 @@ DEPS := ${OBJS:.o=.d}
 
 STATIC_LIB := ${BUILD_DIR}/libwriteurl.a
 
-INC_FLAGS := -I${WRITEURL_HOME}/src -I${WRITEURL_HOME}/external
+EXTERNAL := ${WRITEURL_HOME}/external
+INC_FLAGS := -I${WRITEURL_HOME}/src -I${EXTERNAL}/catch/include \
+	-I${EXTERNAL}/rapidjson/include
 
 CPPFLAGS := ${INC_FLAGS} -MMD -MP
-CXXFLAGS := -std=c++14 -Wall -pedantic -Wextra -Wunreachable-code \
--Wno-nested-anon-types -Werror -fno-elide-constructors -pthread
+CXXFLAGS := -std=c++14 -Wall -Wextra -pedantic -Wunreachable-code \
+-Wno-nested-anon-types -fno-elide-constructors -pthread
 
 ${BUILD_DIR}/%.o: ${SRC_DIR}/%.cpp
 	${CXX} ${CPPFLAGS} ${CXXFLAGS} ${EXTRA_CFLAGS} -c $< -o $@

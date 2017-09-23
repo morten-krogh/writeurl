@@ -28,6 +28,8 @@ public:
                 return "File size limit exceeded";
             case Error::file_unspecified_error:
                 return "Unspecified file error";
+            case Error::store_json_parser_error:
+                return "Error in JSON parsing in the document store";
             case Error::store_error:
                 return "Error in the document store";
         }

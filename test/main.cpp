@@ -1,5 +1,5 @@
 #define CATCH_CONFIG_RUNNER
-#include <catch/include/catch.hpp>
+#include <catch.hpp>
 #include <context.hpp>
 
 #include <stdlib.h>

@@ -1,4 +1,4 @@
-#include <catch/include/catch.hpp>
+#include <catch.hpp>
 #include <context.hpp>
 
 #include <writeurl/store.hpp>
@@ -33,8 +33,8 @@ TEST_CASE("create_document_dirs", "[store]")
 TEST_CASE("get_store_info_from_assets", "[store]")
 {
     const std::string id = "o7frz2tyexl0s7ujtuv8";
-    const std::string read = "vst3suh9s63v8sksjjfh";
-    const std::string write = "6m57kvmdj4kcwl1otea1";
+    const std::string expected_read_password = "vst3suh9s63v8sksjjfh";
+    const std::string expected_write_password = "6m57kvmdj4kcwl1otea1";
     const uint_fast64_t expected_noperation = 213;
     const uint_fast64_t expected_nstate = 0;
 
@@ -43,17 +43,9 @@ TEST_CASE("get_store_info_from_assets", "[store]")
     std::error_code ec;
     store::Ids ids = store::get_ids(root_dir, id, ec);
     CHECK(!ec);
-    CHECK(ids.id == id);
-    CHECK(ids.read == read);
-    CHECK(ids.write == write);
-
-    uint_fast64_t noperation = store::get_noperation(root_dir, id, ec);
-    CHECK(!ec);
-    CHECK(noperation == expected_noperation);
-
-    uint_fast64_t nstate = store::get_nstate(root_dir, id, ec);
-    CHECK(!ec);
-    CHECK(nstate == expected_nstate);
-
-
+    CHECK(id ==  ids.id);
+    CHECK(expected_read_password == ids.read_password);
+    CHECK(expected_write_password == ids.write_password);
+    CHECK(expected_noperation == ids.noperation);
+    CHECK(expected_nstate == ids.nstate);
 }

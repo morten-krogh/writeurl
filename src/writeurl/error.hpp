@@ -21,6 +21,7 @@ enum class Error {
     file_quota_exceeded,
     file_size_limit_exceeded,
     file_unspecified_error,
+    store_json_parser_error,
     store_error,
 
 

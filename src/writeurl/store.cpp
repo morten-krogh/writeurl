@@ -1,12 +1,16 @@
 #include <string>
 #include <vector>
+#include <map>
 #include <cassert>
+
+#include <rapidjson/reader.h>
+#include <rapidjson/error/en.h>
 
 #include <writeurl/error.hpp>
 #include <writeurl/store.hpp>
 #include <writeurl/file.hpp>
 
-#include <iostream>
+#include <iostream> // REMOVE
 
 using namespace writeurl;
 
@@ -62,6 +66,127 @@ std::string resolve_nstate(const std::string& document_dir)
     return file::resolve(document_dir, "nstate");
 }
 
+class IdsJSONHandler: public rapidjson::BaseReaderHandler<rapidjson::UTF8<>, IdsJSONHandler> {
+public:
+
+    IdsJSONHandler(store::Ids& ids):
+        m_ids {ids}
+    {
+    }
+
+    bool StartObject()
+    {
+        if (m_parser_state != ParserState::ExpectObjectStart)
+            return false;
+
+        m_parser_state = ParserState::ExpectKeyOrObjectEnd;
+        return true;
+    }
+
+    bool String(const char* str, rapidjson::SizeType size, bool)
+    {
+        switch(m_parser_state) {
+            case ParserState::ExpectObjectStart:
+                return false;
+            case ParserState::ExpectKeyOrObjectEnd:
+                m_parser_state = ParserState::ExpectValue;
+                m_key = std::string {str, size};
+                return true;
+            case ParserState::ExpectValue:
+                m_parser_state = ParserState::ExpectKeyOrObjectEnd;
+                m_map.insert(std::make_pair(m_key, std::string {str, size}));
+                return true;
+        }
+    }
+
+    bool EndObject(rapidjson::SizeType)
+    {
+        if (m_parser_state != ParserState::ExpectKeyOrObjectEnd)
+            return false;
+
+        auto search = m_map.find("id");
+        if (search == m_map.end())
+            return false;
+
+        m_ids.id = search->second;
+
+        search = m_map.find("read");
+        if (search == m_map.end())
+            return false;
+
+        m_ids.read_password = search->second;
+
+        search = m_map.find("write");
+        if (search == m_map.end())
+            return false;
+
+        m_ids.write_password = search->second;
+
+        return true;
+    }
+
+    bool Default()
+    {
+        return false;
+    }
+
+private:
+    store::Ids& m_ids;
+
+    std::string m_key;
+    std::map<std::string, std::string> m_map;
+
+    enum class ParserState {
+        ExpectObjectStart,
+        ExpectKeyOrObjectEnd,
+        ExpectValue
+    };
+
+    ParserState m_parser_state = ParserState::ExpectObjectStart;
+};
+
+
+
+void read_id_and_passwords(const std::string& document_dir, store::Ids& ids, std::error_code& ec)
+{
+    const std::string ids_path = resolve_ids(document_dir);
+    buffer::Buffer buf;
+    ec = file::read(ids_path, buf);
+    if (ec)
+        return;
+
+    rapidjson::Reader reader;
+    IdsJSONHandler handler {ids};
+    rapidjson::MemoryStream stream {buf.data(), buf.size()};
+    if (!reader.Parse(stream, handler)) {
+        ec = make_error_code(Error::store_json_parser_error);
+        return;
+    }
+}
+
+void read_noperation(const std::string& document_dir, store::Ids& ids, std::error_code& ec)
+{
+    const std::string noperation_path = resolve_noperation(document_dir);
+    buffer::Buffer buf;
+    ec = file::read(noperation_path, buf);
+    if (ec)
+        return;
+
+    ids.noperation = parse_uint(buf.to_string(), ec);
+    return;
+}
+
+void read_nstate(const std::string& document_dir, store::Ids& ids, std::error_code& ec)
+{
+    const std::string nstate_path = resolve_nstate(document_dir);
+    buffer::Buffer buf;
+    ec = file::read(nstate_path, buf);
+    if (ec)
+        return;
+
+    ids.nstate = parse_uint(buf.to_string(), ec);
+    return;
+}
 
 } // anonymous namespace
 
@@ -69,48 +194,23 @@ store::Ids store::get_ids(const std::string& root_dir, const std::string& id, st
 {
     Ids ids;
     const std::string document_dir = resolve_document_dir(root_dir, id);
-    const std::string ids_path = resolve_ids(document_dir);
-    buffer::Buffer buf;
-    ec = file::read(ids_path, buf);
+
+    read_id_and_passwords(document_dir, ids, ec);
     if (ec)
-        return ids;
+        return {};
 
-    std::cout << buf.to_string() << std::endl;
+    assert(id == ids.id);
 
-    ids.id = id;
-    ids.read = "read";
-    ids.write = "write";
+    read_noperation(document_dir, ids, ec);
+    if (ec)
+        return {};
+
+    read_nstate(document_dir, ids, ec);
+    if (ec)
+        return {};
 
     return ids;
 }
-
-uint_fast64_t store::get_noperation(const std::string& root_dir, const std::string& id, std::error_code& ec)
-{
-    const std::string document_dir = resolve_document_dir(root_dir, id);
-    const std::string noperation_path = resolve_noperation(document_dir);
-    buffer::Buffer buf;
-    ec = file::read(noperation_path, buf);
-    if (ec)
-        return 0;
-
-    uint_fast64_t noperation = parse_uint(buf.to_string(), ec);
-    return noperation;
-}
-
-uint_fast64_t store::get_nstate(const std::string& root_dir, const std::string& id, std::error_code& ec)
-{
-    const std::string document_dir = resolve_document_dir(root_dir, id);
-    const std::string nstate_path = resolve_nstate(document_dir);
-    buffer::Buffer buf;
-    ec = file::read(nstate_path, buf);
-    if (ec)
-        return 0;
-
-    uint_fast64_t nstate = parse_uint(buf.to_string(), ec);
-    return nstate;
-}
-
-
 
 //
 //'use strict';
