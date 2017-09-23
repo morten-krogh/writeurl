@@ -7,6 +7,9 @@
  *
 ************************************************************/
 
+#ifndef WRITEURL_BUFFER_H
+#define WRITEURL_BUFFER_H
+
 #include <cstddef>
 #include <memory>
 #include <string>
@@ -37,3 +40,5 @@ private:
 
 } // namespace buffer
 } // namespace writeurl
+
+#endif // WRITEURL_BUFFER_H

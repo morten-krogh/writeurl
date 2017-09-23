@@ -7,6 +7,9 @@
  *
 ************************************************************/
 
+#ifndef WRITEURL_STORE_H
+#define WRITEURL_STORE_H
+
 #include <system_error>
 
 #include <writeurl/document.hpp>
@@ -33,3 +36,5 @@ std::error_code create_document_dirs(const std::string& root_dir);
 
 } // namespace store
 } // namespace writeurl
+
+#endif // WRITEURL_STORE_H

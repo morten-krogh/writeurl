@@ -7,6 +7,9 @@
  *
 ************************************************************/
 
+#ifndef WRITEURL_DOCUMENT_H
+#define WRITEURL_DOCUMENT_H
+
 #include <string>
 
 namespace writeurl {
@@ -39,3 +42,5 @@ private:
 
 } // namespace document
 } // namespace writeurl
+
+#endif // WRITEURL_DOCUMENT_H

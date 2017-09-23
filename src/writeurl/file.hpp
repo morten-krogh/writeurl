@@ -7,6 +7,9 @@
  *
 ************************************************************/
 
+#ifndef WRITEURL_FILE_HPP
+#define WRITEURL_FILE_HPP
+
 #include <string>
 #include <system_error>
 
@@ -33,3 +36,5 @@ std::error_code write(const std::string& path, const char* data, size_t size);
 
 } // namespace file
 } // namespace writeurl
+
+#endif // WRITEURL_FILE_HPP

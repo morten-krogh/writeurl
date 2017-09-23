@@ -7,6 +7,9 @@
  *
 ************************************************************/
 
+#ifndef WRITEURL_ERROR_H
+#define WRITEURL_ERROR_H
+
 #include <system_error>
 
 namespace writeurl {
@@ -37,3 +40,5 @@ template <> struct is_error_code_enum<writeurl::Error> {
 };
 
 } // namespace std
+
+#endif // WRITEURL_ERROR_H
