@@ -42,11 +42,15 @@ public:
 
     AttachStatus attach_document(const std::string& id);
 
+    enum class ConsumerStatus {
+        ok,
+        invalid_read_password,
+        invalid_write_password
+    };
 
-    bool add_consumer_for_document(bool new_document,
+    ConsumerStatus add_consumer_for_document(bool new_document,
                                    const std::string read_password,
                                    const std::string write_password);
-
 
 
     const std::string& get_id() const noexcept;

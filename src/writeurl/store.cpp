@@ -325,12 +325,6 @@ bool Store::create(const std::string& id,
     if (ec)
         return false;
 
-
-
-
-
-
-
     return true;
 }
 

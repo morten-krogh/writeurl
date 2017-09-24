@@ -87,12 +87,18 @@ Document::AttachStatus Document::attach_document(const std::string& id)
 }
 
 
-bool add_consumer_for_document(bool new_document,
-                               const std::string read_password,
-                               const std::string write_password)
+Document::ConsumerStatus Document::add_consumer_for_document(bool new_document,
+                                                             const std::string read_password,
+                                                             const std::string write_password)
 {
+    if (read_password != m_read_password)
+        return ConsumerStatus::invalid_read_password;
+
+    if (write_password != m_write_password)
+        return ConsumerStatus::invalid_write_password;
 
 
+    return ConsumerStatus::ok;
 }
 
 
