@@ -8,6 +8,7 @@ usage()
     Available modes are:
         build
         build-debug
+        build-writeurl-debug
         test
         clean
 EOF
@@ -41,6 +42,12 @@ case $MODE in
         mkdir -p ${BUILD_DIR}
         EXTRA_CFLAGS="-g -DDEBUG"
         WRITEURL_HOME=${WRITEURL_HOME} BUILD_DIR=${BUILD_DIR} EXTRA_CFLAGS=${EXTRA_CFLAGS} make static_lib
+        ;;
+    "build-writeurl-debug")
+        BUILD_DIR=${WRITEURL_HOME}/build/debug
+        mkdir -p ${BUILD_DIR}
+        EXTRA_CFLAGS="-g -DDEBUG"
+        WRITEURL_HOME=${WRITEURL_HOME} BUILD_DIR=${BUILD_DIR} EXTRA_CFLAGS=${EXTRA_CFLAGS} make writeurl
         ;;
     "test")
         BUILD_DIR=${WRITEURL_HOME}/build/release

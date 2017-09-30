@@ -12,6 +12,7 @@
 
 #include <string>
 
+#include <spdlog/spdlog.h>
 // #include <writeurl/store.hpp>
 
 
@@ -22,6 +23,8 @@ public:
 
     struct Config {
 
+        spdlog::logger& logger;
+
 
 
 
@@ -29,10 +32,11 @@ public:
 
     Server(const Config& config);
 
+    void start();
 
 
 private:
-
+    spdlog::logger& logger;
 
 };
 

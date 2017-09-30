@@ -1,4 +1,4 @@
-WRITEURL_HOME ?= ${realpath ..}
+WRITEURL_HOME ?= ${realpath .}
 BUILD_DIR ?= ${WRITEURL_HOME}/build/release
 
 # Library
@@ -13,7 +13,7 @@ STATIC_LIB := ${BUILD_DIR}/libwriteurl.a
 
 EXTERNAL := ${WRITEURL_HOME}/external
 INC_FLAGS := -I${WRITEURL_HOME}/src -I${EXTERNAL}/catch/include \
-	-I${EXTERNAL}/rapidjson/include
+	-I${EXTERNAL}/rapidjson/include -I${EXTERNAL}/spdlog/include
 
 CPPFLAGS := ${INC_FLAGS} -MMD -MP
 CXXFLAGS := -std=c++14 -Wall -Wextra -pedantic -Wunreachable-code \
@@ -24,6 +24,14 @@ ${BUILD_DIR}/%.o: ${SRC_DIR}/%.cpp
 
 ${STATIC_LIB}: ${OBJS}
 	${AR} -rcs $@  $^
+
+# Main
+
+WRITEURL_MAIN := ${BUILD_DIR}/writeurl  
+WRITEURL_MAIN_SRC := ${WRITEURL_HOME}/src/main.cpp
+
+${WRITEURL_MAIN}: ${STATIC_LIB} ${WRITEURL_MAIN_SRC}
+	 ${CXX} ${CPPFLAGS} ${CXXFLAGS} ${EXTRA_CFLAGS} $^ -o $@
 
 # Tests
 
@@ -47,6 +55,9 @@ ${TEST_MAIN}: ${STATIC_LIB} ${TEST_OBJS}
 
 .PHONY: static_lib
 static_lib: ${STATIC_LIB}
+
+.PHONY: writeurl
+writeurl: ${WRITEURL_MAIN}
 
 .PHONY: test
 test: ${TEST_MAIN}
