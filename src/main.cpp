@@ -3,17 +3,13 @@
 #include <writeurl/server.hpp>
 
 
-int main(int argc, char** argv)
+int main(int, char**)
 {
 
-    std::shared_ptr<spdlog::logger> logger = spdlog::stdout_logger_mt("console");
-    // std::shared_ptr<spdlog::logger> logger = spdlog::stdout_color_mt("console");
+    writeurl::Server::Config config;
 
-    writeurl::Server::Config config = { *logger };
-
-
-
-
+    config.logger = spdlog::stdout_logger_mt("console");
+    config.logger->set_level(spdlog::level::level_enum::trace);
 
 
     writeurl::Server server {config};

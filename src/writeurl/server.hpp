@@ -21,9 +21,16 @@ namespace writeurl {
 class Server {
 public:
 
+    struct Address {
+        std::string address = "::";
+        uint16_t port = 0;
+    };
+
     struct Config {
 
-        spdlog::logger& logger;
+        std::shared_ptr<spdlog::logger> logger;
+
+        Address address;
 
 
 
@@ -32,11 +39,24 @@ public:
 
     Server(const Config& config);
 
+    // Blocking. Starts event loop.
     void start();
+
+    // Thread safe
+    void stop();
+
+    const Address& get_address() const;
 
 
 private:
-    spdlog::logger& logger;
+    std::shared_ptr<spdlog::logger> logger;
+
+    Config m_config;
+    Address m_addres;
+
+    
+
+
 
 };
 
