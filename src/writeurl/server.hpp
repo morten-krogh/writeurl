@@ -13,18 +13,15 @@
 #include <string>
 
 #include <spdlog/spdlog.h>
-// #include <writeurl/store.hpp>
+
+#include <writeurl/network.hpp>
 
 
 namespace writeurl {
 
 class Server {
 public:
-
-    struct Address {
-        std::string address = "::";
-        uint16_t port = 0;
-    };
+    using Address = network::Address;
 
     struct Config {
 
@@ -39,13 +36,29 @@ public:
 
     Server(const Config& config);
 
-    // Blocking. Starts event loop.
+    // listen() creates a listening socket.
+    // start must be called after listen().
+    void listen();
+
+    // get_address() returns the address at which the server is listening.
+    // get_address() must be called after listen().
+    const Address& get_address() const;
+
+    // start() starts the event loop. start() is blocking and does not return
+    // before stop() is called. start() must be called on the thread on which 
+    // the server's event loop runs.
     void start();
 
-    // Thread safe
+    // stop() tells the the event loop thread to terminate all connections and
+    // stop the event loop. stop() might return before the event loop has
+    // terminated. The server might continue servicing clients for a little while
+    // after stop() returns.
+    // 
+    // stop() is thread safe and can be called repeatedly.
+    // start() can be called again after stop().
+    // The server will continue listening until the serve object is destroyed.
     void stop();
 
-    const Address& get_address() const;
 
 
 private:
@@ -53,6 +66,8 @@ private:
 
     Config m_config;
     Address m_addres;
+
+
 
     
 
