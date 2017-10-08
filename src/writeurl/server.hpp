@@ -21,13 +21,12 @@ namespace writeurl {
 
 class Server {
 public:
-    using Address = network::Address;
 
     struct Config {
 
         std::shared_ptr<spdlog::logger> logger;
 
-        Address address;
+        network::address address;
 
 
 
@@ -40,9 +39,9 @@ public:
     // start must be called after listen().
     void listen();
 
-    // get_address() returns the address at which the server is listening.
-    // get_address() must be called after listen().
-    const Address& get_address() const;
+    // get_addresses() returns the addresses at which the server is listening.
+    // get_addresses() must be called after listen().
+    std::vector<network::address> get_addresses() const;
 
     // start() starts the event loop. start() is blocking and does not return
     // before stop() is called. start() must be called on the thread on which 
@@ -65,14 +64,7 @@ private:
     std::shared_ptr<spdlog::logger> logger;
 
     Config m_config;
-    Address m_addres;
-
-
-
-    
-
-
-
+    std::vector<network::listen_socket> m_listen_sockets;
 };
 
 } // namespace writeurl

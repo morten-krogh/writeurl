@@ -13,24 +13,22 @@
 #include <string>
 #include <vector>
 
+#include <spdlog/spdlog.h>
+
 namespace writeurl {
 namespace network {
 
-struct Address {
+struct address {
     std::string hostname = "";
     std::string port = "";
 };
 
-
-struct ListenStatus {
-    int error = 0;
-    std::string error_str;
-    std::vector<int> sockets;
-    std::vector<std::string> hostnames;
-    std::vector<std::string> ports;
+struct listen_socket {
+    int descriptor;
+    address address;
 };
 
-ListenStatus listen(const Address& address);
+std::vector<listen_socket> listen(const address& address, spdlog::logger* logger);
 
 
 

@@ -27,21 +27,29 @@ Server::Server(const Config& config):
 
 void Server::listen()
 {
-    network::ListenStatus status = network::listen(m_config.address);
+    m_listen_sockets = network::listen(m_config.address, logger.get());
 
-    if (status.error) {
-        logger->error("Listened failed: {}", status.error_str);
+    if (m_listen_sockets.empty()) {
+        logger->error("Listen failed. The server is not listening on any sockets");
     }
     else {
-        logger->info("Listened succeeded");
-        for (size_t i = 0; i < status.sockets.size(); ++i) {
-            logger->info("Listening socket, fd = {0}, hostname = {1}, port = {2}",
-                         status.sockets[i], status.hostnames[i], status.ports[i]);
-        }
-
-
+        logger->info("Listen succeeded. The server is listening on {} sockets",
+                     m_listen_sockets.size());
+        for (size_t i = 0; i < m_listen_sockets.size(); ++i)
+            logger->info("Listening socket, descriptor = {}, hostname = {}, port = {}",
+                         m_listen_sockets[i].descriptor,
+                         m_listen_sockets[i].address.hostname,
+                         m_listen_sockets[i].address.port);
     }
+}
 
+std::vector<network::address> Server::get_addresses() const
+{
+    std::vector<network::address> addresses;
+    for (size_t i = 0; i < m_listen_sockets.size(); ++i)
+        addresses.push_back(m_listen_sockets[i].address);
+
+    return addresses;
 }
 
 void Server::start()

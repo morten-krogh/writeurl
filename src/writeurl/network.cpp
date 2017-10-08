@@ -11,13 +11,8 @@
 
 using namespace writeurl;
 
-
-
-
-network::ListenStatus network::listen(const Address& address)
+std::vector<network::listen_socket> network::listen(const address& address, spdlog::logger* logger)
 {
-    ListenStatus status;
-
     struct addrinfo hints, *res0;
 
     memset(&hints, 0, sizeof(hints));
@@ -29,92 +24,67 @@ network::ListenStatus network::listen(const Address& address)
     const char* servname = address.port.empty() ? nullptr : address.port.c_str();
 
     int error = getaddrinfo(hostname, servname, &hints, &res0);
-    
     if (error) {
-        status.error = error;
-        status.error_str = gai_strerror(error);
-        return status;
+        logger->error("getaddrinfo error, error = {}, strerror = {}",
+                      error, gai_strerror(error));
+        return {};
     }
 
-    error = 0;
-    char cause = '\0';
-    std::string error_str;
+    std::vector<listen_socket> sockets;
     char host[NI_MAXHOST];
     char serv[NI_MAXSERV];
 
     for (struct addrinfo *res = res0; res; res = res->ai_next) {
-        std::cout << "Trying res, ai_family = " << res->ai_family
-            << ", ai_socktype = " << res->ai_socktype
-            << ", ai_protocol = " << res->ai_protocol
-            << std::endl;
+        logger->debug("Attempt to listen, ai_family = {}, ai_socktype = {}, "
+                      "ai_protocol = {}", res->ai_family, res->ai_socktype,
+                      res->ai_protocol);
 
-
-
-        int sock = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
-        if (sock < 0) {
-            cause = 's';
-            std::cout << "socket failure\n";
+        int descriptor = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+        if (descriptor < 0) {
+            logger->debug("Failure to open socket");
             continue;
         }
+        logger->debug("Socket created with descriptor = {}", descriptor);
 
-        if (bind(sock, res->ai_addr, res->ai_addrlen) < 0) {
-            cause = 'b';
-            close(sock);
+        if (bind(descriptor, res->ai_addr, res->ai_addrlen) < 0) {
+            logger->debug("Failure to bind the socket, errno = {}, error = {}",
+                          errno, strerror(errno));
+            close(descriptor);
             continue;
         }
+        logger->debug("Socket bound");
         
         int backlog = 20;
-        if (::listen(sock, backlog)) {
-            error = errno;
-            cause = 'l';
-            close(sock);
+        if (::listen(descriptor, backlog)) {
+            logger->debug("Socket listen failed with errno = {}", errno);
+            close(descriptor);
             continue;
         }
+        logger->debug("Socket listening with backlog = {}", backlog);
 
         struct sockaddr_storage addr;
         socklen_t addrlen = sizeof(addr);
-        getsockname(sock, (struct sockaddr*) &addr, &addrlen);
+        getsockname(descriptor, (struct sockaddr*) &addr, &addrlen);
 
         error = getnameinfo((struct sockaddr*) &addr, addrlen, host, sizeof(host), serv, sizeof(serv),
                             NI_NUMERICHOST | NI_NUMERICSERV);
         if (error) {
-            cause = 'g';
-            error_str = gai_strerror(error);
-            close(sock);
+            logger->debug("getnameinfo failed for the socket, error = {}, strerror = {}",
+                         error, gai_strerror(error));
+            close(descriptor);
             continue;
         }
+        logger->debug("Socket listening with hostname = {}, port = {}", host, serv);
 
-        status.sockets.push_back(sock);
-        status.hostnames.emplace_back(host);
-        status.ports.emplace_back(serv);
+        listen_socket socket {descriptor, network::address {host, serv}};
+        sockets.push_back(socket);
     }
 
     freeaddrinfo(res0);
 
-    if (status.sockets.empty()) {
-        status.error = 1;
-        if (cause == 's') {
-            status.error_str = "Socket could not be created";
-        }
-        else if (cause == 'b') {
-            status.error_str = "Socket could not be bound";
-        }
-        else if (cause == 'l') {
-            status.error_str = std::string {"Listen error with errno = "} +
-                std::string {strerror(error)};
-        }
-        else {
-            status.error_str = error_str;
-        }
-    }
+    if (sockets.empty())
+        logger->error("No listening sockets could be created");
 
-    return status;
+    return sockets;
 }
-
-
-
-
-
-
-
 
