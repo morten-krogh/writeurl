@@ -35,19 +35,19 @@ case $MODE in
         BUILD_DIR=${WRITEURL_HOME}/build/release
         mkdir -p ${BUILD_DIR}
         EXTRA_CFLAGS="-O3"
-        WRITEURL_HOME=${WRITEURL_HOME} BUILD_DIR=${BUILD_DIR} EXTRA_CFLAGS=${EXTRA_CFLAGS} make static_lib
+        WRITEURL_HOME=${WRITEURL_HOME} BUILD_DIR=${BUILD_DIR} EXTRA_CFLAGS=${EXTRA_CFLAGS} make -j 8 static_lib
         ;;
     "build-debug")
         BUILD_DIR=${WRITEURL_HOME}/build/debug
         mkdir -p ${BUILD_DIR}
         EXTRA_CFLAGS="-g -DDEBUG"
-        WRITEURL_HOME=${WRITEURL_HOME} BUILD_DIR=${BUILD_DIR} EXTRA_CFLAGS=${EXTRA_CFLAGS} make static_lib
+        WRITEURL_HOME=${WRITEURL_HOME} BUILD_DIR=${BUILD_DIR} EXTRA_CFLAGS=${EXTRA_CFLAGS} make -j 8 static_lib
         ;;
     "build-writeurl-debug")
         BUILD_DIR=${WRITEURL_HOME}/build/debug
         mkdir -p ${BUILD_DIR}
         EXTRA_CFLAGS="-g -DDEBUG"
-        WRITEURL_HOME=${WRITEURL_HOME} BUILD_DIR=${BUILD_DIR} EXTRA_CFLAGS=${EXTRA_CFLAGS} make writeurl
+        WRITEURL_HOME=${WRITEURL_HOME} BUILD_DIR=${BUILD_DIR} EXTRA_CFLAGS=${EXTRA_CFLAGS} make -j 8 writeurl
         ;;
     "test")
         BUILD_DIR=${WRITEURL_HOME}/build/release
@@ -56,7 +56,7 @@ case $MODE in
         mkdir -p ${TEST_BUILD_DIR}
         EXTRA_CFLAGS="-O3"
         WRITEURL_HOME=${WRITEURL_HOME} BUILD_DIR=${BUILD_DIR} TEST_BUILD_DIR=${TEST_BUILD_DIR} \
-            TEAST_MAIN=${TEST_MAIN} EXTRA_CFLAGS=${EXTRA_CFLAGS} make test
+            TEAST_MAIN=${TEST_MAIN} EXTRA_CFLAGS=${EXTRA_CFLAGS} make -j 8 test
         ${TEST_MAIN} --use-colour no $@
         ;;
     "test-debug")
@@ -66,7 +66,7 @@ case $MODE in
         mkdir -p ${TEST_BUILD_DIR}
         EXTRA_CFLAGS="-g -DDEBUG"
         WRITEURL_HOME=${WRITEURL_HOME} BUILD_DIR=${BUILD_DIR} TEST_BUILD_DIR=${TEST_BUILD_DIR} \
-            TEAST_MAIN=${TEST_MAIN} EXTRA_CFLAGS=${EXTRA_CFLAGS} make test
+            TEAST_MAIN=${TEST_MAIN} EXTRA_CFLAGS=${EXTRA_CFLAGS} make -j 8 test
         ${TEST_MAIN} --use-colour no $@
         ;;
     "clean")

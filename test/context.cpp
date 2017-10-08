@@ -19,6 +19,19 @@ void Context::set_writeurl_home(const std::string& writeurl_home)
     assert(!ec);
 }
 
+void Context::set_log_level(spdlog::level::level_enum log_level)
+{
+    m_log_level = log_level;
+}
+
+std::shared_ptr<spdlog::logger> Context::get_logger(const std::string& prefix)
+{
+    std::shared_ptr<spdlog::logger> logger = std::make_shared<spdlog::logger>(prefix, m_sink);
+    logger->set_pattern("[" + prefix + "] [%l] %v");
+    logger->set_level(m_log_level);
+    return logger;
+}
+
 std::string Context::get_assets_dir()
 {
     return m_assets;

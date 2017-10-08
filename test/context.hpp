@@ -13,15 +13,22 @@
 #include <string>
 #include <system_error>
 
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/stdout_sinks.h>
+
 class Context {
 public:
 
     void set_writeurl_home(const std::string& writeurl_home);
 
+    void set_log_level(spdlog::level::level_enum log_level);
+    std::shared_ptr<spdlog::logger> get_logger(const std::string& prefix);
     std::string get_assets_dir();
     std::string get_tmp_dir();
     void cleanup();
 private:
+    spdlog::sink_ptr m_sink = spdlog::sinks::stdout_sink_mt::instance();
+    spdlog::level::level_enum m_log_level = spdlog::level::level_enum::info;
     std::string m_writeurl_home;
     std::string m_assets;
     std::string m_tmp;
