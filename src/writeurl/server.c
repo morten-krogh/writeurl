@@ -1,9 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
 #include <zf_log/zf_log.h>
-
 #include <writeurl/server.h>
 
 void wurl_server_init(struct wurl_server *server, const struct wurl_server_config *config)
@@ -13,6 +11,9 @@ void wurl_server_init(struct wurl_server *server, const struct wurl_server_confi
 
         server->hostname = strdup(config->hostname);
         server->servname = strdup(config->servname);
+
+        pthread_mutex_init(&server->mutex, NULL);
+        server->stopped = false;
 }
 
 void wurl_server_free(struct wurl_server *server)
@@ -25,6 +26,8 @@ void wurl_server_free(struct wurl_server *server)
         }
         free(server->hostname);
         free(server->servname);
+
+        pthread_mutex_destroy(&server->mutex);
 }
 
 int wurl_server_listen(struct wurl_server *server)
@@ -39,14 +42,24 @@ void wurl_server_start(struct wurl_server *server)
 {
         ZF_LOGI("The Writeurl server starts the event loop");
 
-        for (int i = 0; i < 1000; ++i) {
-                ZF_LOGD("Debug test i = %i", i);
-                sleep(100);
+        while (true) {
+                bool stopped = false;
+                pthread_mutex_lock(&server->mutex);
+                stopped = server->stopped;
+                pthread_mutex_unlock(&server->mutex);
+                if (stopped) {
+                        ZF_LOGI("The event loop is terminating");
+                        return;
+                }
+                ZF_LOGD("Iteration of the event loop");
+                sleep(10);
         }
-
 }
 
 void wurl_server_stop(struct wurl_server *server)
 {
         ZF_LOGI("The Writeurl server stops the event loop");
+        pthread_mutex_lock(&server->mutex);
+        server->stopped = true;
+        pthread_mutex_unlock(&server->mutex);
 }

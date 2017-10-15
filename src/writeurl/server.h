@@ -9,8 +9,9 @@
 
 #pragma once
 
+#include <pthread.h>
+#include <stdbool.h>
 #include <zf_log/zf_log.h>
-
 #include <writeurl/network.h>
 
 struct wurl_server_config {
@@ -37,6 +38,10 @@ struct wurl_server {
 
         int nsocks;
         struct wurl_net_listen_sock *socks;
+
+        pthread_mutex_t mutex;
+        bool stopped;
+
 };
 
 void wurl_server_init(struct wurl_server *server, const struct wurl_server_config *config);
@@ -49,15 +54,15 @@ int wurl_server_listen(struct wurl_server *server);
 
 // start() starts the event loop. start() is blocking and does not return
 // before stop() is called. start() must be called on the thread on which
-// the server's event loop runs.
+// the server's event loop is expected to run. start() is not supposed to be 
+// called more than once.
 void wurl_server_start(struct wurl_server *server);
 
-//    // stop() tells the the event loop thread to terminate all connections and
-//    // stop the event loop. stop() might return before the event loop has
-//    // terminated. The server might continue servicing clients for a little while
-//    // after stop() returns.
-//    //
+// stop() tells the the event loop thread to terminate all connections and
+// stop the event loop. stop() might return before the event loop has
+// terminated. The server might continue servicing clients for a little while
+// after stop() returns.
+//
 // stop() is thread safe and can be called repeatedly.
-// start() can be called again after stop().
 // The server will continue listening until the server is freed.
 void wurl_server_stop(struct wurl_server *server);
