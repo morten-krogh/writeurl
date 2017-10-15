@@ -6,36 +6,19 @@ int main(__attribute__((unused)) int argc, __attribute__((unused))  char** argv)
 
         config.log_level = ZF_LOG_VERBOSE;
 
+        config.hostname = "localhost"; 
+        //config.hostname = "fe80::1c90:df4a:b1dc:8c70%en0";
+        config.servname = "14000";
+        config.servname = "";
+
         struct wurl_server server;
+        wurl_server_init(&server, &config);
 
-        int rc;
+        int nsocks = wurl_server_listen(&server);
+        ZF_LOGI("nsocks = %i", nsocks);
 
-        rc = wurl_server_init(&server, &config);
-
-        rc = wurl_server_listen(&server);
-
-//    writeurl::Server::Config config;
-//
-//    config.logger = spdlog::stdout_logger_mt("console");
-//    config.logger->set_level(spdlog::level::level_enum::trace);
-//
-//    config.address.hostname = "localhost";
-//    //config.address.hostname = "fe80::1c90:df4a:b1dc:8c70%en0";
-//    config.address.port = "";
-//
-//    writeurl::Server server {config};
-//
-//    server.listen();
-//
-//    server.start();
-//
-//
+        wurl_server_start(&server);
 
 
-
-
-
-
-
-    return 0;
+        return 0;
 }

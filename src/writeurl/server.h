@@ -11,8 +11,7 @@
 
 #include <zf_log/zf_log.h>
 
-//#include <string>
-//#include <writeurl/network.hpp>
+#include <writeurl/network.h>
 
 struct wurl_server_config {
 
@@ -28,62 +27,37 @@ struct wurl_server_config {
         // ZF_LOG_NONE    0xFF
         int log_level;
 
-
-        //        network::address address;
-
+        char* hostname;
+        char* servname;
 };
 
 struct wurl_server {
+        char *hostname;
+        char *servname;
 
-        int dummy;
+        int nsocks;
+        struct wurl_net_listen_sock *socks;
 };
 
-int wurl_server_init(struct wurl_server *server, const struct wurl_server_config *config);
+void wurl_server_init(struct wurl_server *server, const struct wurl_server_config *config);
+
+void wurl_server_free(struct wurl_server *server);
 
 // listen() creates a listening socket.
 // start must be called after listen().
 int wurl_server_listen(struct wurl_server *server);
 
+// start() starts the event loop. start() is blocking and does not return
+// before stop() is called. start() must be called on the thread on which
+// the server's event loop runs.
+void wurl_server_start(struct wurl_server *server);
 
-
-//class Server {
-//public:
-//
-//    struct Config {
-//        std::shared_ptr<spdlog::logger> logger;
-//        network::address address;
-//    };
-//
-//    Server(const Config& config);
-//
-//    // listen() creates a listening socket.
-//    // start must be called after listen().
-//    void listen();
-//
-//    // get_addresses() returns the addresses at which the server is listening.
-//    // get_addresses() must be called after listen().
-//    std::vector<network::address> get_addresses() const;
-//
-//    // start() starts the event loop. start() is blocking and does not return
-//    // before stop() is called. start() must be called on the thread on which
-//    // the server's event loop runs.
-//    void start();
-//
 //    // stop() tells the the event loop thread to terminate all connections and
 //    // stop the event loop. stop() might return before the event loop has
 //    // terminated. The server might continue servicing clients for a little while
 //    // after stop() returns.
 //    //
-//    // stop() is thread safe and can be called repeatedly.
-//    // start() can be called again after stop().
-//    // The server will continue listening until the serve object is destroyed.
-//    void stop();
-//
-//
-//
-//private:
-//    std::shared_ptr<spdlog::logger> logger;
-//
-//    Config m_config;
-//    std::vector<network::listen_socket> m_listen_sockets;
-//};
+// stop() is thread safe and can be called repeatedly.
+// start() can be called again after stop().
+// The server will continue listening until the server is freed.
+void wurl_server_stop(struct wurl_server *server);
