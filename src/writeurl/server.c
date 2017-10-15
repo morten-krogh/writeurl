@@ -43,6 +43,7 @@ void wurl_server_start(struct wurl_server *server)
         ZF_LOGI("The Writeurl server starts the event loop");
 
         while (true) {
+                ZF_LOGD("Iteration of the event loop");
                 bool stopped = false;
                 pthread_mutex_lock(&server->mutex);
                 stopped = server->stopped;
@@ -51,14 +52,14 @@ void wurl_server_start(struct wurl_server *server)
                         ZF_LOGI("The event loop is terminating");
                         return;
                 }
-                ZF_LOGD("Iteration of the event loop");
-                sleep(10);
+                sleep(1);
         }
 }
 
 void wurl_server_stop(struct wurl_server *server)
 {
         ZF_LOGI("The Writeurl server stops the event loop");
+        sleep(1);
         pthread_mutex_lock(&server->mutex);
         server->stopped = true;
         pthread_mutex_unlock(&server->mutex);

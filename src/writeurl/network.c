@@ -76,7 +76,7 @@ int wurl_net_listen(const char* hostname, const char* servname, struct wurl_net_
                 ZF_LOGI("Socket listening with host = %s, serv = %s", host, serv);
 
                 ++nsocks;
-                socks = realloc(socks, nsocks);
+                socks = realloc(socks, nsocks * sizeof(*socks));
                 socks[nsocks - 1].fd = fd;
                 strcpy(socks[nsocks - 1].host, host);
                 strcpy(socks[nsocks - 1].serv, serv);
