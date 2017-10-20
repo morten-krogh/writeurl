@@ -45,4 +45,9 @@ void wut_collect_test_start(struct wut_collect *col, struct wut_result *res);
 void wut_collect_test_end(struct wut_collect *col, struct wut_result *res);
 void wut_collect_end(struct wut_collect *col);
 
+typedef void(*wut_test_fun)(struct wut_collect *col, struct wut_result *res);
+
+void wut_add_assert_equal(struct wut_collect *col, char *file,
+                          int line, int a, int b);
+
 

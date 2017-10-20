@@ -67,3 +67,11 @@ void wut_collect_end(struct wut_collect *col)
         printf("Number of tests = %zu\n", col->ntest);
         printf("Number of failed tests = %zu\n", col->nfail);
 }
+
+void wut_add_assert_equal(struct wut_result *res, char *file,
+                          int line, int a, int b)
+{
+        
+
+
+}
