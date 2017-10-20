@@ -16,7 +16,8 @@ INC_FLAGS := -I${WRITEURL_HOME}/src -I${EXTERNAL}/zf_log
 
 CPPFLAGS := ${INC_FLAGS} -MMD -MP
 CFLAGS := -std=c11 -Wall -Wextra -pedantic -Wunreachable-code \
-	-Wno-nested-anon-types -fno-elide-constructors -pthread
+	-Wno-nested-anon-types -fno-elide-constructors -pthread \
+	-Wno-unused-parameter
 
 ${BUILD_DIR}/%.o: ${SRC_DIR}/%.c
 	${CC} ${CPPFLAGS} ${CFLAGS} ${EXTRA_CFLAGS} -c $< -o $@
@@ -43,23 +44,23 @@ ${WRITEURL_MAIN}: ${STATIC_LIB} ${WRITEURL_MAIN_SRC}
 
 # Tests
 
-#TEST_BUILD_DIR ?= ${BUILD_DIR}/test
-#TEST_MAIN ?= ${TEST_BUILD_DIR}/main
-#TEST_SRC_DIR := ${WRITEURL_HOME}/test
-#
-#TEST_SRCS := ${shell find ${TEST_SRC_DIR} -name '*.cpp'}
-#TEST_OBJS := ${TEST_SRCS:${TEST_SRC_DIR}/%.cpp=${TEST_BUILD_DIR}/%.o}
-#TEST_DEPS := ${TEST_OBJS:.o=.d}
-#
-#TEST_CPPFLAGS := -I${TEST_SRC_DIR} ${CPPFLAGS}
-#
-#TEST_LDFLAGS :=
-#
-#${TEST_BUILD_DIR}/%.o: ${TEST_SRC_DIR}/%.cpp
-#	${CXX} ${TEST_CPPFLAGS} ${CXXFLAGS} ${EXTRA_CFLAGS} -c $< -o $@
-#
-#${TEST_MAIN}: ${STATIC_LIB} ${TEST_OBJS}
-#	${CXX} ${TEST_LDFLAGS} $^ -o $@
+TEST_BUILD_DIR ?= ${BUILD_DIR}/test
+TEST_MAIN ?= ${TEST_BUILD_DIR}/main
+TEST_SRC_DIR := ${WRITEURL_HOME}/test
+
+TEST_SRCS := ${shell find ${TEST_SRC_DIR} -name '*.c'}
+TEST_OBJS := ${TEST_SRCS:${TEST_SRC_DIR}/%.c=${TEST_BUILD_DIR}/%.o}
+TEST_DEPS := ${TEST_OBJS:.o=.d}
+
+TEST_CPPFLAGS := -I${TEST_SRC_DIR} ${CPPFLAGS}
+
+TEST_LDFLAGS :=
+
+${TEST_BUILD_DIR}/%.o: ${TEST_SRC_DIR}/%.c
+	${CC} ${TEST_CPPFLAGS} ${CFLAGS} ${EXTRA_CFLAGS} -c $< -o $@
+
+${TEST_MAIN}: ${STATIC_LIB} ${TEST_OBJS}
+	${CC} ${TEST_LDFLAGS} $^ -o $@
 
 
 
