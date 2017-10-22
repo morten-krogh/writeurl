@@ -87,13 +87,9 @@ struct wut_test *wut_collect_new_test(struct wut_collect *col, char *name)
 
 static void print_assert_failure(char *name, struct wut_assert *as)
 {
-        char *fmt = "Failure in test = %s, file = %s, line = %i\n";
-        char *fmt_reason =
-                "Failure in test = %s, file = %s, line = %i, reason = %s\n";
-        if (as->reason)
-                printf(fmt_reason, name, as->file, as->line, as->reason);
-        else
-                printf(fmt, name, as->file, as->line);
+        char *fmt = "Failure in test = %s, file = %s, line = %i, %s\n";
+        printf(fmt, name, as->file, as->line,
+               as->reason ? as->reason : "false");
 }
 
 void wut_collect_test_done(struct wut_collect *col, struct wut_test *test)
@@ -110,22 +106,17 @@ void wut_collect_test_done(struct wut_collect *col, struct wut_test *test)
                 ++col->nfail;
 }
 
+#define NORMAL "\x1b[0m"
+#define RED "\x1B[31m"
+#define GREEN "\x1B[32m"
+
 void wut_collect_done(struct wut_collect *col)
 {
         printf("End of test run\n");
         printf("Number of tests = %zu\n", col->ntest);
         printf("Number of failed tests = %zu\n", col->nfail);
+        if (col->nfail == 0)
+                printf("%sSuccess%s\n", GREEN, NORMAL);
+        else 
+                printf("%sFailure%s\n", RED, NORMAL);
 }
-
-//void wut_add_assert(struct wut_collect *col, char *file,
-//                    int line, int a, int b)
-//{
-//        struct wut_assert as;
-        //wut
-//}
-
-// void wut_add_assert_equal(struct wut_result *res, char *file,
-//                          int line, int a, int b)
-//{
-        
-//}

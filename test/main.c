@@ -3,13 +3,23 @@
 
 void fn1(struct wut_test *test)
 {
-        struct wut_assert *as = wut_test_new_assert(test, __FILE__, __LINE__);
-        as->pass = false;
-        asprintf(&as->reason, "The error reason is ABC");
+        ASSERT(true);
+    //    ASSERT(false);
+  //      ASSERT_EQ(12, 14);
+        ASSERT_EQ(12, 12);
+}
 
-        as = wut_test_new_assert(test, __FILE__, __LINE__);
-        as->pass = false;
+void fn2(struct wut_test *test)
+{
+        int a = 5;
+        int b = 7;
+        int c = 20 * 8;
+        ASSERT_EQ(a + b, c);
+}
 
+void fn3(struct wut_test *test)
+{
+        ASSERT_EQ(3 * 8, 24);
 }
 
 int main(int argc, char** argv)
@@ -19,10 +29,12 @@ int main(int argc, char** argv)
 
         char *fun_names[] = {
                 "fn1",
+                "fn2",
         };
 
         wut_test_fun funs[] = {
                 fn1,
+                fn2,
         };
 
         size_t nfuns = sizeof(funs) / sizeof(*funs);
@@ -34,4 +46,5 @@ int main(int argc, char** argv)
         }
 
         wut_collect_done(&col);
+        wut_collect_destroy(&col);
 }

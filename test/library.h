@@ -11,6 +11,7 @@
 
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 struct wut_assert {
         bool pass;
@@ -50,6 +51,23 @@ void wut_collect_test_done(struct wut_collect *col, struct wut_test *test);
 void wut_collect_done(struct wut_collect *col);
 
 typedef void(*wut_test_fun)(struct wut_test *test);
+
+#define ASSERT(cond) do { \
+        struct wut_assert *as = wut_test_new_assert(test, __FILE__, __LINE__); \
+        if (!(cond)) \
+                as->pass = false; \
+        } while (false);
+
+#define ASSERT_EQ(lhs, rhs) do { \
+        intmax_t i1 = lhs; \
+        intmax_t i2 = rhs; \
+        struct wut_assert *as = wut_test_new_assert(test, __FILE__, __LINE__); \
+        if (i1 != i2) \
+                as->pass = false; \
+                char *fmt = "actual = %jd, expected = %jd"; \
+                asprintf(&as->reason, fmt, i1, i2); \
+        } while (false);
+
 
 //void wut_assert(struct wut_collect *col, char *file, int line, int a, int b);
 //void wut_add_assert_equal(struct wut_collect *col, char *file,
