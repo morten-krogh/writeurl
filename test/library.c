@@ -117,6 +117,55 @@ void wut_collect_done(struct wut_collect *col)
         printf("Number of failed tests = %zu\n", col->nfail);
         if (col->nfail == 0)
                 printf("%sSuccess%s\n", GREEN, NORMAL);
-        else 
+        else
                 printf("%sFailure%s\n", RED, NORMAL);
+}
+
+void wut_funs_init(struct wut_funs *funs)
+{
+        funs->name = NULL;
+        funs->fun = NULL;
+        funs->nfun = 0;
+        funs->nalloc = 0;
+}
+
+void wut_funs_destroy(struct wut_funs *funs)
+{
+        free(funs->name);
+        free(funs->fun);
+}
+
+void wut_funs_expand(struct wut_funs *funs)
+{
+        size_t nalloc = funs->nalloc == 0 ? 1 : 2 * funs->nalloc;
+        funs->name =
+                realloc(funs->name, nalloc * sizeof(*funs->name));
+        funs->fun = realloc(funs->fun, nalloc * sizeof(*funs->fun));
+        funs->nalloc = nalloc;
+}
+
+void wut_funs_register(struct wut_funs *funs, char *name,
+                     void(*fun)(struct wut_test *test))
+{
+        if (funs->nfun == funs->nalloc)
+                wut_funs_expand(funs);
+        funs->name[funs->nfun] = name;
+        funs->fun[funs->nfun] = fun;
+        ++funs->nfun;
+}
+
+void wut_funs_run(struct wut_funs *funs)
+{
+        struct wut_collect col;
+        wut_collect_init(&col);
+
+        for (size_t i = 0; i < funs->nfun; ++i) {
+                struct wut_test *test =
+                        wut_collect_new_test(&col, funs->name[i]);
+                funs->fun[i](test);
+                wut_collect_test_done(&col, test);
+        }
+
+        wut_collect_done(&col);
+        wut_collect_destroy(&col);
 }
