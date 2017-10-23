@@ -5,16 +5,16 @@ TEST(simple_1);
 TEST(simple_2);
 TEST(simple_3);
 
+struct wut_fun funs[] = {
+        FUN(simple_1)
+        FUN(simple_2)
+        FUN(simple_3)
+};
+
 int main(int argc, char** argv)
 {
-        struct wut_funs funs;
-        wut_funs_init(&funs);
+        size_t nfun = sizeof(funs) / sizeof(funs[0]);
+        size_t nfail = wut_fun_run(funs, nfun);
 
-        REGISTER(simple_1);
-        REGISTER(simple_2);
-        REGISTER(simple_3);
-
-        wut_funs_run(&funs);
-
-        wut_funs_destroy(&funs);
+        return nfail;
 }

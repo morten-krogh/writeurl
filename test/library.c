@@ -121,51 +121,23 @@ void wut_collect_done(struct wut_collect *col)
                 printf("%sFailure%s\n", RED, NORMAL);
 }
 
-void wut_funs_init(struct wut_funs *funs)
-{
-        funs->name = NULL;
-        funs->fun = NULL;
-        funs->nfun = 0;
-        funs->nalloc = 0;
-}
-
-void wut_funs_destroy(struct wut_funs *funs)
-{
-        free(funs->name);
-        free(funs->fun);
-}
-
-void wut_funs_expand(struct wut_funs *funs)
-{
-        size_t nalloc = funs->nalloc == 0 ? 1 : 2 * funs->nalloc;
-        funs->name =
-                realloc(funs->name, nalloc * sizeof(*funs->name));
-        funs->fun = realloc(funs->fun, nalloc * sizeof(*funs->fun));
-        funs->nalloc = nalloc;
-}
-
-void wut_funs_register(struct wut_funs *funs, char *name,
-                     void(*fun)(struct wut_test *test))
-{
-        if (funs->nfun == funs->nalloc)
-                wut_funs_expand(funs);
-        funs->name[funs->nfun] = name;
-        funs->fun[funs->nfun] = fun;
-        ++funs->nfun;
-}
-
-void wut_funs_run(struct wut_funs *funs)
+size_t wut_fun_run(struct wut_fun *funs, size_t nfun)
 {
         struct wut_collect col;
         wut_collect_init(&col);
 
-        for (size_t i = 0; i < funs->nfun; ++i) {
+        for (size_t i = 0; i < nfun; ++i) {
+                struct wut_fun *fun = funs + i;
                 struct wut_test *test =
-                        wut_collect_new_test(&col, funs->name[i]);
-                funs->fun[i](test);
+                        wut_collect_new_test(&col, fun->name);
+                fun->fun(test);
                 wut_collect_test_done(&col, test);
         }
 
+        size_t nfail = col.nfail;
+
         wut_collect_done(&col);
         wut_collect_destroy(&col);
+
+        return nfail;
 }

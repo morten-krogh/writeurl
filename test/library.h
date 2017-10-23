@@ -51,25 +51,18 @@ struct wut_test *wut_collect_new_test(struct wut_collect *col, char *name);
 void wut_collect_test_done(struct wut_collect *col, struct wut_test *test);
 void wut_collect_done(struct wut_collect *col);
 
-struct wut_funs {
-        char **name;
-        void (**fun)(struct wut_test *test);
-        size_t nfun;
-        size_t nalloc;
+struct wut_fun {
+        char *name;
+        void (*fun)(struct wut_test *test);
 };
 
-void wut_funs_init(struct wut_funs *funs);
-void wut_funs_destroy(struct wut_funs *funs);
-void wut_funs_expand(struct wut_funs *funs);
-void wut_funs_register(struct wut_funs *funs, char *name,
-                     void(*fun)(struct wut_test *test));
-void wut_funs_run(struct wut_funs *funs);
+size_t wut_fun_run(struct wut_fun *funs, size_t nfun);
 
 typedef void(*wut_test_fun)(struct wut_test *test);
 
 #define TEST(name) void test_##name(struct wut_test *test)
 
-#define REGISTER(name) wut_funs_register(&funs, #name, test_##name)
+#define FUN(name) {#name, test_##name},
 
 #define ASSERT(cond) do { \
         struct wut_assert *as = wut_test_new_assert(test, __FILE__, __LINE__); \
