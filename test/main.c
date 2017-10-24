@@ -1,11 +1,14 @@
 #include <stdio.h>
 #include <library.h>
 
+TEST(resolve);
 TEST(simple_1);
 TEST(simple_2);
 TEST(simple_3);
 
+
 struct wut_fun funs[] = {
+	FUN(resolve),
 	FUN(simple_1),
 	FUN(simple_2),
 	FUN(simple_3),
