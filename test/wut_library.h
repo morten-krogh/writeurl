@@ -13,6 +13,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 
 struct wut_assert {
 	bool pass;
@@ -78,4 +79,13 @@ typedef void(*wut_test_fun)(struct wut_test *test);
 		as->pass = false; \
 		char *fmt = "actual = %jd, expected = %jd"; \
 		asprintf(&as->reason, fmt, i1, i2); \
+	} while (false);
+
+#define ASSERT_STR_EQ(lhs, rhs) do { \
+	int cmp = strcmp(lhs, rhs); \
+	struct wut_assert *as = wut_test_new_assert(test, __FILE__, __LINE__); \
+	if (cmp) \
+		as->pass = false; \
+		char *fmt = "actual = %s, expected = %s"; \
+		asprintf(&as->reason, fmt, lhs, rhs); \
 	} while (false);

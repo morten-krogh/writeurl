@@ -1,6 +1,6 @@
 #include <stdlib.h>
-#include <library.h>
 #include <stdio.h>
+#include <wut_library.h>
 
 void wut_assert_init(struct wut_assert *as, char *file, int line)
 {

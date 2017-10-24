@@ -9,7 +9,11 @@
 
 #pragma once
 
+#include <stdbool.h>
+
 char *wul_resolve(const char *base, const char *name);
+
+bool wul_exsts(const char *path);
 
 //std::string resolve(const std::string& prefix, const std::string& name);
 //

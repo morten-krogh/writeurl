@@ -1,13 +1,11 @@
 #include <string.h>
 #include <stdlib.h>
-
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <fts.h>
 #include <sys/uio.h>
 #include <unistd.h>
-
 #include <writeurl/file.h>
 
 char *wul_resolve(const char *base, const char *name)
@@ -17,31 +15,19 @@ char *wul_resolve(const char *base, const char *name)
 	size_t len = len_base + 1 + len_name;
 	char *path = malloc(len + 1);
 	memcpy(path, base, len_base);
-	path[len_base] = '\t';
+	path[len_base] = '/';
 	memcpy(path + len_base + 1, name, len_name);
 	path[len] = '\0';
 	return path;
 }
 
-//std::string file::resolve(const std::vector<std::string>& components)
-//{
-//    assert(components.size() != 0);
-//    std::string result = components[0];
-//    for (size_t i = 1; i < components.size(); ++i) {
-//        result.append(1, '/');
-//        result.append(components[i]);
-//    }
-//    return result;
-//}
-//
-//std::string file::resolve(const std::string& prefix, const std::string& name)
-//{
-//    std::vector<std::string> components(2);
-//    components[0] = prefix;
-//    components[1] = name;
-//    return resolve(components);
-//}
-//
+bool wul_exsts(const char *path)
+{
+	struct stat buf;
+	return stat(path, &buf) == 0;
+}
+
+
 //bool file::exists(const std::string& path)
 //{
 //    struct stat buffer;

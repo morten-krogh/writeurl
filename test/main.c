@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <library.h>
+#include <wut_library.h>
 
 TEST(resolve);
 TEST(simple_1);

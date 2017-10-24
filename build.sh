@@ -57,7 +57,7 @@ case $MODE in
         EXTRA_CFLAGS="-O3"
         WRITEURL_HOME=${WRITEURL_HOME} BUILD_DIR=${BUILD_DIR} TEST_BUILD_DIR=${TEST_BUILD_DIR} \
             TEAST_MAIN=${TEST_MAIN} EXTRA_CFLAGS=${EXTRA_CFLAGS} make -j 8 test
-        ${TEST_MAIN} --use-colour no $@
+        ${TEST_MAIN}
         ;;
     "test-debug")
         BUILD_DIR=${WRITEURL_HOME}/build/debug

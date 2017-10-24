@@ -1,4 +1,4 @@
-#include <library.h>
+#include <wut_library.h>
 
 TEST(simple_1)
 {
