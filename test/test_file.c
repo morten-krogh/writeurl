@@ -17,3 +17,13 @@ TEST(resolve)
 	free(path);
 }
 
+TEST(file_exists)
+{
+	char *path = wul_resolve(test->assets, "non-ecisting");
+	ASSERT(!wul_exists(path));
+	free(path);
+
+	path = wul_resolve(test->assets, "file1.txt");
+	ASSERT(wul_exists(path));
+	free(path);
+}

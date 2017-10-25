@@ -21,7 +21,7 @@ char *wul_resolve(const char *base, const char *name)
 	return path;
 }
 
-bool wul_exsts(const char *path)
+bool wul_exists(const char *path)
 {
 	struct stat buf;
 	return stat(path, &buf) == 0;

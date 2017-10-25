@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <writeurl/file.h>
 #include <wut_library.h>
 
 void wut_assert_init(struct wut_assert *as, char *file, int line)
@@ -14,12 +15,13 @@ void wut_assert_destroy(struct wut_assert *as)
 	free(as->reason);
 }
 
-void wut_test_init(struct wut_test *test, char *name)
+void wut_test_init(struct wut_test *test, const char *name, const char *assets)
 {
 	test->name = name;
 	test->assert = NULL;
 	test->nassert = 0;
 	test->nalloc = 0;
+	test->assets = assets;
 }
 
 void wut_test_destroy(struct wut_test *test)
@@ -74,18 +76,19 @@ void wut_collect_expand(struct wut_collect *col)
 	col->nalloc = nalloc;
 }
 
-struct wut_test *wut_collect_new_test(struct wut_collect *col, char *name)
+struct wut_test *wut_collect_new_test(struct wut_collect *col,
+				      const char *name, const char *assets)
 {
 	printf("Start test: %s\n", name);
 	if (col->ntest == col->nalloc)
 		wut_collect_expand(col);
 	struct wut_test *test = col->test + col->ntest;
-	wut_test_init(test, name);
+	wut_test_init(test, name, assets);
 	++col->ntest;
 	return test;
 }
 
-static void print_assert_failure(char *name, struct wut_assert *as)
+static void print_assert_failure(const char *name, struct wut_assert *as)
 {
 	char *fmt = "Failure in test = %s, file = %s, line = %i, %s\n";
 	printf(fmt, name, as->file, as->line,
@@ -121,15 +124,18 @@ void wut_collect_done(struct wut_collect *col)
 		printf("%sFailure%s\n", RED, NORMAL);
 }
 
-size_t wut_fun_run(struct wut_fun *funs, size_t nfun)
+size_t wut_fun_run(struct wut_fun *funs, size_t nfun, const char *writeurl_home)
 {
+	char *test_dir = wul_resolve(writeurl_home, "test");
+	char *assets = wul_resolve(test_dir, "assets");
+
 	struct wut_collect col;
 	wut_collect_init(&col);
 
 	for (size_t i = 0; i < nfun; ++i) {
 		struct wut_fun *fun = funs + i;
 		struct wut_test *test =
-			wut_collect_new_test(&col, fun->name);
+			wut_collect_new_test(&col, fun->name, assets);
 		fun->fun(test);
 		wut_collect_test_done(&col, test);
 	}
@@ -138,6 +144,9 @@ size_t wut_fun_run(struct wut_fun *funs, size_t nfun)
 
 	wut_collect_done(&col);
 	wut_collect_destroy(&col);
+
+	free(test_dir);
+	free(assets);
 
 	return nfail;
 }

@@ -26,13 +26,14 @@ void wut_assert_init(struct wut_assert *as, char *file, int line);
 void wut_assert_destroy(struct wut_assert *as);
 
 struct wut_test {
-	char *name;
+	const char *name;
 	struct wut_assert *assert;
 	size_t nassert;
 	size_t nalloc;
+	const char *assets;
 };
 
-void wut_test_init(struct wut_test *test, char *name);
+void wut_test_init(struct wut_test *test, const char *name, const char *assets);
 void wut_test_destroy(struct wut_test *test);
 void wut_test_expand(struct wut_test *test);
 struct wut_assert *wut_test_new_assert(struct wut_test *test, char *file,
@@ -48,7 +49,8 @@ struct wut_collect {
 void wut_collect_init(struct wut_collect *col);
 void wut_collect_destroy(struct wut_collect *col);
 void wut_collect_expand(struct wut_collect *col);
-struct wut_test *wut_collect_new_test(struct wut_collect *col, char *name);
+struct wut_test *wut_collect_new_test(struct wut_collect *col,
+				      const char *name, const char *assets);
 void wut_collect_test_done(struct wut_collect *col, struct wut_test *test);
 void wut_collect_done(struct wut_collect *col);
 
@@ -57,7 +59,7 @@ struct wut_fun {
 	void (*fun)(struct wut_test *test);
 };
 
-size_t wut_fun_run(struct wut_fun *funs, size_t nfun);
+size_t wut_fun_run(struct wut_fun *funs, size_t nfun, const char *writeurl_home);
 
 typedef void(*wut_test_fun)(struct wut_test *test);
 

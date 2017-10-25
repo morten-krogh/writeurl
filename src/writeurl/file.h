@@ -13,7 +13,7 @@
 
 char *wul_resolve(const char *base, const char *name);
 
-bool wul_exsts(const char *path);
+bool wul_exists(const char *path);
 
 //std::string resolve(const std::string& prefix, const std::string& name);
 //
