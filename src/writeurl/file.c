@@ -6,6 +6,8 @@
 #include <fts.h>
 #include <sys/uio.h>
 #include <unistd.h>
+#include <errno.h>
+#include <zf_log/zf_log.h>
 #include <writeurl/file.h>
 
 char *wul_resolve(const char *base, const char *name)
@@ -28,43 +30,6 @@ bool wul_exists(const char *path)
 }
 
 
-//bool file::exists(const std::string& path)
-//{
-//    struct stat buffer;
-//    return (stat(path.c_str(), &buffer) == 0);
-//}
-//
-//std::error_code file::mkdir(const std::string& path)
-//{
-//    mode_t mode = 0750;
-//    int rc = ::mkdir(path.c_str(), mode);
-//    if (rc == -1) {
-//        if (errno == ENOENT)
-//            return make_error_code(Error::file_no_exist);
-//        else if (errno == EACCES)
-//            return make_error_code(Error::file_write_access_denied);
-//        else
-//            return make_error_code(Error::file_unspecified_error);
-//    }
-//
-//    return std::error_code{};
-//}
-//
-//std::error_code file::rmdir(const std::string& path)
-//{
-//    int rc = ::rmdir(path.c_str());
-//    if (rc == -1) {
-//        if (errno == ENOENT)
-//            return make_error_code(Error::file_no_exist);
-//        else if (errno == EACCES)
-//            return make_error_code(Error::file_write_access_denied);
-//        else
-//            return make_error_code(Error::file_unspecified_error);
-//    }
-//
-//    return std::error_code{};
-//}
-//
 //std::error_code file::rmdir_recursive(const std::string& path)
 //{
 //    std::string path_2 = path; // copy to avoid const
@@ -98,50 +63,35 @@ bool wul_exists(const char *path)
 //    return std::error_code{};
 //}
 //
-//std::error_code file::unlink(const std::string& path)
-//{
-//    int rc = ::unlink(path.c_str());
-//    if (rc == -1) {
-//        if (errno == ENOENT)
-//            return make_error_code(Error::file_no_exist);
-//        else if (errno == EACCES)
-//            return make_error_code(Error::file_read_access_denied);
-//        else
-//            return make_error_code(Error::file_unspecified_error);
-//    }
-//
-//    return std::error_code{};
-//}
-//
-//std::error_code file::read(const std::string& path, buffer::Buffer& buf)
-//{
-//    int fd = open(path.c_str(), O_RDONLY);
-//    if (fd == -1) {
-//        if (errno == ENOENT)
-//            return make_error_code(Error::file_no_exist);
-//        else if (errno == EACCES)
-//            return make_error_code(Error::file_read_access_denied);
-//        else
-//            return make_error_code(Error::file_unspecified_error);
-//    }
-//
-//    struct stat buffer;
-//    int rc = fstat(fd, &buffer);
-//    if (rc == -1)
-//        return make_error_code(Error::file_unspecified_error);
-//
-//    size_t file_size = size_t(buffer.st_size);
-//
-//    buf.reserve(file_size);
-//    buf.resize(file_size);
-//
-//    ssize_t nread = ::read(fd, (void*) buf.data(), file_size);
-//    if (nread != ssize_t(file_size))
-//        return make_error_code(Error::file_unspecified_error);
-//
-//    return std::error_code{};
-//}
-//
+int wul_read(const char *path, char **content)
+{
+	int fd = open(path, O_RDONLY);
+	if (fd == -1) {
+		ZF_LOGE("open failed for path = %s with errno = %i, "
+			"error = %s\n", path, errno, strerror(errno));
+		return -1;
+	}
+
+	struct stat buffer;
+	int rc = fstat(fd, &buffer);
+	if (rc == -1) {
+		ZF_LOGE("stat failed for path = %s with errno = %i, "
+			"error = %s\n", path, errno, strerror(errno));
+		return -1;
+	}
+
+	size_t file_size = (size_t)buffer.st_size;
+	*content = malloc(file_size);
+
+	ssize_t nread = read(fd, *content, file_size);
+	if (nread != (ssize_t)file_size) {
+		ZF_LOGE("read failed for path = %s with errno = %i, "
+			"error = %s\n", path, errno, strerror(errno));
+		return -1;
+	}
+
+	return file_size;
+}
 //std::error_code file::write(const std::string& path, const char* data, size_t size)
 //{
 //    mode_t mode = 0640;

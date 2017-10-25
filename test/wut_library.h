@@ -91,3 +91,17 @@ typedef void(*wut_test_fun)(struct wut_test *test);
 		char *fmt = "actual = %s, expected = %s"; \
 		asprintf(&as->reason, fmt, lhs, rhs); \
 	} while (false);
+
+#define ASSERT_MEM_EQ(lhs, rhs, n) do { \
+	int cmp = memcmp(lhs, rhs, n); \
+	struct wut_assert *as = wut_test_new_assert(test, __FILE__, __LINE__); \
+	if (cmp) \
+		as->pass = false; \
+		as->reason = malloc(8 + 5 * n + 12 + 5 * n + 1); \
+		sprintf(as->reason, "actual ="); \
+		for (size_t i = 0; i < n; ++i) \
+			sprintf(as->reason + 8 + 5 * i, " %#x", lhs[i]); \
+		sprintf(as->reason + 8 + 5 * n, ", expected ="); \
+		for (size_t i = 0; i < n; ++i) \
+			sprintf(as->reason + 8 + 5 * n + 12 + 5 * i, " %#x", rhs[i]); \
+	} while (false);

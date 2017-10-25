@@ -15,16 +15,10 @@ char *wul_resolve(const char *base, const char *name);
 
 bool wul_exists(const char *path);
 
-//std::string resolve(const std::string& prefix, const std::string& name);
-//
-//bool exists(const std::string& path);
-//
-//std::error_code mkdir(const std::string& path);
-//std::error_code rmdir(const std::string& path);
+// returns the size of the file and puts the content in an allocated buffer
+// returned in *content. -1 is returned in error cases.
+int wul_read(const char *path, char **content);
+
 //std::error_code rmdir_recursive(const std::string& path);
-//
-//std::error_code unlink(const std::string& path);
-//
-//std::error_code read(const std::string& path, buffer::Buffer& buf);
 //
 //std::error_code write(const std::string& path, const char* data, size_t size);

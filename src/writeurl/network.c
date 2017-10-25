@@ -45,7 +45,7 @@ int wurl_net_listen(const char* hostname, const char* servname, struct wurl_net_
                 ZF_LOGD("Socket created with file descriptor = %i", fd);
 
                 if (bind(fd, res->ai_addr, res->ai_addrlen) < 0) {
-                        ZF_LOGD("bind() failed, errno = {}, error = {}",
+                        ZF_LOGD("bind() failed, errno = %i, error = %s",
                                 errno, strerror(errno));
                         close(fd);
                         continue;

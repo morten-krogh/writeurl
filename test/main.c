@@ -3,6 +3,7 @@
 
 TEST(resolve);
 TEST(file_exists);
+TEST(file_read);
 TEST(simple_1);
 TEST(simple_2);
 TEST(simple_3);
@@ -11,6 +12,7 @@ TEST(simple_3);
 struct wut_fun funs[] = {
 	FUN(resolve),
 	FUN(file_exists),
+	FUN(file_read),
 	FUN(simple_1),
 	FUN(simple_2),
 	FUN(simple_3),
