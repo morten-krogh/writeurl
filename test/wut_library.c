@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
+#include <sys/stat.h>
 #include <writeurl/file.h>
 #include <wut_library.h>
 
@@ -10,18 +12,25 @@ void wut_assert_init(struct wut_assert *as, char *file, int line)
 	as->line = line;
 	as->reason = NULL;
 }
+
 void wut_assert_destroy(struct wut_assert *as)
 {
 	free(as->reason);
 }
 
-void wut_test_init(struct wut_test *test, const char *name, const char *assets)
+void wut_test_init(struct wut_test *test, const char *name, const char *assets,
+		   const char *tmp_dir)
 {
 	test->name = name;
 	test->assert = NULL;
 	test->nassert = 0;
 	test->nalloc = 0;
 	test->assets = assets;
+	test->tmp = wul_resolve(tmp_dir, name);
+	wul_rmdir_rec(test->tmp);
+	assert(!wul_exists(test->tmp));
+	int rc = mkdir(test->tmp, 0740);
+	assert(!rc);
 }
 
 void wut_test_destroy(struct wut_test *test)
@@ -31,6 +40,7 @@ void wut_test_destroy(struct wut_test *test)
 		wut_assert_destroy(as);
 	}
 	free(test->assert);
+	free(test->tmp);
 }
 
 void wut_test_expand(struct wut_test *test)
@@ -77,13 +87,14 @@ void wut_collect_expand(struct wut_collect *col)
 }
 
 struct wut_test *wut_collect_new_test(struct wut_collect *col,
-				      const char *name, const char *assets)
+				      const char *name, const char *assets,
+				      const char *tmp_dir)
 {
 	printf("Start test: %s\n", name);
 	if (col->ntest == col->nalloc)
 		wut_collect_expand(col);
 	struct wut_test *test = col->test + col->ntest;
-	wut_test_init(test, name, assets);
+	wut_test_init(test, name, assets, tmp_dir);
 	++col->ntest;
 	return test;
 }
@@ -128,6 +139,8 @@ size_t wut_fun_run(struct wut_fun *funs, size_t nfun, const char *writeurl_home)
 {
 	char *test_dir = wul_resolve(writeurl_home, "test");
 	char *assets = wul_resolve(test_dir, "assets");
+	char *tmp_dir = wul_resolve(test_dir, "tmp");
+	int rc = mkdir(tmp_dir, 0740);
 
 	struct wut_collect col;
 	wut_collect_init(&col);
@@ -135,7 +148,7 @@ size_t wut_fun_run(struct wut_fun *funs, size_t nfun, const char *writeurl_home)
 	for (size_t i = 0; i < nfun; ++i) {
 		struct wut_fun *fun = funs + i;
 		struct wut_test *test =
-			wut_collect_new_test(&col, fun->name, assets);
+			wut_collect_new_test(&col, fun->name, assets, tmp_dir);
 		fun->fun(test);
 		wut_collect_test_done(&col, test);
 	}
@@ -147,6 +160,7 @@ size_t wut_fun_run(struct wut_fun *funs, size_t nfun, const char *writeurl_home)
 
 	free(test_dir);
 	free(assets);
+	free(tmp_dir);
 
 	return nfail;
 }

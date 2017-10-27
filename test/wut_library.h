@@ -31,9 +31,11 @@ struct wut_test {
 	size_t nassert;
 	size_t nalloc;
 	const char *assets;
+	char *tmp;
 };
 
-void wut_test_init(struct wut_test *test, const char *name, const char *assets);
+void wut_test_init(struct wut_test *test, const char *name, const char *assets,
+		   const char* tmp_dir);
 void wut_test_destroy(struct wut_test *test);
 void wut_test_expand(struct wut_test *test);
 struct wut_assert *wut_test_new_assert(struct wut_test *test, char *file,
@@ -50,7 +52,8 @@ void wut_collect_init(struct wut_collect *col);
 void wut_collect_destroy(struct wut_collect *col);
 void wut_collect_expand(struct wut_collect *col);
 struct wut_test *wut_collect_new_test(struct wut_collect *col,
-				      const char *name, const char *assets);
+				      const char *name, const char *assets,
+				      const char *tmp_dir);
 void wut_collect_test_done(struct wut_collect *col, struct wut_test *test);
 void wut_collect_done(struct wut_collect *col);
 

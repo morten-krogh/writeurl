@@ -15,10 +15,16 @@ char *wul_resolve(const char *base, const char *name);
 
 bool wul_exists(const char *path);
 
+// recursively remove the dir path and all its subdirs.
+// returns 0 on success and -1 on failure.
+int wul_rmdir_rec(char *path);
+
 // returns the size of the file and puts the content in an allocated buffer
 // returned in *content. -1 is returned in error cases.
-int wul_read(const char *path, char **content);
+size_t wul_read(const char *path, char **buf);
 
-//std::error_code rmdir_recursive(const std::string& path);
-//
-//std::error_code write(const std::string& path, const char* data, size_t size);
+
+// wul_write() writes nbyte bytes in buf into the file specfied by path.
+// The return value is 0 if the entire buf is written into the file, -1
+// otherwise.
+int wul_write(const char *path, const char* buf, size_t nbyte);

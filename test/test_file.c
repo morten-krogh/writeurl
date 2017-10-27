@@ -35,19 +35,38 @@ TEST(file_read)
 	int rc = wul_read(path, &content);
 	ASSERT_EQ(rc, 3);
 	ASSERT_MEM_EQ(content, "abc", 3);
+	free(content);
+	free(path);
+	
+	path = wul_resolve(test->assets, "non-existing");
+	rc = wul_read(path, &content);
+	ASSERT_EQ(rc, -1);
 	free(path);
 
-    //std::string non_existing_file = file::resolve(context.get_assets_dir(), "non-existing");
-    //buf.resize(0);
-    //ec = file::read(non_existing_file, buf);
-    //CHECK(ec);
-    //CHECK(ec.value() == 1);
-    //CHECK(ec.message() == "File does not exist");
+	path = wul_resolve(test->assets, "empty");
+	rc = wul_read(path, &content);
+	ASSERT_EQ(rc, 0);
+	//free(content);
+	free(path);
+}
 
-    //std::string empty_file = file::resolve(context.get_assets_dir(), "empty");
-    //buf.resize(0);
-    //ec = file::read(empty_file, buf);
-    //CHECK(!ec);
-    //CHECK(buf.size() == 0);
-    //CHECK(buf.to_string() == "");
+TEST(file_write)
+{
+	char *path = wul_resolve(test->tmp, "file");
+	ASSERT(!wul_exists(path));
+
+	char buf[] = "abcdef\nghijkl\n";
+	size_t size = sizeof(buf) - 1;
+	int rc = wul_write(path, buf, size);
+	ASSERT_EQ(rc, 0);
+
+	ASSERT(wul_exists(path));
+
+	char *content;
+	rc = wul_read(path, &content);
+	ASSERT_EQ(rc, size);
+	ASSERT_MEM_EQ(content, "sajkasddakjdkhadskjasdjksabuf", size);
+
+	free(content);
+	free(path);
 }
