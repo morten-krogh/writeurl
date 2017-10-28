@@ -3,9 +3,10 @@
 #include <wut_library.h>
 
 TEST(resolve);
-TEST(file_exists);
+TEST(file_exist);
 TEST(file_read);
 TEST(file_write);
+TEST(file_rmdir_rec);
 TEST(simple_1);
 TEST(simple_2);
 TEST(simple_3);
@@ -13,9 +14,10 @@ TEST(simple_3);
 
 struct wut_fun funs[] = {
 	FUN(resolve),
-	FUN(file_exists),
+	FUN(file_exist),
 	FUN(file_read),
 	FUN(file_write),
+	FUN(file_rmdir_rec),
 	FUN(simple_1),
 	FUN(simple_2),
 	FUN(simple_3),

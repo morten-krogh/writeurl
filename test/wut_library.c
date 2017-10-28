@@ -28,7 +28,7 @@ void wut_test_init(struct wut_test *test, const char *name, const char *assets,
 	test->assets = assets;
 	test->tmp = wul_resolve(tmp_dir, name);
 	wul_rmdir_rec(test->tmp);
-	assert(!wul_exists(test->tmp));
+	assert(!wul_exist(test->tmp));
 	int rc = mkdir(test->tmp, 0740);
 	assert(!rc);
 }
@@ -140,7 +140,8 @@ size_t wut_fun_run(struct wut_fun *funs, size_t nfun, const char *writeurl_home)
 	char *test_dir = wul_resolve(writeurl_home, "test");
 	char *assets = wul_resolve(test_dir, "assets");
 	char *tmp_dir = wul_resolve(test_dir, "tmp");
-	int rc = mkdir(tmp_dir, 0740);
+	mkdir(tmp_dir, 0740);
+	assert(wul_exist(tmp_dir));
 
 	struct wut_collect col;
 	wut_collect_init(&col);

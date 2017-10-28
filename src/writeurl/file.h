@@ -13,7 +13,7 @@
 
 char *wul_resolve(const char *base, const char *name);
 
-bool wul_exists(const char *path);
+bool wul_exist(const char *path);
 
 // recursively remove the dir path and all its subdirs.
 // returns 0 on success and -1 on failure.

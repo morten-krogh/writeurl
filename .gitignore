@@ -1,7 +1,8 @@
-.tup
 *.swp
 
 publish
 node_modules/
 
 build
+
+test/tmp

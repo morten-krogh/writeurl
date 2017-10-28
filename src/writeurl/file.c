@@ -23,7 +23,7 @@ char *wul_resolve(const char *base, const char *name)
 	return path;
 }
 
-bool wul_exists(const char *path)
+bool wul_exist(const char *path)
 {
 	struct stat buf;
 	return stat(path, &buf) == 0;
@@ -42,7 +42,7 @@ int wul_rmdir_rec(char *path)
 	}
 
 	FTSENT* ftsent;
-	while (ftsent = fts_read(fts)) {
+	while ((ftsent = fts_read(fts))) {
 		if (ftsent->fts_info == FTS_NSOK) {
 			int rc = unlink(ftsent->fts_accpath);
 			if (rc == -1) {
