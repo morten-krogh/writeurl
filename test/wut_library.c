@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <unistd.h>
 #include <stdio.h>
 #include <assert.h>
 #include <sys/stat.h>
@@ -63,6 +64,7 @@ struct wut_assert *wut_test_new_assert(struct wut_test *test, char *file,
 
 void wut_collect_init(struct wut_collect *col)
 {
+	printf("\n");
 	printf("Start of test run\n");
 	col->test = NULL;
 	col->ntest = 0;
@@ -126,6 +128,7 @@ void wut_collect_test_done(struct wut_collect *col, struct wut_test *test)
 
 void wut_collect_done(struct wut_collect *col)
 {
+	printf("\n");
 	printf("End of test run\n");
 	printf("Number of tests = %zu\n", col->ntest);
 	printf("Number of failed tests = %zu\n", col->nfail);
@@ -139,12 +142,19 @@ size_t wut_fun_run(struct wut_fun *funs, size_t nfun, const char *writeurl_home)
 {
 	char *test_dir = wul_resolve(writeurl_home, "test");
 	char *assets = wul_resolve(test_dir, "assets");
-	char *tmp_dir = wul_resolve(test_dir, "tmp");
+	char *test_tmp = wul_resolve(test_dir, "tmp");
+	assert(wul_exist(assets));
+	assert(wul_exist(test_tmp));
+
+	char *tmp_dir = wul_resolve(test_tmp, "tmp.XXXXXX");
+	mktemp(tmp_dir);
+	assert(!wul_exist(tmp_dir));
 	mkdir(tmp_dir, 0740);
 	assert(wul_exist(tmp_dir));
 
 	struct wut_collect col;
 	wut_collect_init(&col);
+	printf("tmp_dir = %s\n\n", tmp_dir);
 
 	for (size_t i = 0; i < nfun; ++i) {
 		struct wut_fun *fun = funs + i;
@@ -161,6 +171,7 @@ size_t wut_fun_run(struct wut_fun *funs, size_t nfun, const char *writeurl_home)
 
 	free(test_dir);
 	free(assets);
+	wul_rmdir_rec(tmp_dir);
 	free(tmp_dir);
 
 	return nfail;
