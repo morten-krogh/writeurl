@@ -23,7 +23,7 @@ static const int levels[] = {
 
 int wul_log_level(const char* desc)
 {
-	for (size_t i = 0; i < sizeof(desc) / sizeof(desc[0]); ++i)
+	for (size_t i = 0; i < sizeof(descs) / sizeof(descs[0]); ++i)
 		if (!(strcmp(desc, descs[i])))
 			return levels[i];
 	return -1;
