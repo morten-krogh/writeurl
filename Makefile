@@ -4,50 +4,71 @@ BUILD_DIR ?= ${WUL_HOME}/build/release
 ${BUILD_DIR}:
 	mkdir -p ${BUILD_DIR}
 
-# wul objects
-
-SRC_DIR := ${WUL_HOME}/src/wul
-
-SRCS := ${shell find ${SRC_DIR} -name '*.c'}
-OBJS := ${SRCS:${SRC_DIR}/%.c=${BUILD_DIR}/%.o}
-DEPS := ${OBJS:.o=.d}
-
-LIB_WRITEURL := ${BUILD_DIR}/libwriteurl.a
-
 EXTERNAL := ${WUL_HOME}/external
-INC_FLAGS := -I${WUL_HOME}/src -I${EXTERNAL}/zf_log
 
-CPPFLAGS := ${INC_FLAGS} -MMD -MP
+CPPFLAGS := -MMD -MP
 CFLAGS := -std=c11 -Wall -Wextra -pedantic -Wunreachable-code \
 	-Wno-nested-anon-types -fno-elide-constructors -pthread \
 	-Wno-unused-parameter
-
-${BUILD_DIR}/%.o: ${SRC_DIR}/%.c
-	${CC} ${CPPFLAGS} ${CFLAGS} ${EXTRA_CFLAGS} -c $< -o $@
 
 # zf_log
 
 ZF_LOG_DIR := ${EXTERNAL}/zf_log/zf_log
 ZF_LOG_SRC := ${ZF_LOG_DIR}/zf_log.c
-ZF_LOG_OBJ := ${BUILD_DIR}/zf_log.o
+ZF_LOG_BUILD_DIR := ${BUILD_DIR}/zf_log
+${ZF_LOG_BUILD_DIR}:
+	mkdir -p ${ZF_LOG_BUILD_DIR}
+ZF_LOG_OBJ := ${ZF_LOG_BUILD_DIR}/zf_log.o
+ZF_LOG_INC_FLAGS := -I${EXTERNAL}/zf_log
+ZF_LOG_DEPS := ${ZF_LOG_OBJ:.o=.d}
+
+${ZF_LOG_OBJ}: ${ZF_LOG_BUILD_DIR}
 
 ${ZF_LOG_OBJ}: ${ZF_LOG_SRC}
-	${CC} ${CPPFLAGS} ${CFLAGS} ${EXTRA_CFLAGS} -c $< -o $@
+	${CC} ${ZF_LOG_INC_FLAGS} ${CPPFLAGS} ${CFLAGS} ${EXTRA_CFLAGS} -c $< -o $@
+
+# wul objects
+
+WUL_SRC_DIR := ${WUL_HOME}/src/wul
+WUL_SRCS := ${shell find ${WUL_SRC_DIR} -name '*.c'}
+WUL_BUILD_DIR := ${BUILD_DIR}/wul
+${WUL_BUILD_DIR}:
+	mkdir -p ${WUL_BUILD_DIR}
+WUL_OBJS := ${WUL_SRCS:${WUL_SRC_DIR}/%.c=${WUL_BUILD_DIR}/%.o}
+WUL_DEPS := ${WUL_OBJS:.o=.d}
+
+WUL_INC_FLAGS := -I${WUL_HOME}/src ${ZF_LOG_INC_FLAGS}
+
+${WUL_OBJS}: ${WUL_BUILD_DIR}
+
+${WUL_BUILD_DIR}/%.o: ${WUL_SRC_DIR}/%.c
+	${CC} ${WUL_INC_FLAGS} ${CPPFLAGS} ${CFLAGS} ${EXTRA_CFLAGS} -c $< -o $@
 
 # libwriteurl
 
-${LIB_WRITEURL}: ${BUILD_DIR} ${OBJS} ${ZF_LOG_OBJ}
-	${AR} -rcs $@ ${OBJS} ${ZF_LOG_OBJ}
+LIB_WRITEURL := ${BUILD_DIR}/libwriteurl.a
 
-# Main
+${LIB_WRITEURL}: ${BUILD_DIR}
 
-WRITEURL_SERVER := ${BUILD_DIR}/writeurl-server
-WRITEURL_SERVER_SRC := ${WUL_HOME}/src/main.c
+${LIB_WRITEURL}: ${BUILD_DIR} ${WUL_OBJS} ${ZF_LOG_OBJ}
+	${AR} -rcs $@ ${WUL_OBJS} ${ZF_LOG_OBJ}
 
-WRITEURL_LDFLAGS :=
+# Writeurl server
 
-${WRITEURL_SERVER}: ${LIB_WRITEURL} ${WRITEURL_SERVER_SRC}
-	${CC} ${CPPFLAGS} ${CFLAGS} ${EXTRA_CFLAGS} ${WRITEURL_LDFLAGS} ${EXTRA_LDFLAGS} $^ -o $@
+SERVER_SRC := ${WUL_HOME}/src/main.c
+SERVER_BUILD_DIR := ${BUILD_DIR}/server
+${SERVER_BUILD_DIR}:
+	mkdir -p ${SERVER_BUILD_DIR}
+SERVER_OBJ := ${SERVER_BUILD_DIR}/main.o
+SERVER_DEPS := ${SERVER_OBJ:.o=.d}
+
+${SERVER_OBJ}: ${SERVER_BUILD_DIR} ${SERVER_SRC}
+	${CC} ${WUL_INC_FLAGS} ${CPPFLAGS} ${CFLAGS} ${EXTRA_CFLAGS} -c ${SERVER_SRC} -o ${SERVER_OBJ}
+
+SERVER := ${BUILD_DIR}/writeurl
+
+${SERVER}: ${SERVER_OBJ} ${LIB_WRITEURL}
+	${CC} ${EXTRA_LDFLAGS} $^ -o $@
 
 # Tests
 
@@ -75,8 +96,8 @@ ${TEST_MAIN}: ${TEST_BUILD_DIR} ${LIB_WRITEURL} ${TEST_OBJS}
 .PHONY: libwriteurl
 libwriteurl: ${LIB_WRITEURL}
 
-.PHONY: writeurl-server
-writeurl-server: ${WRITEURL_SERVER}
+.PHONY: writeurl
+writeurl: ${SERVER}
 
 .PHONY: test
 test: ${TEST_MAIN}
@@ -96,7 +117,9 @@ clean:
 
 all: libwriteurl test
 
--include $(DEPS)
+-include ${ZF_LOG_DEPS}
+-include $(WUL_DEPS)
+-include ${WRITEURL_SERVER_DEPS}
 -include ${TEST_DEPS}
 
 print-%  : ; @echo $* = $($*)

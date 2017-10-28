@@ -6,11 +6,11 @@ usage()
 {
     cat << EOF
     Available modes are:
-        libwriteurl
-        libwriteurl-debug
-        writeurl-server
-        writerul-server-debug
-        test
+        writeurl-release
+        writeurl-debug
+        writeurl-asan
+        writeurl-tsan
+        test-release
         test-debug
         test-asan
         test-tsan
@@ -51,19 +51,19 @@ MODE="$1"
 
 case $MODE in
 
-    "libwriteurl")
-        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_RELEASE} EXTRA_CFLAGS=${EXTRA_CFLAGS_RELEASE} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_RELEASE} make -j 8 libwriteurl
+    "writeurl-release")
+        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_RELEASE} EXTRA_CFLAGS=${EXTRA_CFLAGS_RELEASE} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_RELEASE} make -j 8 writeurl
         ;;
-    "libwriteurl-debug")
-        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_DEBUG} EXTRA_CFLAGS=${EXTRA_CFLAGS_DEBUG} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_DEBUG} make -j 8 libwriteurl
+    "writeurl-debug")
+        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_DEBUG} EXTRA_CFLAGS=${EXTRA_CFLAGS_DEBUG} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_DEBUG} make -j 8 writeurl
         ;;
-    "writeurl-server")
-        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_RELEASE} EXTRA_CFLAGS=${EXTRA_CFLAGS_RELEASE} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_RELEASE} make -j 8 writeurl-server
+    "writeurl-asan")
+        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_ASAN} EXTRA_CFLAGS=${EXTRA_CFLAGS_ASAN} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_ASAN} make -j 8 writeurl
         ;;
-    "writeurl-server-debug")
-        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_DEBUG} EXTRA_CFLAGS=${EXTRA_CFLAGS_DEBUG} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_DEBUG} make -j 8 writeurl-server
+    "writeurl-tsan")
+        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_TSAN} EXTRA_CFLAGS=${EXTRA_CFLAGS_TSAN} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_TSAN} make -j 8 writeurl
         ;;
-    "test")
+    "test-release")
         WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_RELEASE} EXTRA_CFLAGS=${EXTRA_CFLAGS_RELEASE} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_RELEASE} make -j 8 test
         ;;
     "test-debug")
