@@ -1,5 +1,5 @@
+#include <wul_test_lib.h>
 #include <wul/log.h>
-#include <wut_library.h>
 
 TEST(log_level)
 {

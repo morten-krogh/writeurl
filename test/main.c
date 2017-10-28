@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <zf_log/zf_log.h>
-#include <wut_library.h>
+#include <wul_test_lib.h>
 #include <wul/log.h>
 
 TEST(resolve);

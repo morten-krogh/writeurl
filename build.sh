@@ -6,10 +6,12 @@ usage()
 {
     cat << EOF
     Available modes are:
-        build
-        build-debug
-        build-wul-debug
+        libwriteurl
+        libwriteurl-debug
+        writeurl-server
+        writerul-server-debug
         test
+        test-debug
         clean
 EOF
 }
@@ -25,51 +27,40 @@ then
     exit 1
 fi
 
+EXTRA_CFLAGS_RELEASE="-O3"
+EXTRA_CFLAGS_DEBUG="-g -DDEBUG"
+
+BUILD_DIR_RELEASE=${WUL_HOME}/build/release
+mkdir -p ${BUILD_DIR_RELEASE}
+
+BUILD_DIR_DEBUG=${WUL_HOME}/build/debug
+mkdir -p ${BUILD_DIR_DEBUG}
+
 MODE="$1"
 [ $# -gt 0 ] && shift
 
-
 case $MODE in
 
-    "build")
-        BUILD_DIR=${WUL_HOME}/build/release
-        mkdir -p ${BUILD_DIR}
-        EXTRA_CFLAGS="-O3"
-        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR} EXTRA_CFLAGS=${EXTRA_CFLAGS} make -j 8 static_lib
+    "libwriteurl")
+        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_RELEASE} EXTRA_CFLAGS=${EXTRA_CFLAGS_RELEASE} make -j 8 libwriteurl
         ;;
-    "build-debug")
-        BUILD_DIR=${WUL_HOME}/build/debug
-        mkdir -p ${BUILD_DIR}
-        EXTRA_CFLAGS="-g -DDEBUG"
-        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR} EXTRA_CFLAGS=${EXTRA_CFLAGS} make -j 8 static_lib
+    "libwriteurl-debug")
+        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_DEBUG} EXTRA_CFLAGS=${EXTRA_CFLAGS_DEBUG} make -j 8 libwriteurl
         ;;
-    "build-wul-debug")
-        BUILD_DIR=${WUL_HOME}/build/debug
-        mkdir -p ${BUILD_DIR}
-        EXTRA_CFLAGS="-g -DDEBUG"
-        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR} EXTRA_CFLAGS=${EXTRA_CFLAGS} make -j 8 wul
+    "writeurl-server")
+        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_RELEASE} EXTRA_CFLAGS=${EXTRA_CFLAGS_RELEASE} make -j 8 writeurl-server
+        ;;
+    "writeurl-server-debug")
+        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_DEBUG} EXTRA_CFLAGS=${EXTRA_CFLAGS_DEBUG} make -j 8 writeurl-server
         ;;
     "test")
-        BUILD_DIR=${WUL_HOME}/build/release
-        TEST_BUILD_DIR=${BUILD_DIR}/test
-        TEST_MAIN=${TEST_BUILD_DIR}/main
-        mkdir -p ${TEST_BUILD_DIR}
-        EXTRA_CFLAGS="-O3"
-        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR} TEST_BUILD_DIR=${TEST_BUILD_DIR} \
-            TEAST_MAIN=${TEST_MAIN} EXTRA_CFLAGS=${EXTRA_CFLAGS} make -j 8 test
-        ${TEST_MAIN}
+        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_RELEASE} EXTRA_CFLAGS=${EXTRA_CFLAGS_RELEASE} make -j 8 test
         ;;
     "test-debug")
-        BUILD_DIR=${WUL_HOME}/build/debug
-        TEST_BUILD_DIR=${BUILD_DIR}/test
-        TEST_MAIN=${TEST_BUILD_DIR}/main
-        mkdir -p ${TEST_BUILD_DIR}
-        EXTRA_CFLAGS="-g -DDEBUG"
-        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR} TEST_BUILD_DIR=${TEST_BUILD_DIR} \
-            TEAST_MAIN=${TEST_MAIN} EXTRA_CFLAGS=${EXTRA_CFLAGS} make -j 8 test
-        ${TEST_MAIN} --use-colour no $@
+        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_DEBUG} EXTRA_CFLAGS=${EXTRA_CFLAGS_DEBUG} make -j 8 test
         ;;
     "clean")
+        echo "rm -rf ${WUL_HOME}/build"
         rm -rf ${WUL_HOME}/build
         ;;
     *)

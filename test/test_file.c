@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <wul_test_lib.h>
 #include <wul/file.h>
-#include <wut_library.h>
 
 TEST(resolve)
 {

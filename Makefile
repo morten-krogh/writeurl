@@ -9,7 +9,7 @@ SRCS := ${shell find ${SRC_DIR} -name '*.c'}
 OBJS := ${SRCS:${SRC_DIR}/%.c=${BUILD_DIR}/%.o}
 DEPS := ${OBJS:.o=.d}
 
-STATIC_LIB := ${BUILD_DIR}/libwriteurl.a
+LIB_WRITEURL := ${BUILD_DIR}/libwriteurl.a
 
 EXTERNAL := ${WUL_HOME}/external
 INC_FLAGS := -I${WUL_HOME}/src -I${EXTERNAL}/zf_log
@@ -31,16 +31,16 @@ ZF_LOG_OBJ := ${BUILD_DIR}/zf_log.o
 ${ZF_LOG_OBJ}: ${ZF_LOG_SRC}
 	${CC} ${CPPFLAGS} ${CFLAGS} ${EXTRA_CFLAGS} -c $< -o $@
 
-${STATIC_LIB}: ${OBJS} ${ZF_LOG_OBJ}
+${LIB_WRITEURL}: ${OBJS} ${ZF_LOG_OBJ}
 	${AR} -rcs $@  $^
 
 # Main
 
-WUL_MAIN := ${BUILD_DIR}/writeurl-server
-WUL_MAIN_SRC := ${WUL_HOME}/src/main.c
+WRITEURL_SERVER := ${BUILD_DIR}/writeurl-server
+WRITEURL_SERVER_SRC := ${WUL_HOME}/src/main.c
 
-${WUL_MAIN}: ${STATIC_LIB} ${WUL_MAIN_SRC}
-	 ${CC} ${CPPFLAGS} ${CFLAGS} ${EXTRA_CFLAGS} $^ -o $@
+${WRITEURL_SERVER}: ${LIB_WRITEURL} ${WRITEURL_SERVER_SRC}
+	${CC} ${CPPFLAGS} ${CFLAGS} ${EXTRA_CFLAGS} $^ -o $@
 
 # Tests
 
@@ -56,22 +56,24 @@ TEST_CPPFLAGS := -I${TEST_SRC_DIR} ${CPPFLAGS}
 
 TEST_LDFLAGS :=
 
+${TEST_BUILD_DIR}:
+	mkdir -p ${TEST_BUILD_DIR}
+
 ${TEST_BUILD_DIR}/%.o: ${TEST_SRC_DIR}/%.c
 	${CC} ${TEST_CPPFLAGS} ${CFLAGS} ${EXTRA_CFLAGS} -c $< -o $@
 
-${TEST_MAIN}: ${STATIC_LIB} ${TEST_OBJS}
-	${CC} ${TEST_LDFLAGS} $^ -o $@
+${TEST_MAIN}: ${TEST_BUILD_DIR} ${LIB_WRITEURL} ${TEST_OBJS}
+	${CC} ${TEST_LDFLAGS} ${LIB_WRITEURL} ${TEST_OBJS} -o $@
 
+.PHONY: libwriteurl
+libwriteurl: ${LIB_WRITEURL}
 
-
-.PHONY: static_lib
-static_lib: ${STATIC_LIB}
-
-.PHONY: wul
-wul: ${WUL_MAIN}
+.PHONY: writeurl-server
+writeurl-server: ${WRITEURL_SERVER}
 
 .PHONY: test
 test: ${TEST_MAIN}
+	${TEST_MAIN}
 
 .PHONY: objects
 objects: ${OBJS}
@@ -85,7 +87,7 @@ clean:
 	${RM} ${TEST_DEPS}
 
 
-all: static_lib test
+all: libwriteurl test
 
 -include $(DEPS)
 -include ${TEST_DEPS}
