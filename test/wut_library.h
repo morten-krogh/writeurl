@@ -15,6 +15,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <assert.h>
+
 struct wut_assert {
 	bool pass;
 	char *file;
@@ -100,11 +102,11 @@ typedef void(*wut_test_fun)(struct wut_test *test);
 	struct wut_assert *as = wut_test_new_assert(test, __FILE__, __LINE__); \
 	if (cmp) \
 		as->pass = false; \
-		as->reason = malloc(8 + 5 * n + 12 + 5 * n + 1); \
+		as->reason = malloc(8 + 3 * n + 12 + 3 * n + 1); \
 		sprintf(as->reason, "actual ="); \
 		for (size_t i = 0; i < n; ++i) \
-			sprintf(as->reason + 8 + 5 * i, " %#x", lhs[i]); \
-		sprintf(as->reason + 8 + 5 * n, ", expected ="); \
+			sprintf(as->reason + 8 + 3 * i, " %02x", (unsigned char)lhs[i]); \
+		sprintf(as->reason + 8 + 3 * n, ", expected ="); \
 		for (size_t i = 0; i < n; ++i) \
-			sprintf(as->reason + 8 + 5 * n + 12 + 5 * i, " %#x", rhs[i]); \
+			sprintf(as->reason + 8 + 3 * n + 12 + 3 * i, " %02x", (unsigned char)rhs[i]); \
 	} while (false);

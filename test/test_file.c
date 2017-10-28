@@ -39,7 +39,7 @@ TEST(file_read)
 	ASSERT_MEM_EQ(content, "abc", 3);
 	free(content);
 	free(path);
-	
+
 	path = wul_resolve(test->assets, "non-existing");
 	rc = wul_read(path, &content);
 	ASSERT_EQ(rc, -1);
@@ -57,8 +57,10 @@ TEST(file_write)
 	char *path = wul_resolve(test->tmp, "file");
 	ASSERT(!wul_exist(path));
 
-	char buf[] = "abcdef\nghijkl\n";
+	char buf[] = "abcdef\nghi\tjkl\n";
 	size_t size = sizeof(buf) - 1;
+	buf[1] = 0;
+	buf[2] = 0xff;
 	int rc = wul_write(path, buf, size);
 	ASSERT_EQ(rc, 0);
 
@@ -67,7 +69,7 @@ TEST(file_write)
 	char *content;
 	rc = wul_read(path, &content);
 	ASSERT_EQ(rc, size);
-	ASSERT_MEM_EQ(content, "sajkasddakjdkhadskjasdjksabuf", size);
+	ASSERT_MEM_EQ(content, buf, size);
 
 	rc = unlink(path);
 	ASSERT_EQ(rc, 0);
