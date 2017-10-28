@@ -12,6 +12,8 @@ usage()
         writerul-server-debug
         test
         test-debug
+        test-asan
+        test-tsan
         clean
 EOF
 }
@@ -27,17 +29,22 @@ then
     exit 1
 fi
 
+BUILD_DIR_RELEASE=${WUL_HOME}/build/release
 EXTRA_CFLAGS_RELEASE="-O3"
 EXTRA_LD_FLAGS_RELEASE=
 
-EXTRA_CFLAGS_DEBUG="-g -DDEBUG -fsanitize=address -fno-omit-frame-pointer"
-EXTRA_LD_FLAGS_DEBUG="-fsanitize=address"
-
-BUILD_DIR_RELEASE=${WUL_HOME}/build/release
-mkdir -p ${BUILD_DIR_RELEASE}
-
 BUILD_DIR_DEBUG=${WUL_HOME}/build/debug
-mkdir -p ${BUILD_DIR_DEBUG}
+EXTRA_CFLAGS_DEBUG="-g -DDEBUG"
+EXTRA_LD_FLAGS_DEBUG=
+
+BUILD_DIR_ASAN=${WUL_HOME}/build/asan
+EXTRA_CFLAGS_ASAN="-g -DDEBUG -fsanitize=address -fno-omit-frame-pointer"
+EXTRA_LD_FLAGS_ASAN="-fsanitize=address"
+
+BUILD_DIR_TSAN=${WUL_HOME}/build/tsan
+EXTRA_CFLAGS_TSAN="-g -DDEBUG -fsanitize=thread"
+EXTRA_LD_FLAGS_TSAN="-fsanitize=thread"
+
 
 MODE="$1"
 [ $# -gt 0 ] && shift
@@ -45,22 +52,28 @@ MODE="$1"
 case $MODE in
 
     "libwriteurl")
-        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_RELEASE} EXTRA_CFLAGS=${EXTRA_CFLAGS_RELEASE} make -j 8 libwriteurl
+        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_RELEASE} EXTRA_CFLAGS=${EXTRA_CFLAGS_RELEASE} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_RELEASE} make -j 8 libwriteurl
         ;;
     "libwriteurl-debug")
-        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_DEBUG} EXTRA_CFLAGS=${EXTRA_CFLAGS_DEBUG} make -j 8 libwriteurl
+        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_DEBUG} EXTRA_CFLAGS=${EXTRA_CFLAGS_DEBUG} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_DEBUG} make -j 8 libwriteurl
         ;;
     "writeurl-server")
-        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_RELEASE} EXTRA_CFLAGS=${EXTRA_CFLAGS_RELEASE} make -j 8 writeurl-server
+        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_RELEASE} EXTRA_CFLAGS=${EXTRA_CFLAGS_RELEASE} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_RELEASE} make -j 8 writeurl-server
         ;;
     "writeurl-server-debug")
         WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_DEBUG} EXTRA_CFLAGS=${EXTRA_CFLAGS_DEBUG} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_DEBUG} make -j 8 writeurl-server
         ;;
     "test")
-        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_RELEASE} EXTRA_CFLAGS=${EXTRA_CFLAGS_RELEASE} make -j 8 test
+        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_RELEASE} EXTRA_CFLAGS=${EXTRA_CFLAGS_RELEASE} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_RELEASE} make -j 8 test
         ;;
     "test-debug")
         WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_DEBUG} EXTRA_CFLAGS=${EXTRA_CFLAGS_DEBUG} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_DEBUG} make -j 8 test
+        ;;
+    "test-asan")
+        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_ASAN} EXTRA_CFLAGS=${EXTRA_CFLAGS_ASAN} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_ASAN} make -j 8 test
+        ;;
+    "test-tsan")
+        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_TSAN} EXTRA_CFLAGS=${EXTRA_CFLAGS_TSAN} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_TSAN} make -j 8 test
         ;;
     "clean")
         echo "rm -rf ${WUL_HOME}/build"

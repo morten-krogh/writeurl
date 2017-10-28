@@ -1,7 +1,10 @@
 WUL_HOME ?= ${realpath .}
 BUILD_DIR ?= ${WUL_HOME}/build/release
 
-# Library
+${BUILD_DIR}:
+	mkdir -p ${BUILD_DIR}
+
+# wul objects
 
 SRC_DIR := ${WUL_HOME}/src/wul
 
@@ -31,8 +34,10 @@ ZF_LOG_OBJ := ${BUILD_DIR}/zf_log.o
 ${ZF_LOG_OBJ}: ${ZF_LOG_SRC}
 	${CC} ${CPPFLAGS} ${CFLAGS} ${EXTRA_CFLAGS} -c $< -o $@
 
-${LIB_WRITEURL}: ${OBJS} ${ZF_LOG_OBJ}
-	${AR} -rcs $@  $^
+# libwriteurl
+
+${LIB_WRITEURL}: ${BUILD_DIR} ${OBJS} ${ZF_LOG_OBJ}
+	${AR} -rcs $@ ${OBJS} ${ZF_LOG_OBJ}
 
 # Main
 
