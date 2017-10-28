@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <unistd.h>
 #include <sys/stat.h>
 #include <writeurl/file.h>
 #include <wut_library.h>
@@ -47,7 +48,7 @@ TEST(file_read)
 	path = wul_resolve(test->assets, "empty");
 	rc = wul_read(path, &content);
 	ASSERT_EQ(rc, 0);
-	//free(content);
+	free(content);
 	free(path);
 }
 
@@ -67,6 +68,10 @@ TEST(file_write)
 	rc = wul_read(path, &content);
 	ASSERT_EQ(rc, size);
 	ASSERT_MEM_EQ(content, "sajkasddakjdkhadskjasdjksabuf", size);
+
+	rc = unlink(path);
+	ASSERT_EQ(rc, 0);
+	ASSERT(!wul_exist(path));
 
 	free(content);
 	free(path);

@@ -7,10 +7,6 @@ TEST(file_exist);
 TEST(file_read);
 TEST(file_write);
 TEST(file_rmdir_rec);
-TEST(simple_1);
-TEST(simple_2);
-TEST(simple_3);
-
 
 struct wut_fun funs[] = {
 	FUN(resolve),
@@ -18,9 +14,6 @@ struct wut_fun funs[] = {
 	FUN(file_read),
 	FUN(file_write),
 	FUN(file_rmdir_rec),
-	FUN(simple_1),
-	FUN(simple_2),
-	FUN(simple_3),
 };
 
 int main(int argc, char** argv)
