@@ -28,7 +28,10 @@ then
 fi
 
 EXTRA_CFLAGS_RELEASE="-O3"
-EXTRA_CFLAGS_DEBUG="-g -DDEBUG"
+EXTRA_LD_FLAGS_RELEASE=
+
+EXTRA_CFLAGS_DEBUG="-g -DDEBUG -fsanitize=address -fno-omit-frame-pointer"
+EXTRA_LD_FLAGS_DEBUG="-fsanitize=address"
 
 BUILD_DIR_RELEASE=${WUL_HOME}/build/release
 mkdir -p ${BUILD_DIR_RELEASE}
@@ -51,13 +54,13 @@ case $MODE in
         WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_RELEASE} EXTRA_CFLAGS=${EXTRA_CFLAGS_RELEASE} make -j 8 writeurl-server
         ;;
     "writeurl-server-debug")
-        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_DEBUG} EXTRA_CFLAGS=${EXTRA_CFLAGS_DEBUG} make -j 8 writeurl-server
+        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_DEBUG} EXTRA_CFLAGS=${EXTRA_CFLAGS_DEBUG} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_DEBUG} make -j 8 writeurl-server
         ;;
     "test")
         WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_RELEASE} EXTRA_CFLAGS=${EXTRA_CFLAGS_RELEASE} make -j 8 test
         ;;
     "test-debug")
-        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_DEBUG} EXTRA_CFLAGS=${EXTRA_CFLAGS_DEBUG} make -j 8 test
+        WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_DEBUG} EXTRA_CFLAGS=${EXTRA_CFLAGS_DEBUG} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_DEBUG} make -j 8 test
         ;;
     "clean")
         echo "rm -rf ${WUL_HOME}/build"
