@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <sys/stat.h>
-#include <writeurl/file.h>
+#include <wul/file.h>
 #include <wut_library.h>
 
 void wut_assert_init(struct wut_assert *as, char *file, int line)

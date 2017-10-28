@@ -12,7 +12,7 @@
 #include <pthread.h>
 #include <stdbool.h>
 #include <zf_log/zf_log.h>
-#include <writeurl/network.h>
+#include <wul/network.h>
 
 struct wurl_server_config {
 

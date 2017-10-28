@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <unistd.h>
-#include <writeurl/server.h>
+#include <wul/server.h>
 
 static bool sigint_sent = false;
 

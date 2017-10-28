@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <zf_log/zf_log.h>
-#include <writeurl/file.h>
+#include <wul/file.h>
 
 char *wul_resolve(const char *base, const char *name)
 {

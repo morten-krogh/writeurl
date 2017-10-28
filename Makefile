@@ -1,9 +1,9 @@
-WRITEURL_HOME ?= ${realpath .}
-BUILD_DIR ?= ${WRITEURL_HOME}/build/release
+WUL_HOME ?= ${realpath .}
+BUILD_DIR ?= ${WUL_HOME}/build/release
 
 # Library
 
-SRC_DIR := ${WRITEURL_HOME}/src/writeurl
+SRC_DIR := ${WUL_HOME}/src/wul
 
 SRCS := ${shell find ${SRC_DIR} -name '*.c'}
 OBJS := ${SRCS:${SRC_DIR}/%.c=${BUILD_DIR}/%.o}
@@ -11,8 +11,8 @@ DEPS := ${OBJS:.o=.d}
 
 STATIC_LIB := ${BUILD_DIR}/libwriteurl.a
 
-EXTERNAL := ${WRITEURL_HOME}/external
-INC_FLAGS := -I${WRITEURL_HOME}/src -I${EXTERNAL}/zf_log
+EXTERNAL := ${WUL_HOME}/external
+INC_FLAGS := -I${WUL_HOME}/src -I${EXTERNAL}/zf_log
 
 CPPFLAGS := ${INC_FLAGS} -MMD -MP
 CFLAGS := -std=c11 -Wall -Wextra -pedantic -Wunreachable-code \
@@ -36,17 +36,17 @@ ${STATIC_LIB}: ${OBJS} ${ZF_LOG_OBJ}
 
 # Main
 
-WRITEURL_MAIN := ${BUILD_DIR}/writeurl  
-WRITEURL_MAIN_SRC := ${WRITEURL_HOME}/src/main.c
+WUL_MAIN := ${BUILD_DIR}/writeurl-server
+WUL_MAIN_SRC := ${WUL_HOME}/src/main.c
 
-${WRITEURL_MAIN}: ${STATIC_LIB} ${WRITEURL_MAIN_SRC}
+${WUL_MAIN}: ${STATIC_LIB} ${WUL_MAIN_SRC}
 	 ${CC} ${CPPFLAGS} ${CFLAGS} ${EXTRA_CFLAGS} $^ -o $@
 
 # Tests
 
 TEST_BUILD_DIR ?= ${BUILD_DIR}/test
 TEST_MAIN ?= ${TEST_BUILD_DIR}/main
-TEST_SRC_DIR := ${WRITEURL_HOME}/test
+TEST_SRC_DIR := ${WUL_HOME}/test
 
 TEST_SRCS := ${shell find ${TEST_SRC_DIR} -name '*.c'}
 TEST_OBJS := ${TEST_SRCS:${TEST_SRC_DIR}/%.c=${TEST_BUILD_DIR}/%.o}
@@ -67,8 +67,8 @@ ${TEST_MAIN}: ${STATIC_LIB} ${TEST_OBJS}
 .PHONY: static_lib
 static_lib: ${STATIC_LIB}
 
-.PHONY: writeurl
-writeurl: ${WRITEURL_MAIN}
+.PHONY: wul
+wul: ${WUL_MAIN}
 
 .PHONY: test
 test: ${TEST_MAIN}

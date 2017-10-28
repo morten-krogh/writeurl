@@ -2,7 +2,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <zf_log/zf_log.h>
-#include <writeurl/server.h>
+#include <wul/server.h>
 
 void wurl_server_init(struct wurl_server *server, const struct wurl_server_config *config)
 {
@@ -59,7 +59,7 @@ void wurl_server_start(struct wurl_server *server)
 void wurl_server_stop(struct wurl_server *server)
 {
         ZF_LOGI("The Writeurl server stops the event loop");
-        sleep(1);
+        //sleep(1);
         pthread_mutex_lock(&server->mutex);
         server->stopped = true;
         pthread_mutex_unlock(&server->mutex);

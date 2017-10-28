@@ -1,5 +1,5 @@
 #include <string.h>
-#include <writeurl/log.h>
+#include <wul/log.h>
 
 static const char *descs[] = {
 	"verbose",

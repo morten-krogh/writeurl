@@ -1,4 +1,4 @@
-#include <writeurl/log.h>
+#include <wul/log.h>
 #include <wut_library.h>
 
 TEST(log_level)

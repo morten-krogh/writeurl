@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/stat.h>
-#include <writeurl/file.h>
+#include <wul/file.h>
 #include <wut_library.h>
 
 TEST(resolve)

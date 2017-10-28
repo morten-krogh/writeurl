@@ -5,10 +5,8 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <errno.h>
-
 #include <zf_log/zf_log.h>
-
-#include <writeurl/network.h>
+#include <wul/network.h>
 
 int wurl_net_listen(const char* hostname, const char* servname, struct wurl_net_listen_sock** sockets)
 {
