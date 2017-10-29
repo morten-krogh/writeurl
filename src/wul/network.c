@@ -8,7 +8,7 @@
 #include <zf_log/zf_log.h>
 #include <wul/network.h>
 
-int wurl_net_listen(const char* hostname, const char* servname, struct wurl_net_listen_sock** sockets)
+int wul_net_listen(const char* hostname, const char* servname, struct wul_net_listen_sock** sockets)
 {
     struct addrinfo hints, *res0;
 
@@ -26,7 +26,7 @@ int wurl_net_listen(const char* hostname, const char* servname, struct wurl_net_
     }
 
     int nsocks = 0;
-    struct wurl_net_listen_sock *socks = NULL;
+    struct wul_net_listen_sock *socks = NULL;
     char host[NI_MAXHOST];
     char serv[NI_MAXSERV];
 

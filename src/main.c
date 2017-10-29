@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <wul/server.h>
 
-static bool sigint_sent = false;
+static volatile bool sigint_sent = false;
 
 static void signal_handler(__attribute__((unused)) int sig)
 {
@@ -11,7 +11,7 @@ static void signal_handler(__attribute__((unused)) int sig)
 
 static void* start_server(void* arg)
 {
-        wurl_server_start((struct wurl_server*)arg);
+        wul_server_start((struct wul_server*)arg);
         return NULL;
 }
 
@@ -19,7 +19,7 @@ int main(__attribute__((unused)) int argc, __attribute__((unused))  char** argv)
 {
         signal(SIGINT, signal_handler);
 
-        struct wurl_server_config config;
+        struct wul_server_config config;
 
         config.log_level = ZF_LOG_VERBOSE;
 
@@ -28,10 +28,12 @@ int main(__attribute__((unused)) int argc, __attribute__((unused))  char** argv)
         config.servname = "14000";
         config.servname = "";
 
-        struct wurl_server server;
-        wurl_server_init(&server, &config);
+	config.nworker = 2;
 
-        int nsocks = wurl_server_listen(&server);
+        struct wul_server server;
+        wul_server_init(&server, &config);
+
+        int nsocks = wul_server_listen(&server);
         ZF_LOGI("nsocks = %i", nsocks);
 
         pthread_t server_thread;
@@ -41,12 +43,12 @@ int main(__attribute__((unused)) int argc, __attribute__((unused))  char** argv)
                 sleep(1);
 
         ZF_LOGI("SIGINT caught. The Writeurl server is shutting down");
-        wurl_server_stop(&server);
+        wul_server_stop(&server);
 
         void *value_ptr;
         pthread_join(server_thread, &value_ptr);
 
-        wurl_server_free(&server);
+        wul_server_destroy(&server);
 
         ZF_LOGI("The Writeurl server exits");
 
