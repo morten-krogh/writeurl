@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <errno.h>
 #include <zf_log/zf_log.h>
 #include <wul/server.h>
 #include <wul/log.h>
@@ -14,14 +15,26 @@ void wul_server_init(struct wul_server *server, const struct wul_server_config *
         server->hostname = strdup(config->hostname);
         server->servname = strdup(config->servname);
 
-        pthread_mutex_init(&server->mutex, NULL);
-        server->stopped = false;
-
         ZF_LOGD("The Writeurl server is initialized with nworker = %ju", config->nworker);
 	server->nworker = config->nworker;
 	server->worker = malloc(config->nworker * sizeof(*server->worker));
 	for (size_t i = 0; i < server->nworker; ++i)
-		wul_worker_init(server->worker + i, i, server);
+		wul_worker_init(server->worker + i, server);
+
+        int rc = pthread_mutex_init(&server->mutex, NULL);
+	if (rc) {
+		ZF_LOGF("pthread_mutex_init() failed, errno = %i, error = %s",
+			errno, strerror(errno));
+		exit(1);
+	}
+        rc = pthread_cond_init(&server->cond, NULL);
+	if (rc) {
+		ZF_LOGF("pthread_cond_init() failed, errno = %i, error = %s",
+			errno, strerror(errno));
+		exit(1);
+	}
+        server->stopped = false;
+	server->nwork = 0;
 }
 
 void wul_server_destroy(struct wul_server *server)
@@ -40,6 +53,7 @@ void wul_server_destroy(struct wul_server *server)
         free(server->servname);
 
         pthread_mutex_destroy(&server->mutex);
+	pthread_cond_destroy(&server->cond);
 }
 
 int wul_server_listen(struct wul_server *server)
@@ -96,4 +110,5 @@ void wul_server_stop(struct wul_server *server)
         pthread_mutex_lock(&server->mutex);
         server->stopped = true;
         pthread_mutex_unlock(&server->mutex);
+	pthread_cond_broadcast(&server->cond);
 }

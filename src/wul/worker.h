@@ -11,9 +11,9 @@
 
 #include <stdbool.h>
 #include <pthread.h>
+#include <wul/server.h>
 
 struct wul_worker {
-	size_t id;
 	pthread_t thread;
 
 	struct wul_server *server;
@@ -21,8 +21,7 @@ struct wul_worker {
 
 };
 
-void wul_worker_init(struct wul_worker *worker, size_t id,
-		     struct wul_server *server);
+void wul_worker_init(struct wul_worker *worker, struct wul_server *server);
 
 void wul_worker_destroy(struct wul_worker *worker);
 

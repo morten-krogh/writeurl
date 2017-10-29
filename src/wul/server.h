@@ -45,11 +45,20 @@ struct wul_server {
         int nsocks;
         struct wul_net_listen_sock *socks;
 
-        pthread_mutex_t mutex;
-        bool stopped;
 
+	// The server creates nworker worker threads.
 	size_t nworker;
 	struct wul_worker *worker;
+
+	// The mutex protects the work queue
+	// and 'stopped'. The condition variable
+	// is used by workers to wait for work.
+        pthread_mutex_t mutex;
+	pthread_cond_t cond;
+        bool stopped;
+	// Temporary test variable
+	size_t nwork;
+	
 };
 
 void wul_server_init(struct wul_server *server, const struct wul_server_config *config);
