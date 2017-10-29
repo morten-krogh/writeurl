@@ -11,7 +11,7 @@ TEST(file_rmdir_rec);
 TEST(log_level);
 TEST(log_desc);
 
-struct wut_fun funs[] = {
+struct wul_t_fun funs[] = {
 	FUN(resolve),
 	FUN(file_exist),
 	FUN(file_read),
@@ -42,7 +42,7 @@ int main(int argc, char** argv)
 	zf_log_set_output_level(log_level);
 
 	size_t nfun = sizeof(funs) / sizeof(funs[0]);
-	size_t nfail = wut_fun_run(funs, nfun, wul_home);
+	size_t nfail = wul_t_fun_run(funs, nfun, wul_home);
 
 	return nfail;
 }
