@@ -30,13 +30,12 @@ int main(int argc, char** argv)
 	}
 
 	const char* log_desc = getenv("WUL_LOG_LEVEL");
-	printf("log_desc = %s\n", log_desc);
 	if (!log_desc)
 		log_desc = "none";
 
 	int log_level = wul_log_level(log_desc);
 	if (log_level == -1) {
-		fprintf(stderr, "WUL_LOG_LEVEL is invalid\n");
+		fprintf(stderr, "WUL_LOG_LEVEL = %s is invalid\n", log_desc);
 		return 1;
 	}
 
