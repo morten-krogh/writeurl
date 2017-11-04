@@ -132,7 +132,7 @@ var filter_dirs = function (args) {
 };
 
 if (args.length === 0) {
-	args = ['js', 'server'].map(function (x) {
+	args = ['js', 'server-nodejs'].map(function (x) {
 		return kite_dir + x;
 	});
 	verify_all(args);

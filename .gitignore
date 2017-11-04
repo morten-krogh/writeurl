@@ -1,6 +1,5 @@
 *.swp
 
-publish
 node_modules/
 
 build

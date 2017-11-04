@@ -6,6 +6,14 @@ ${BUILD_DIR}:
 
 EXTERNAL := ${WUL_HOME}/external
 
+# JS front end
+
+
+
+
+
+# C server
+
 CPPFLAGS := -MMD -MP
 CFLAGS := -std=c11 -Wall -Wextra -pedantic -Wunreachable-code \
 	-Wno-nested-anon-types -fno-elide-constructors -pthread \
