@@ -2,14 +2,14 @@
 
 nbe.publish.create = function (editor_id, doc) {
 	var time, init, msg, publish, add_external_ops, set_time, get_time;
-  
+ 
 	time = null;
 
 	init = function (state) {
 		set_time(state.time);
 	};
 
-	msg = document.createElement("div");
+	msg = document.createElement('div');
 
 	publish = function (callback) {
 		var html, body;
@@ -17,19 +17,19 @@ nbe.publish.create = function (editor_id, doc) {
 		html = nbe.doc.html(nbe.dynamic.doc);
 			
 		body = {
-			type : "publish", 
+			type : 'publish',
 			id : doc.ids.id,
 			write : doc.ids.write,
 			html : html
 		};
 			
-		nbe.lib.xhr("POST", nbe.config.publish_url, {}, JSON.stringify(body), 0, function (response) {
+		nbe.lib.xhr('POST', nbe.config.publish_url, {}, JSON.stringify(body), 0, function (response) {
 			var op;
 			
 			response = JSON.parse(response);
-			if (response === "published") {
+			if (response === 'published') {
 				op = {
-					editor_class : "publish",
+					editor_class : 'publish',
 					before : time,
 					after : Date.now()
 				};
@@ -42,9 +42,9 @@ nbe.publish.create = function (editor_id, doc) {
 		});
 	};
 
-	add_external_ops = function (ops, set_location) {
+	add_external_ops = function (ops, _set_location) {
 		ops.forEach(function (op) {
-			if ("editor_class" in op && op.editor_class === "publish") {
+			if ('editor_class' in op && op.editor_class === 'publish') {
 				set_time(op.after);
 			}
 		});
@@ -52,7 +52,7 @@ nbe.publish.create = function (editor_id, doc) {
 
 	set_time = function (new_time) {
 		time = new_time;
-		msg.textContent = time === null ? "Not published" : "Published at " + new Date(time);
+		msg.textContent = time === null ? 'Not published' : 'Published at ' + new Date(time);
 	};
 
 	get_time = function () {

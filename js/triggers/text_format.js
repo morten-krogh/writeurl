@@ -67,7 +67,7 @@ nbe.triggers.text_format = function (editor, type, value) {
 		return ops;
 	};
 
-	ops_lines = function (start_id, end_id) {
+	ops_lines = function (_start_id, _end_id) {
 		var lines, ops;
 
 		lines = nbe.location.lines(editor);

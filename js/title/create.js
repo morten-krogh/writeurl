@@ -23,7 +23,7 @@ nbe.title.create = function (editor_id, options, doc) {
 			}
 		};
 
-		detect_input = function (event) {
+		detect_input = function (_event) {
 			var new_value, op;
 
 			new_value = el_editor.value;
@@ -49,7 +49,7 @@ nbe.title.create = function (editor_id, options, doc) {
 		};
 	}
 
-	add_external_ops = function (ops, set_location) {
+	add_external_ops = function (ops, _set_location) {
 		ops.forEach(function (op) {
 			if ('editor_class' in op && op.editor_class === 'title') {
 				set_value(op.after);
