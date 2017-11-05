@@ -7,14 +7,13 @@ var mod_lib = require('./mod_lib');
 var mod_client = require('./mod_client');
 
 var type_new = function (ws, msg) {
-	var reply, doc;
+	var reply;
 
 	if (mod_lib.verify_three_ids(msg)) {
 		if (mod_store.exist(msg.ids.id)) {
 			reply = {type : 'new', text : 'exist'};
 		} else {
 			reply = {type : 'new', text : 'created'};
-			doc = {ids : msg.ids, stored : false, operations : [], state : mod_state.init()};
 			mod_store.create(msg.ids, mod_state.init());
 		}
 		ws.send(JSON.stringify(reply));

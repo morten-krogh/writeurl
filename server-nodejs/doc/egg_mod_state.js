@@ -1,5 +1,7 @@
 'use strict';
 
+/* global nbe: false */
+
 exports.init = function () {
 	return nbe.doc.state_serialize(nbe.doc.state_init());
 };
@@ -25,6 +27,7 @@ exports.test = function (state, operations) {
 		try {
 			st1 = nbe.doc.state_serialize(state_deserialized);
 			st2 = nbe.doc.state_serialize(nbe.doc.state_deserialize(st1));
+			console.log(st2);
 		} catch (e) {
 			console.log(state_deserialized.text.nodes.root.children.slice(0, 5));
 			//console.log(nbe.doc.state_serialize(state_deserialized));

@@ -3,8 +3,6 @@
 var mod_state = require('./mod_state');
 
 var mod_store = require('./mod_store');
-var mod_lib = require('./mod_lib');
-var mod_client = require('./mod_client');
 
 var id = 'nk2sx5rgebqpf7yykpb9';
 

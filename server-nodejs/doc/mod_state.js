@@ -1,4 +1,5 @@
 'use strict';
+/* eslint-disable */
 
 
 var kite = {browser : {}};
@@ -241,7 +242,7 @@ nbe.doc.html = function (doc) {
 		'<!DOCTYPE html>',
 		'<html lang="en">',
 		'<head>',
-		'<meta charset="utf-8" />',
+		'<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />',
 		'<title>',
 		title,
 		'</title>',
@@ -505,8 +506,7 @@ nbe.editor.create = function (editor_id, options, doc) {
 	var el_editor, add_external_ops, init, editor;
 
 	el_editor = document.createElement('div');
-	el_editor.classList.add('nbe');
-	el_editor.classList.add('editor');
+	el_editor.classList.add('wu-editor');
 	el_editor.setAttribute('data-id', 'editor');
 
 	add_external_ops = function (ops, set_location) {
@@ -672,7 +672,7 @@ nbe.events.add_event_listeners = function (editor) {
 			} else if (event.keyCode === 86) {
 				editor.trigger('paste', null);
 			} else if (event.keyCode === 88) {
-				//editor.trigger('cut', null); cut event is fired automiatically.
+				//editor.trigger('cut', null); cut event is fired automatically.
 			} else if (event.keyCode === 90) {
 				editor.trigger('undo', event.shiftKey ? 'redo' : 'undo');
 				event.preventDefault();
@@ -684,7 +684,7 @@ nbe.events.add_event_listeners = function (editor) {
 		var char;
 
 		//console.log('keypress', event);
-		if (event.keyCode >= 37 && event.keyCode <= 40) {
+		if (event.charCode === 0 && event.keyCode >= 37 && event.keyCode <= 40) {
 			nbe.location.get_format(editor);
 		} else if (!event.ctrlKey && !event.metaKey && event.keyCode !== 8 && event.keyCode !== 9 && event.keyCode !== 13) {
 			char = String.fromCharCode(event.charCode ? event.charCode : event.which);
@@ -777,9 +777,9 @@ nbe.inputs.background_color = function (trigger, title, parent, init) {
 	button = nbe.inputs.input('background_color', trigger);
 
 	value = null;
-	element = kite.browser.dom.eac('button', parent, 'format_button background_color off');
+	element = kite.browser.dom.eac('button', parent, 'wu-icon wu-icon-background_color off');
 	element.title = title;
-	el_symbol = kite.browser.dom.eac('div', element, 'background_color');
+	el_symbol = kite.browser.dom.ea('div', element);
 	el_symbol.textContent = 'A';
 
 	color_menu = nbe.inputs.color_menu(function (color) {
@@ -808,7 +808,7 @@ nbe.inputs.background_color = function (trigger, title, parent, init) {
 		if (color_menu.is_open()) {
 			color_menu.remove();
 		} else {
-			color_menu.display(parent, element.offsetLeft + (element.offsetWidth / 2) + 1, element.offsetTop + element.offsetHeight, value);
+			color_menu.display(parent, element, value);
 		}
 
 	}, false);
@@ -836,13 +836,13 @@ nbe.inputs.button = function (type, title, parent, trigger, init) {
 	input = nbe.inputs.input(type, trigger);
 
 	value = null;
-	element = kite.browser.dom.eac('button', parent, 'format_button ' + type + ' off');
+	element = kite.browser.dom.eac('button', parent, 'wu-icon wu-icon-' + type + ' off');
 	element.title = title;
 
 	set_value = function (new_value) {
 		if (value !== new_value) {
 			value = new_value;
-			element.className = 'format_button ' + type + ' ' + value;
+			element.className = 'wu-icon wu-icon-' + type + ' ' + value;
 		}
 	};
 
@@ -865,7 +865,7 @@ nbe.inputs.color = function (trigger, title, parent, init) {
 	button = nbe.inputs.input('color', trigger);
 
 	value = null;
-	element = kite.browser.dom.eac('button', parent, 'format_button off');
+	element = kite.browser.dom.eac('button', parent, 'wu-icon off');
 	element.title = title;
 	element.textContent = 'A';
 
@@ -895,7 +895,7 @@ nbe.inputs.color = function (trigger, title, parent, init) {
 		if (color_menu.is_open()) {
 			color_menu.remove();
 		} else {
-			color_menu.display(parent, element.offsetLeft + (element.offsetWidth / 2) + 1, element.offsetTop + element.offsetHeight, value);
+			color_menu.display(parent, element, value);
 		}
 	}, false);
 
@@ -911,9 +911,9 @@ nbe.inputs.color_menu = function (trigger, default_color, default_label, colors,
 
 	is_open = false;
 
-	el_panel = document.getElementById('panel');
+	el_panel = document.body;
 
-	element = kite.browser.dom.ec('div', 'color_menu');
+	element = kite.browser.dom.ec('div', 'wu-menu wu-color_menu');
 	element.addEventListener('click', function (e) {
 		var color;
 
@@ -930,14 +930,14 @@ nbe.inputs.color_menu = function (trigger, default_color, default_label, colors,
 	create_swatch = function (color, parent) {
 		var el_swatch;
 
-		el_swatch = kite.browser.dom.eac('div', parent, 'color_swatch');
+		el_swatch = kite.browser.dom.eac('div', parent, 'wu-color_swatch');
 		el_swatch.style.backgroundColor = color;
 		el_swatch.setAttribute('data-color', color);
 
 		return el_swatch;
 	};
 
-	el_default = kite.browser.dom.eac('div', element, 'color_default');
+	el_default = kite.browser.dom.eac('div', element, 'wu-color_default');
 
 	rgb_input = function (e) {
 		var new_value;
@@ -952,8 +952,8 @@ nbe.inputs.color_menu = function (trigger, default_color, default_label, colors,
 		}
 	};
 
-	el_custom = kite.browser.dom.eac('div', element, 'color_custom');
-	el_custom_swatch = kite.browser.dom.eac('div', el_custom, 'color_swatch');
+	el_custom = kite.browser.dom.eac('div', element, 'wu-color_custom');
+	el_custom_swatch = kite.browser.dom.eac('div', el_custom, 'wu-color_swatch');
 	el_custom_swatch.addEventListener('click', function (e) {
 		rgb_input(e);
 	}, false);
@@ -995,31 +995,32 @@ nbe.inputs.color_menu = function (trigger, default_color, default_label, colors,
 
 	switch_swatch = function (new_value) {
 		if (swatches[value]) {
-			swatches[value].classList.remove('selected');
+			swatches[value].classList.remove('wu-selected');
 		}
 
-		el_custom_swatch.classList.remove('selected');
+		el_custom_swatch.classList.remove('wu-selected');
 		el_custom_swatch.style.backgroundColor = 'transparent';
 
 		if (swatches[new_value]) {
-			swatches[new_value].classList.add('selected');
+			swatches[new_value].classList.add('wu-selected');
 		} else {
-			el_custom_swatch.classList.add('selected');
+			el_custom_swatch.classList.add('wu-selected');
 			el_custom_swatch.style.backgroundColor = new_value;
 		}
 
 		value = new_value;
 	};
 
-	return {display : function (parent, left, top, new_value) {
-		var rgb;
+	return {display : function (parent, offset_element, new_value) {
+		var rgb, offset;
 
 		is_open = true;
 
 		el_panel.appendChild(element);
 
-		element.style.left = (left - (element.offsetWidth / 2)) + 44 + 'px';
-		element.style.top = top + 'px';
+		offset = kite.browser.ui.get_offset(offset_element);
+		element.style.left = (offset.left - (element.offsetWidth / 2) + (offset_element.offsetWidth / 2)) + 'px';
+		element.style.top = offset.top + offset_element.offsetHeight + 'px';
 
 		document.body.addEventListener('click', remove_handler, false);
 
@@ -1047,13 +1048,17 @@ nbe.inputs.drop_down = function (type, title, menu_content, button_content, pare
 
 	value = null;
 
-	el_panel = document.getElementById('panel');
+	el_panel = document.body;
 
-	element = kite.browser.dom.eac('div', parent, 'drop_down ' + type);
+	element = kite.browser.dom.eac('div', parent, 'wu-icon wu-drop-down wu-icon-' + type);
 	element.title = title;
 	element.addEventListener('click', function (e) {
+		var offset;
+
 		if (!el_menu.parentNode && e.target !== el_input) {
-			el_menu.style.left = element.offsetLeft + 45 + 'px';
+			offset = kite.browser.ui.get_offset(element);
+			el_menu.style.left = offset.left + 1 + 'px';
+			el_menu.style.top = offset.top + element.offsetHeight + 'px';
 			el_panel.appendChild(el_menu);
 			close = false;
 			setTimeout(function () {
@@ -1091,7 +1096,7 @@ nbe.inputs.drop_down = function (type, title, menu_content, button_content, pare
 		}
 	}, false);
 
-	el_menu = kite.browser.dom.ec('div', 'drop_down_menu');
+	el_menu = kite.browser.dom.ec('div', 'wu-menu drop_down_menu');
 	el_menu.addEventListener('click', function (e) {
 		var value;
 
@@ -1107,7 +1112,7 @@ nbe.inputs.drop_down = function (type, title, menu_content, button_content, pare
 
 	for (key in menu_content) {
 		if (menu_content.hasOwnProperty(key)) {
-			options[key] = kite.browser.dom.ea('div', el_menu);
+			options[key] = kite.browser.dom.eac('div', el_menu, 'wu-menu-row');
 			options[key].setAttribute('data-option', key);
 			options[key].innerHTML = menu_content[key];
 		}
@@ -1115,11 +1120,11 @@ nbe.inputs.drop_down = function (type, title, menu_content, button_content, pare
 
 	set_value = function (new_value) {
 		if (value && value in options) {
-			options[value].className = '';
+			options[value].className = 'wu-menu-row';
 		}
 		value = new_value;
 		if (value in options) {
-			options[value].className = 'selected';
+			options[value].className = 'wu-menu-row wu-selected';
 		}
 		if (display_input) {
 			el_input.value = value.replace('px', '');
@@ -3276,7 +3281,7 @@ nbe.paste.traverse = function (state, node) {
 
 nbe.publish.create = function (editor_id, doc) {
 	var time, init, msg, publish, add_external_ops, set_time, get_time;
-
+ 
 	time = null;
 
 	init = function (state) {
@@ -3287,25 +3292,36 @@ nbe.publish.create = function (editor_id, doc) {
 
 	publish = function (callback) {
 		var html, body;
-
+		
 		html = nbe.doc.html(nbe.dynamic.doc);
-		body = {type : 'publish', id : doc.ids.id, write : doc.ids.write, html : html};
+			
+		body = {
+			type : 'publish',
+			id : doc.ids.id,
+			write : doc.ids.write,
+			html : html
+		};
+			
 		nbe.lib.xhr('POST', nbe.config.publish_url, {}, JSON.stringify(body), 0, function (response) {
 			var op;
-
+			
 			response = JSON.parse(response);
 			if (response === 'published') {
-				op = {editor_class : 'publish', before : time, after : Date.now()};
+				op = {
+					editor_class : 'publish',
+					before : time,
+					after : Date.now()
+				};
 				set_time(op.after);
 				doc.add_ops(editor_id, [op]);
+				callback(response);
 			}
-			callback(response);
 		}, function () {}, function () {
 			callback(null);
 		});
 	};
 
-	add_external_ops = function (ops, set_location) {
+	add_external_ops = function (ops, _set_location) {
 		ops.forEach(function (op) {
 			if ('editor_class' in op && op.editor_class === 'publish') {
 				set_time(op.after);
@@ -3327,7 +3343,7 @@ nbe.publish.create = function (editor_id, doc) {
 
 
 nbe.publish.state_copy = function (state) {
-	return {time : state.time};
+	return {time: state.time};
 };
 
 
@@ -3338,7 +3354,7 @@ nbe.publish.state_init = function () {
 
 nbe.publish.state_update = function (state, ops) {
 	if (ops.length > 0) {
-		state.time = ops[ops.length - 1].after;
+		state.time = ops[ops.length - 1].after; 
 	}
 };
 
@@ -3366,7 +3382,7 @@ nbe.site.display_editor = function (doc) {
 
 	title_editor = doc.editors.add('title_editor', 'title', {editable : editable, html_title : true});
 	if (editable) {
-		kite.browser.dom.eac('div', el_editor_container, 'editor_title').appendChild(title_editor.el_editor);
+		kite.browser.dom.eac('div', el_editor_container, 'wu-title-container').appendChild(title_editor.el_editor);
 	}
 	nbe.dynamic.get_title = title_editor.get_value;
 
@@ -3389,55 +3405,137 @@ nbe.site.doc_noexist = function (doc) {
 
 
 /*
-	el = element or id of element.
-	el_editor and el_panel are the elements for the panel and editor.
-	ids = {id, read, write}, if id is null, ids are generated automatically.
-	config = {new_doc : boolean, local_storage : boolean, ws_url : url to web socket}
-	callback
-
+	el_text, el_title, el_panel : elements for insertion of text, title and panel. If they are null, there is no insertion.
+	ids = {id, read, write}, if ids.write is null, the editor is read only, otherwise writeable.
+	new_doc : is the document new
+	ws_url : the rul of the web socket to the server.
+	local_storage : boolean designating whether local storage is to be used.
+	html_title : whtehr the title should be used as title of the full html document.
+	callback : get key value pairs.
 */
 
-nbe.site.embed = function (el_editor, el_panel, ids, config, callback) {
-	var editable, callback_status, doc;
+nbe.site.embed = function (el_text, el_title, el_panel, ids, new_doc, ws_url, local_storage, html_title, callback) {
+	var editable, dom_id_to_el, callback_status, doc;
 
-	if (config.ws_url === 'default') {
-		config.ws_url = 'ws://www.writeurl.com:8043';
-	}
+	editable = !(ids.write === null || ids.write === '');
 
-	el_editor = typeof(el_editor) === 'string' ? document.getElementById(el_editor) : el_editor;
-
-	if (ids === null) {
-		ids = {
-			id : nbe.lib.rnd_string(20),
-			read : nbe.lib.rnd_string(20),
-			write : nbe.lib.rnd_string(20)
-		};
-		callback('ids', ids);
-	}
-
-	editable = ids.write !== null;
+	dom_id_to_el = function (id) {
+		return typeof(id) === 'string' ? document.getElementById(id) : id;
+	};
 
 	callback_status = function (key, value) {
-		var editor;
+		var editor, title_editor;
 
 		callback(key, value);
 		if (key === 'doc' && value === 'exist') {
 			doc.comm.notify();
 			editor = doc.editors.add('editor', 'text', {editable : editable});
-			el_editor.appendChild(editor.el_editor);
-			if (editable) {
-				el_panel = typeof(el_panel) === 'string' ? document.getElementById(el_panel) : el_panel;
-				nbe.site.panel(el_panel, editor);
+			if (el_text) {
+				dom_id_to_el(el_text).appendChild(editor.el_editor);
+			}
+			if (el_title) {
+				title_editor = doc.editors.add('title_editor', 'title', {editable : editable, html_title : html_title});
+				dom_id_to_el(el_title).appendChild(title_editor.el_editor);
+			}
+			if (el_panel) {
+				nbe.site.panel(dom_id_to_el(el_panel), editor);
 			}
 		}
 	};
 
-	ids.new_doc = config.new_doc;
-	doc = nbe.doc.create(ids, config.local_storage, config.ws_url, callback_status);
+	ids.new_doc = new_doc;
+	doc = nbe.doc.create(ids, local_storage, ws_url, callback_status);
 
-	if (config.new_doc) {
+	if (doc.server_status !== 'unknown') {
 		callback_status('doc', 'exist');
 	}
+};
+
+
+/*
+	Helper function to call embed.
+	It is used for write documents.
+
+	el : an element where panel, title and text is inserted. el can be an id of an element.
+	ids : an object with id, the read password, and write password.
+*/
+
+nbe.site.embed_new = function (el) {
+	var ws_url, el_panel, el_title, el_text, ids;
+
+	el = typeof(el) === 'string' ? document.getElementById(el) : el;
+
+	ws_url = 'ws://www.writeurl.com:8043';
+
+	el_panel = document.createElement('div');
+	el.appendChild(el_panel);
+	el_title = document.createElement('div');
+	el.appendChild(el_title);
+	el_text = document.createElement('div');
+	el.appendChild(el_text);
+
+	ids = {
+		id : nbe.lib.rnd_string(20),
+		read : nbe.lib.rnd_string(20),
+		write : nbe.lib.rnd_string(20)
+	};
+
+	nbe.site.embed(el_text, el_title, el_panel, ids, true, ws_url, true, false, function () {});
+
+	return ids;
+};
+
+
+/*
+	Helper function to call embed.
+	It is used for read only documents.
+
+	el : an element where title and text is inserted. el can be an id of an element.
+	ids : an object with id and the read password.
+*/
+
+nbe.site.embed_read = function (el, ids) {
+	var ws_url, el_title, el_text;
+
+	el = typeof(el) === 'string' ? document.getElementById(el) : el;
+
+	ws_url = 'ws://www.writeurl.com:8043';
+
+	ids.write = null;
+
+	el_title = document.createElement('div');
+	el.appendChild(el_title);
+	el_text = document.createElement('div');
+	el.appendChild(el_text);
+
+	nbe.site.embed(el_text, el_title, null, ids, false, ws_url, true, false, function () {});
+};
+
+
+/*
+	Helper function to call embed.
+	It is used for write documents.
+
+	el : an element where panel, title and text is inserted. el can be an id of an element.
+	ids : an object with id, the read password, and write password.
+*/
+
+nbe.site.embed_write = function (el, ids) {
+	var ws_url, el_panel, el_title, el_text;
+
+	el = typeof(el) === 'string' ? document.getElementById(el) : el;
+
+	ws_url = 'ws://www.writeurl.com:8043';
+
+	el_panel = document.createElement('div');
+	el.appendChild(el_panel);
+	el_title = document.createElement('div');
+	el.appendChild(el_title);
+	el_text = document.createElement('div');
+	el.appendChild(el_text);
+
+	console.log(ids);
+	nbe.site.embed(el_text, el_title, el_panel, ids, false, ws_url, true, false, function () {});
 };
 
 
@@ -3479,25 +3577,25 @@ nbe.site.panel = function (el_panel_container, editor) {
 
 	buttons = {};
 
-	el_panel = kite.browser.dom.eac('div', el_panel_container, 'format_panel');
+	el_panel = kite.browser.dom.eac('div', el_panel_container, 'wu-format-panel');
 
 	toggle_panel = function () {
 		if (is_visible) {
-			el_panel.className = 'format_panel';
+			el_panel.className = 'wu-format-panel';
 			el_toggle_panel.textContent = 'More';
 		} else {
-			el_panel.className = 'format_panel open';
+			el_panel.className = 'wu-format-panel open';
 			el_toggle_panel.textContent = 'Less';
 		}
 		is_visible = !is_visible;
 	};
 
-	el_toggle_panel = kite.browser.dom.eac('button', el_panel_container, 'toggle circle_button');
+	el_toggle_panel = kite.browser.dom.eac('button', el_panel_container, 'wu-toggle circle_button');
 	el_toggle_panel.textContent = 'More';
 	el_toggle_panel.addEventListener('click', toggle_panel, false);
 
 	el_panel.addEventListener('click', function (e) {
-		if (e.target.classList.contains('format_button') || e.target.parentNode.classList.contains('drop_down_menu') || e.target.parentNode.parentNode.classList.contains('drop_down_menu')) {
+		if (e.target.classList.contains('wu-icon') || e.target.parentNode.classList.contains('drop_down_menu') || e.target.parentNode.parentNode.classList.contains('drop_down_menu')) {
 			toggle_panel();
 		}
 	}, false);
@@ -3755,8 +3853,7 @@ nbe.state.element = function (id, type, val) {
 
 	el = document.createElement(name);
 	el.setAttribute('data-id', id);
-	el.classList.add('nbe');
-	el.classList.add(type);
+	el.classList.add('wu-' + type);
 
 	if (type === 'line') {
 		el.appendChild(document.createElement('br'));
@@ -3798,7 +3895,7 @@ nbe.state.formats = {
 		max : 500
 	},
 
-	font_family : ['arial', 'helvetica', 'times', 'verdana']
+	font_family : ['arial', 'courier', 'helvetica', 'times', 'verdana']
 };
 
 
@@ -4038,7 +4135,7 @@ nbe.state.mutate_element = function (element, type, val) {
 
 		for (i = 0; i < keys.length; i++) {
 			if (keys[i] in val) {
-				element.classList.add(val[keys[i]]);
+				element.classList.add('wu-' + val[keys[i]]);
 			}
 		}
 	};
@@ -4047,7 +4144,7 @@ nbe.state.mutate_element = function (element, type, val) {
 		var i;
 
 		for (i = 0; i < classes.length; i++) {
-			element.classList.remove(classes[i]);
+			element.classList.remove('wu-' + classes[i]);
 		}
 	};
 
@@ -4062,10 +4159,10 @@ nbe.state.mutate_element = function (element, type, val) {
 		break;
 	case 'text' :
 		element.textContent = val.text;
-		element.classList[val.bold ? 'add' : 'remove']('bold');
-		element.classList[val.italic ? 'add' : 'remove']('italic');
-		element.classList[val.underline ? 'add' : 'remove']('underline');
-		element.classList[val.strikethrough ? 'add' : 'remove']('strikethrough');
+		element.classList[val.bold ? 'add' : 'remove']('wu-bold');
+		element.classList[val.italic ? 'add' : 'remove']('wu-italic');
+		element.classList[val.underline ? 'add' : 'remove']('wu-underline');
+		element.classList[val.strikethrough ? 'add' : 'remove']('wu-strikethrough');
 		element.style.color = val.color || '';
 		element.style.backgroundColor = val.background_color || '';
 		element.style.fontFamily = val.font_family || '';
@@ -4125,9 +4222,9 @@ nbe.state.reset_counter = function (editor) {
 		}
 
 		if (reset) {
-			editor.dom[line.id].classList.add('reset-counter');
+			editor.dom[line.id].classList.add('wu-reset-counter');
 		} else {
-			editor.dom[line.id].classList.remove('reset-counter');
+			editor.dom[line.id].classList.remove('wu-reset-counter');
 		}
 	}
 };
@@ -4356,7 +4453,7 @@ nbe.title.create = function (editor_id, options, doc) {
 
 	if (options.editable) {
 
-		el_editor = document.createElement('input');
+		el_editor = kite.browser.dom.ec('input', 'wu-title');
 		el_editor.setAttribute('type', 'text');
 
 		set_value = function (new_value) {
@@ -4370,7 +4467,7 @@ nbe.title.create = function (editor_id, options, doc) {
 			}
 		};
 
-		detect_input = function (event) {
+		detect_input = function (_event) {
 			var new_value, op;
 
 			new_value = el_editor.value;
@@ -4396,7 +4493,7 @@ nbe.title.create = function (editor_id, options, doc) {
 		};
 	}
 
-	add_external_ops = function (ops, set_location) {
+	add_external_ops = function (ops, _set_location) {
 		ops.forEach(function (op) {
 			if ('editor_class' in op && op.editor_class === 'title') {
 				set_value(op.after);
@@ -4958,7 +5055,7 @@ nbe.triggers.text_format = function (editor, type, value) {
 		return ops;
 	};
 
-	ops_lines = function (start_id, end_id) {
+	ops_lines = function (_start_id, _end_id) {
 		var lines, ops;
 
 		lines = nbe.location.lines(editor);
@@ -5079,6 +5176,8 @@ nbe.triggers.trigger = function (editor, type, value) {
 };
 
 
+/* global nbe: false */
+
 exports.init = function () {
 	return nbe.doc.state_serialize(nbe.doc.state_init());
 };
@@ -5104,6 +5203,7 @@ exports.test = function (state, operations) {
 		try {
 			st1 = nbe.doc.state_serialize(state_deserialized);
 			st2 = nbe.doc.state_serialize(nbe.doc.state_deserialize(st1));
+			console.log(st2);
 		} catch (e) {
 			console.log(state_deserialized.text.nodes.root.children.slice(0, 5));
 			//console.log(nbe.doc.state_serialize(state_deserialized));

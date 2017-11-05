@@ -9,6 +9,7 @@ var expand = function (files) {
 	done = true;
 	files.forEach(function (file) {
 		if (file.match('browser|css')) {
+			return;
 		} else if (file.match('[.]js$')) {
 			result.push(file);
 		} else if (fs.statSync(file).isDirectory()) {
@@ -52,7 +53,7 @@ files.forEach(function (file) {
 
 var text = content.join('');
 text = text.replace(/'use strict';/g, '');
-text = "'use strict';\n" + text;
+text = '\'use strict\';\n/* eslint-disable */\n' + text;
 
 var output = 'mod_state.js';
 fs.writeFileSync(output, text);
