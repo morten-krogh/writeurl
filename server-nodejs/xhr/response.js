@@ -5,9 +5,9 @@ var fs = require('fs');
 var mime = require('node-mime');
 var buffer = require('./buffer.js');
 
-var set_status_code_and_standard_headers = function (req, res, status_code, headers) {
-        res.setHeader('Server', 'Kite server');
-        res.setHeader('Date', new Date().toUTCString());
+var set_status_code_and_standard_headers = function (_req, res, status_code, headers) {
+	res.setHeader('Server', 'Kite server');
+	res.setHeader('Date', new Date().toUTCString());
 	//res.setHeader('Expires', new Date(Date.now() + 10000000).toUTCString());  // for development, the browser will not cache anything now.
 	res.setHeader('Cache-Control', ['no-cache', 'no-store']);  // for development, the browser will not cache anything now.
 	res.writeHead(status_code, headers);
@@ -43,7 +43,7 @@ exports.pathname = function (req, res, status_code, headers, pathname, compress)
 
 	headers['Content-Type'] = mime.lookup(pathname);
 	stream = fs.createReadStream(pathname);
-	stream.on('error', function (exception) {
+	stream.on('error', function (_exception) {
 		exports['404'](req, res);
 	});
 	exports.stream(req, res, status_code, headers, stream, compress);

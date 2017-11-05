@@ -1,0 +1,20 @@
+root: true
+env: {}
+extends: 'eslint:recommended'
+rules:
+  indent:
+    - error
+    - tab
+  linebreak-style:
+    - error
+    - unix
+  quotes:
+    - error
+    - single
+  semi:
+    - error
+    - always
+  no-unused-vars:
+    - error
+    - args: all
+      argsIgnorePattern: '^_'

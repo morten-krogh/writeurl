@@ -12,7 +12,7 @@ exports.create_read_stream = function (input) {
 	stream = {
 		destination : null,
 
-		on : function (event, listener) {
+		on : function (_event, _listener) {
 		},
 
 		pipe : function (destination) {
@@ -31,20 +31,20 @@ exports.create_read_stream = function (input) {
 };
 
 exports.cat = function (buffers) {
-        var length, nbuffers, i, buffer, index;
+	var length, nbuffers, i, buffer, index;
 
-        length = 0;
-        nbuffers = buffers.length;
-        for (i = 0; i < nbuffers; i++) {
-                length += buffers[i].length;
-        }
-        buffer = new Buffer(length);
-        index = 0;
-        for (i = 0; i < nbuffers; i++) {
-                buffers[i].copy(buffer, index, 0);
-                index += buffers[i].length;
-        }
-        return buffer;
+	length = 0;
+	nbuffers = buffers.length;
+	for (i = 0; i < nbuffers; i++) {
+		length += buffers[i].length;
+	}
+	buffer = new Buffer(length);
+	index = 0;
+	for (i = 0; i < nbuffers; i++) {
+		buffers[i].copy(buffer, index, 0);
+		index += buffers[i].length;
+	}
+	return buffer;
 };
 
 exports.read_stream_to_buffer = function (stream, callback) {

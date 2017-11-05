@@ -41,23 +41,23 @@ var are_strings = function (obj, keys) {
 	return true;
 };
 
-var validate = function (form) {
-	var key;
-
-	if (form === null || typeof(form) !== 'object') {
-		return false;
-	}
-
-	for (key in form) {
-		if (form.hasOwnProperty(key)) {
-			if (typeof(form[key]) !== 'string') {
-				return false;
-			}
-		}
-	}
-
-	return 'type' in form;
-};
+//var validate = function (form) {
+//	var key;
+//
+//	if (form === null || typeof(form) !== 'object') {
+//		return false;
+//	}
+//
+//	for (key in form) {
+//		if (form.hasOwnProperty(key)) {
+//			if (typeof(form[key]) !== 'string') {
+//				return false;
+//			}
+//		}
+//	}
+//
+//	return 'type' in form;
+//};
 
 var make_feedback =  function (form) {
 	var content;
@@ -124,7 +124,7 @@ var init = function () {
 		}
 	}).listen(port, host);
 
-        console.log('mailform and publish server running at ' + host + ':' + port);
+	console.log('mailform and publish server running at ' + host + ':' + port);
 };
 
 init();
