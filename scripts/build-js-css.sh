@@ -21,8 +21,11 @@ publish_path=${css_dir}/publish.css
 content=`cat $wu_format_path`$'\n'`cat $publish_path`$'\n'
 
 # escape ' for the javascript string
-content=${content/\'/\\\'}
+content=${content//\'/\\\'}
+
+# escape newline with \n
+content=${content//$'\n'/\\n}
 
 output="'use strict';"$'\n\n'"nbe.css.publish = '${content}';"
 
-echo "$output" > dest
+echo "$output" > $1

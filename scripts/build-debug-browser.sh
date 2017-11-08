@@ -15,13 +15,18 @@ build_dir=${WUL_HOME}/build/debug/browser
 mkdir -p ${build_dir}
 mkdir -p ${build_dir}/html
 mkdir -p ${build_dir}/js
+mkdir -p ${build_dir}/js/css
 mkdir -p ${build_dir}/css
 mkdir -p ${build_dir}/img
 
 # symbolic links to the source directories
 cp -R ${WUL_HOME}/html/* ${build_dir}/html
-cp -R ${WUL_HOME}/js ${build_dir}/js
-cp -R ${WUL_HOME}/css ${build_dir}/css
-cp -R ${WUL_HOME}/img ${build_dir}/img
+cp -R ${WUL_HOME}/js/* ${build_dir}/js
+cp -R ${WUL_HOME}/css/* ${build_dir}/css
+cp -R ${WUL_HOME}/img/* ${build_dir}/img
 
 
+
+publish_js_path=${build_dir}/js/css/publish.js
+echo ${publish_js_path}
+./build-js-css.sh "${publish_js_path}"
