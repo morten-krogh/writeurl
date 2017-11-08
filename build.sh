@@ -52,7 +52,12 @@ MODE="$1"
 [ $# -gt 0 ] && shift
 
 case $MODE in
+    "browser-debug")
+        WUL_HOME=${WUL_HOME} ${WUL_HOME}/scripts/build-debug-browser.sh
+        ;;
+    "browser-release")
 
+        ;;
     "writeurl-release")
         WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_RELEASE} EXTRA_CFLAGS=${EXTRA_CFLAGS_RELEASE} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_RELEASE} make -j 8 writeurl
         ;;

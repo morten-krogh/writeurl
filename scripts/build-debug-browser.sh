@@ -29,4 +29,4 @@ cp -R ${WUL_HOME}/img/* ${build_dir}/img
 
 publish_js_path=${build_dir}/js/css/publish.js
 echo ${publish_js_path}
-./build-js-css.sh "${publish_js_path}"
+${WUL_HOME}/scripts/build-js-css.sh "${publish_js_path}"
