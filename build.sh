@@ -6,12 +6,14 @@ usage()
 {
     cat << EOF
     Available modes are:
-        writeurl-release
+        browser-debug
+        browser-release
         writeurl-debug
+        writeurl-release
         writeurl-asan
         writeurl-tsan
-        test-release
         test-debug
+        test-release
         test-asan
         test-tsan
         clean

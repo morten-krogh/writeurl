@@ -6,8 +6,17 @@ ${BUILD_DIR}:
 
 EXTERNAL := ${WUL_HOME}/external
 
-# JS front end
+# Browser build
 
+BROWSER_BUILD_DIR := ${WUL_HOME}/build/browser
+
+${BROWSER_BUILD_DIR}:
+	mkdir -p ${BROWSER_BUILD_DIR}
+
+.PHONY browser: ${BROWSER_BUILD_DIR}
+	cp ${WUL_HOME}/html/robots.txt ${BROWSER_BUILD_DIR}/robots.txt
+	cp ${WUL_HOME}/html/faq.html ${BROWSER_BUILD_DIR}/faq.html
+	cp ${WUL_HOME}/html/googleb63512ae7494e695.html ${BROWSER_BUILD_DIR}/googleb63512ae7494e695.html
 
 
 

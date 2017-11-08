@@ -1,5 +1,20 @@
 'use strict';
 
+const process = require('process');
+const wul_home = process.env['WUL_HOME'];
+
+if (!wul_home) {
+	console.log('WUL_HOME must be set in the environment');
+	process.exit(1);
+}
+
+const html_dir = wul_home + '/html';
+const css_dir = wul_home + '/css';
+const js_dir = wul_home + '/js';
+const img_dir = wul_home + '/img';
+const build_dir = wul_home + '/build/browser';
+
+
 var fs = require('fs');
 var uglifyjs = require('uglify-js');
 
@@ -17,7 +32,7 @@ var obfuscate = function (content) {
 };
 
 var read_index_html = function () {
-	return fs.readFileSync('../../html/index.html', 'utf8');
+	return fs.readFileSync(html_dir +  '/index.html', 'utf8');
 };
 
 var parse_index_html = function (text) {
@@ -51,7 +66,7 @@ var read_css_files = function (parts) {
 		var name;
 
 		name = line.match(/\/([^.]+\.css)/)[1];
-		files.push(fs.readFileSync('../../' + name, 'utf8'));
+		files.push(fs.readFileSync(css_dir + '/' + name, 'utf8'));
 	});
 
 	parts.css = ['<style type="text/css">'].concat(files).concat(['</style>']).join('\n');
@@ -66,7 +81,7 @@ var read_js_files = function (parts) {
 
 		name = line.match(/\/(js\/[^.]+\.js)/)[1];
 		if (name !== 'js/site/last.js') {
-			files.push(fs.readFileSync('../../' + name, 'utf8'));
+			files.push(fs.readFileSync(js_dir + '/' + name, 'utf8'));
 		}
 	});
 
@@ -106,25 +121,25 @@ var build_html = function (parts) {
 };
 
 var write_css = function (css) {
-	fs.writeFileSync('../public/style.css', css);
+	fs.writeFileSync(build_dir + '/style.css', css);
 };
 
 var write_js = function (js) {
-	fs.writeFileSync('../public/script.js', js);
+	fs.writeFileSync(build_dir + '/script.js', js);
 };
 
 var copy_last = function () {
-	fs.writeFileSync('../public/last.js', fs.readFileSync('../../js/site/last.js'));
+	fs.writeFileSync(build_dir + '/last.js', fs.readFileSync(js_dir + '/site/last.js'));
 };
 
 var write_html = function (html) {
-	fs.writeFileSync('../public/index.html', html);
+	fs.writeFileSync(build_dir + '/index.html', html);
 };
 
 var write_manifest = function (html) {
 	var imgs, others, manifest;
 
-	imgs = fs.readdirSync('../../img').map(function (filename) {
+	imgs = fs.readdirSync(img_dir).map(function (filename) {
 		return '/img/' + filename;
 	});
 
@@ -136,7 +151,7 @@ var write_manifest = function (html) {
 
 	manifest = 'CACHE MANIFEST\n# ' + new Date().toUTCString() + '\n\nCACHE:\n/index.html\n' + imgs.join('\n') + '\n' + others.join('\n') + '\n\nFALLBACK:\n/ /\n\nNETWORK:\n/publish/\n*\n';
 
-	fs.writeFileSync('../public/manifest.appcache', manifest);
+	fs.writeFileSync(build_dir + '/manifest.appcache', manifest);
 };
 
 var build = function () {
@@ -159,8 +174,8 @@ var js_css = function () {
 	var inputs, out_pathname, content, output;
 
 	inputs = [
-		'../../css/wu-format.css',
-		'../../css/publish.css'
+		css_dir + '/wu-format.css',
+		css_dir + '/publish.css'
 	];
 
 	out_pathname = '../../js/css/publish.js';
