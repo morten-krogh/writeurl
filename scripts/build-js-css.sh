@@ -28,4 +28,4 @@ content=${content//$'\n'/\\n}
 
 output="'use strict';"$'\n\n'"nbe.css.publish = '${content}';"
 
-echo "$output" > $1
+printf "%s" "$output" > $1

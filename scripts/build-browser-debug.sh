@@ -19,7 +19,7 @@ mkdir -p ${build_dir}/js/css
 mkdir -p ${build_dir}/css
 mkdir -p ${build_dir}/img
 
-# symbolic links to the source directories
+# copy source directories
 cp -R ${WUL_HOME}/html/* ${build_dir}/html
 cp -R ${WUL_HOME}/js/* ${build_dir}/js
 cp -R ${WUL_HOME}/css/* ${build_dir}/css
@@ -28,5 +28,4 @@ cp -R ${WUL_HOME}/img/* ${build_dir}/img
 
 
 publish_js_path=${build_dir}/js/css/publish.js
-echo ${publish_js_path}
 ${WUL_HOME}/scripts/build-js-css.sh "${publish_js_path}"

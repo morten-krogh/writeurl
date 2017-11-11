@@ -1,5 +1,8 @@
 'use strict';
 
+const fs = require('fs');
+const uglifyjs = require('uglify-js');
+
 const process = require('process');
 const wul_home = process.env['WUL_HOME'];
 
@@ -10,15 +13,14 @@ if (!wul_home) {
 
 const html_dir = wul_home + '/html';
 const css_dir = wul_home + '/css';
-const js_dir = wul_home + '/js';
+const js_dir = wul_home + '/build/debug/browser';
 const img_dir = wul_home + '/img';
-const build_dir = wul_home + '/build/browser';
+const build_dir = wul_home + '/build/release/browser';
+
+const obfuscate = function (content) {
 
 
-var fs = require('fs');
-var uglifyjs = require('uglify-js');
 
-var obfuscate = function (content) {
 	var script, obfuscated_script, ast;
 
 	script = content.toString();
@@ -31,11 +33,11 @@ var obfuscate = function (content) {
 	return new Buffer(obfuscated_script);
 };
 
-var read_index_html = function () {
+const read_index_html = function () {
 	return fs.readFileSync(html_dir +  '/index.html', 'utf8');
 };
 
-var parse_index_html = function (text) {
+const parse_index_html = function (text) {
 	var parts, lines, current, i, line;
 
 	lines = text.split('\n');
@@ -58,7 +60,7 @@ var parse_index_html = function (text) {
 	return parts;
 };
 
-var read_css_files = function (parts) {
+const read_css_files = function (parts) {
 	var files;
 
 	files = [];
@@ -66,13 +68,13 @@ var read_css_files = function (parts) {
 		var name;
 
 		name = line.match(/\/([^.]+\.css)/)[1];
-		files.push(fs.readFileSync(css_dir + '/' + name, 'utf8'));
+		files.push(fs.readFileSync(wul_home + '/' + name, 'utf8'));
 	});
 
 	parts.css = ['<style type="text/css">'].concat(files).concat(['</style>']).join('\n');
 };
 
-var read_js_files = function (parts) {
+const read_js_files = function (parts) {
 	var files;
 
 	files = [];
@@ -88,7 +90,7 @@ var read_js_files = function (parts) {
 	parts.js = files;
 };
 
-var process_js = function (parts) {
+const process_js = function (parts) {
 	var scripts, all, obfuscated;
 
 	scripts = [];
@@ -96,14 +98,14 @@ var process_js = function (parts) {
 		scripts.push(script.replace(/^.*'use strict'.*\n/, ''));
 	});
 
-	all = ["'use strict';\n"].concat(scripts).join('\n');
-	obfuscated = obfuscate(all).toString();
-	//obfuscated = all;
+	all = ['\'use strict\';\n'].concat(scripts).join('\n');
+	//obfuscated = obfuscate(all).toString();
+	obfuscated = all;
 
 	parts.js = obfuscated;
 };
 
-var build_html = function (parts) {
+const build_html = function (parts) {
 	var html_head, html_css, html_middle, html_js, html_last;
 
 	html_head = parts.first.join('\n').replace('<html lang="en"', '<html lang="en" manifest="/manifest.appcache"');
@@ -112,7 +114,7 @@ var build_html = function (parts) {
 	html_js = [
 		'<script src="/script.js"></script>',
 		'<script src="/last.js"></script>'
-	].join("\n");
+	].join('\n');
 	html_last = parts.last.filter(function (line) {
 		return line !== '';
 	}).join('\n');
@@ -120,23 +122,23 @@ var build_html = function (parts) {
 	return html_head + '\n' + html_css + '\n' + html_middle + '\n' + html_js + '\n' + html_last;
 };
 
-var write_css = function (css) {
+const write_css = function (css) {
 	fs.writeFileSync(build_dir + '/style.css', css);
 };
 
-var write_js = function (js) {
+const write_js = function (js) {
 	fs.writeFileSync(build_dir + '/script.js', js);
 };
 
-var copy_last = function () {
-	fs.writeFileSync(build_dir + '/last.js', fs.readFileSync(js_dir + '/site/last.js'));
+const copy_last = function () {
+	fs.writeFileSync(build_dir + '/last.js', fs.readFileSync(js_dir + '/js/site/last.js'));
 };
 
-var write_html = function (html) {
+const write_html = function (html) {
 	fs.writeFileSync(build_dir + '/index.html', html);
 };
 
-var write_manifest = function (html) {
+const write_manifest = function () {
 	var imgs, others, manifest;
 
 	imgs = fs.readdirSync(img_dir).map(function (filename) {
@@ -154,7 +156,7 @@ var write_manifest = function (html) {
 	fs.writeFileSync(build_dir + '/manifest.appcache', manifest);
 };
 
-var build = function () {
+const build = function () {
 	var text, parts, html;
 
 	text = read_index_html();
@@ -170,31 +172,4 @@ var build = function () {
 	write_manifest();
 };
 
-var js_css = function () {
-	var inputs, out_pathname, content, output;
-
-	inputs = [
-		css_dir + '/wu-format.css',
-		css_dir + '/publish.css'
-	];
-
-	out_pathname = '../../js/css/publish.js';
-
-	content = '';
-	inputs.forEach(function (input) {
-		content = content + fs.readFileSync(input, 'utf8') + '\n';
-	});
-
-	content = content.replace(/'/g, "\\'");
-	content = content.replace(/\n/g, "\\n");
-	output = [
-		'\'use strict\';',
-		'',
-		'nbe.css.publish = \'' + content + '\';'
-	].join('\n');
-
-	fs.writeFileSync(out_pathname, output);
-};
-
-js_css();
 build();
