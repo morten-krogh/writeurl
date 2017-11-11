@@ -14,5 +14,9 @@
     "ws": "0.4.22"
   },
   "author": "Writeurl",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "dependencies": {
+    "express": "github:expressjs/express#5.0",
+    "vhost": "^3.0.2"
+  }
 }
