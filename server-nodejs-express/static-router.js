@@ -1,3 +1,5 @@
+'use strict';
+
 const express = require('express');
 const vhost = require('vhost');
 const router = express.Router();
@@ -26,12 +28,12 @@ const options = {
 };
 
 router.use(vhost(release_host, express.static(release_dir, options)));
-router.use(vhost(release_host, (req, res, next) => {
+router.use(vhost(release_host, (_req, res, _next) => {
 	res.sendFile(release_dir + '/index.html');
 }));
 
 router.use(vhost(debug_host, express.static(debug_dir, options)));
-router.use(vhost(debug_host, (req, res, next) => {
+router.use(vhost(debug_host, (_req, res, _next) => {
 	res.sendFile(debug_dir + '/html/index.html');
 }));
 

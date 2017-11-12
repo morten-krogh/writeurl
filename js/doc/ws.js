@@ -29,6 +29,8 @@ nbe.doc.ws = function (url, callback_msg, callback_status) {
 	};
 
 	connect = function () {
+		console.log('connect, url = ', url);
+
 		conn = typeof(WebSocket) !== 'undefined' ?  new WebSocket(url) : new MozWebSocket(url);
 		//console.log('connect', new Date(), conn);
 
