@@ -22,7 +22,6 @@ const wul_state = {
 
 const operations_handler = make_operations_handler(config.doc_dir);
 
-
 server.on('upgrade', (req, socket, head) => {
 	const path = url.parse(req.url).pathname;
 	if (path == '/operations') {
@@ -30,9 +29,6 @@ server.on('upgrade', (req, socket, head) => {
 	} else {
 		socket.destroy();
 	}
-
-	console.log('upgrade, path = ', path);
-
 });
 
 app.use(static_router);

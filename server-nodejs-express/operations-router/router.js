@@ -3,7 +3,6 @@
 const WebSocket = require('ws');
 
 const make_store = require('./mod_store');
-const mod_id = require('./mod_id');
 const mod_client = require('./mod_client');
 const mod_handler = require('./mod_handler');
 
@@ -33,6 +32,7 @@ function make_operations_handler(doc_dir) {
 	});
 
 	const state = {
+		ws_id_counter: 0,
 		clients : {},
 		docs : {},
 		store: make_store(doc_dir)
@@ -42,7 +42,7 @@ function make_operations_handler(doc_dir) {
 		var ws_id;
 
 		console.log('wss connection');
-		ws_id = mod_id.get();
+		ws_id = state.ws_id_counter++;
 		mod_client.open(state, ws_id, ws);
 
 		log(state, 'open', ws, ws_id);
