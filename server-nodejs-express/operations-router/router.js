@@ -2,6 +2,7 @@
 
 const WebSocket = require('ws');
 
+const make_store = require('./mod_store');
 const mod_id = require('./mod_id');
 const mod_client = require('./mod_client');
 const mod_handler = require('./mod_handler');
@@ -25,7 +26,7 @@ function log(state, type, ws, ws_id) {
 }
 
 
-function make_operations_handler() {
+function make_operations_handler(doc_dir) {
 
 	const wss = new WebSocket.Server({
 		noServer: true
@@ -33,7 +34,8 @@ function make_operations_handler() {
 
 	const state = {
 		clients : {},
-		docs : {}
+		docs : {},
+		store: make_store(doc_dir)
 	};
 
 	wss.on('connection', function (ws) {
@@ -56,15 +58,6 @@ function make_operations_handler() {
 
 	});
 
-	//	wss.on('connection', function connection(ws, req) {
-	//
-	//		ws.on('message', function incoming(message) {
-	//			console.log('received: %s', message);
-	//		});
-	//
-	//		ws.send('something');
-	//	});
-	//
 	const operations_handler = function(req, socket, head) {
 		wss.handleUpgrade(req, socket, head, (ws) => {
 			console.log('handleUpgrade');

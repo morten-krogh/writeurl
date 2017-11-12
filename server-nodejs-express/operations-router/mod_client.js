@@ -1,7 +1,5 @@
 'use strict';
 
-var mod_store = require('./mod_store');
-
 exports.open = function (state, ws_id, ws) {
 	state.clients[ws_id] = {ws : ws, id : null, read : null, noperations : null};
 };
@@ -53,7 +51,7 @@ var single = function (state, id, ws_id) {
 	var client, operations;
 
 	client = state.clients[ws_id];
-	operations = mod_store.get_operations(id, client.noperations);
+	operations = state.store.get_operations(id, client.noperations);
 	send(client, client.noperations, operations);
 };
 
@@ -69,7 +67,7 @@ var multi = function (state, id) {
 		}
 	}
 
-	operations = mod_store.get_operations(id, noperations);
+	operations = state.store.get_operations(id, noperations);
 
 	Object.keys(ws_ids).forEach(function (ws_id) {
 		send(state.clients[ws_id], noperations, operations);
