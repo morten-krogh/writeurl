@@ -2,19 +2,8 @@
 
 const express = require('express');
 const vhost = require('vhost');
-const router = express.Router();
 
-const wul_home = process.env['WUL_HOME'];
-if (!wul_home) {
-	console.log('WUL_HOME must be set in the environment');
-	process.exit(1);
-}
-
-const release_host = 'release.writeurl.localhost';
 const debug_host = 'debug.writeurl.localhost';
-
-const release_dir = wul_home + '/build/release/browser';
-const debug_dir = wul_home + '/build/debug/browser';
 
 const options = {
 	dotfiles: 'ignore',
@@ -27,14 +16,29 @@ const options = {
 	setHeaders: null
 };
 
-router.use(vhost(release_host, express.static(release_dir, options)));
-router.use(vhost(release_host, (_req, res, _next) => {
-	res.sendFile(release_dir + '/index.html');
-}));
+const make_static_router = function(config) {
+	const router = express.Router();
 
-router.use(vhost(debug_host, express.static(debug_dir, options)));
-router.use(vhost(debug_host, (_req, res, _next) => {
-	res.sendFile(debug_dir + '/html/index.html');
-}));
+	router.get('/hello.txt', (req, res, next) => {
+		console.log("Hi from abc");
+		express.static('/Users/mkrogh/publish_dir')(req, res, next);
+	});
 
-module.exports = router;
+	router.get('/publish', express.static(config.publish_dir, options));
+
+	router.use(vhost(debug_host, express.static(config.debug_build_dir, options)));
+	router.use(vhost(debug_host, (_req, res, _next) => {
+		res.sendFile(config.debug_build_dir + '/html/index.html');
+	}));
+
+	// release_host and anything else.
+	// const release_host = 'release.writeurl.localhost';
+	router.use(express.static(config.release_build_dir, options));
+	router.use((_req, res, _next) => {
+		res.sendFile(config.release_build_dir + '/index.html');
+	});
+
+	return router;
+};
+
+module.exports = make_static_router;
