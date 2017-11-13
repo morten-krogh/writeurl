@@ -4,7 +4,6 @@ const http = require('http');
 const url = require('url');
 const vhost = require('vhost');
 const express = require('express');
-const make_static_router = require('./static-router.js');
 const make_operations_handler = require('./operations-router/router.js');
 
 
@@ -19,10 +18,10 @@ const config = {
 	publish_dir: '/Users/mkrogh/publish_dir'
 };
 
-const wul_state = {
-	config: config,
-	store: null
-};
+//const wul_state = {
+//	config: config,
+//	store: null
+//};
 
 const operations_handler = make_operations_handler(config.doc_dir);
 
@@ -69,4 +68,8 @@ app.use(vhost(debug_host, (_req, res, _next) => {
 app.use(express.static(config.release_build_dir, options));
 app.use((_req, res, _next) => {
 	res.sendFile(config.release_build_dir + '/index.html');
+});
+
+server.listen(config.port, () => {
+	console.log('Writeurl server is listening on port: ', config.port);
 });
