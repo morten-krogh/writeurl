@@ -5,6 +5,7 @@ const url = require('url');
 const vhost = require('vhost');
 const express = require('express');
 const make_operations_handler = require('./operations-router/router.js');
+const make_form_handler = require('./xhr/form_handler.js');
 
 
 const app = express();
@@ -18,12 +19,19 @@ const config = {
 	publish_dir: '/Users/mkrogh/publish_dir'
 };
 
-//const wul_state = {
+const app_state = {
 //	config: config,
 //	store: null
-//};
+	publish_dir: '/Users/mkrogh/publish_dir'
+};
 
 const operations_handler = make_operations_handler(config.doc_dir);
+const form_handler = make_form_handler(app_state);
+
+app.use(function (req, _res, next) {
+	console.log(req.url);
+	next();
+});
 
 server.on('upgrade', (req, socket, head) => {
 	const path = url.parse(req.url).pathname;
@@ -34,10 +42,7 @@ server.on('upgrade', (req, socket, head) => {
 	}
 });
 
-
-
-
-
+app.post('*', form_handler);
 
 
 // static files
@@ -47,14 +52,13 @@ const debug_host = 'debug.writeurl.localhost';
 const options = {
 	dotfiles: 'ignore',
 	etag: false,
-	extensions: ['index.html'],
+	extensions: ['html', 'index.html'],
 	fallthrough: true,
 	index: 'index.html',
 	maxAge: 0,
 	redirect: false,
 	setHeaders: null
 };
-
 
 app.use('/publish', express.static(config.publish_dir, options));
 

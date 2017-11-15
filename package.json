@@ -9,6 +9,7 @@
   "scripts": {},
   "dependencies": {
     "express": "github:expressjs/express#5.0",
+    "node-mime": "^1.0.0",
     "vhost": "^3.0.2",
     "ws": "^3.3.1"
   },

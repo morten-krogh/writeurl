@@ -79,7 +79,7 @@ nbe.config = (function () {
 		ws_url : 'ws://' + host + '/operations',
 		share_url : 'http://' + host + ':8050',
 		feedback_url : 'http://' + host + ':8050',
-		publish_url : 'http://' + host + ':8050',
+		publish_url : 'http://' + host + '/publish',
 		file_upload_url : 'http://' + host + ':8051'
 	};
 }());
