@@ -2,7 +2,6 @@
 
 const WebSocket = require('ws');
 
-const make_store = require('./mod_store');
 const mod_client = require('./mod_client');
 const mod_handler = require('./mod_handler');
 
@@ -25,7 +24,7 @@ function log(state, type, ws, ws_id) {
 }
 
 
-function make_operations_handler(doc_dir) {
+function make_operations_handler(app_state) {
 
 	const wss = new WebSocket.Server({
 		noServer: true
@@ -35,7 +34,7 @@ function make_operations_handler(doc_dir) {
 		ws_id_counter: 0,
 		clients : {},
 		docs : {},
-		store: make_store(doc_dir)
+		store: app_state.store
 	};
 
 	wss.on('connection', function (ws) {

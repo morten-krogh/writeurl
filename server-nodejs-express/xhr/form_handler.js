@@ -90,7 +90,7 @@ function form_handler(app_state, req, res, _next) {
 			});
 			response.body(req, res, 200, response_header, JSON.stringify('email sent'), false);
 		} else if (typeof(form) === 'object' && form.type === 'publish') {
-			msg = publish(app_state.publish_dir, form);
+			msg = publish(app_state, form);
 			response.body(req, res, 200, response_header, JSON.stringify(msg), false);
 		} else {
 			response.body(req, res, 200, response_header, JSON.stringify('invalid format'), false);
