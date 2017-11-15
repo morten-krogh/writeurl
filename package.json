@@ -12,6 +12,7 @@
     "js-yaml": "^3.10.0",
     "node-mime": "^1.0.0",
     "vhost": "^3.0.2",
+    "winston": "^3.0.0-rc1",
     "ws": "^3.3.1"
   },
   "devDependencies": {

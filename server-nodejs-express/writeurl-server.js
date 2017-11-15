@@ -9,6 +9,7 @@ const yaml = require('js-yaml');
 const make_store = require('./operations-router/mod_store.js');
 const make_operations_handler = require('./operations-router/router.js');
 const make_form_handler = require('./xhr/form_handler.js');
+const make_logger = require('./logger.js');
 
 const app = express();
 const server = http.createServer(app);
@@ -42,14 +43,15 @@ const app_state = {
 	release_build_dir: config.release_build_dir,
 	debug_build_dir: config.debug_build_dir,
 	store: make_store(config.doc_dir),
-	publish_dir: config.publish_dir
+	publish_dir: config.publish_dir,
+	logger: make_logger(config)
 };
 
 const operations_handler = make_operations_handler(app_state);
 const form_handler = make_form_handler(app_state);
 
 app.use(function (req, _res, next) {
-	console.log(req.url);
+	app_state.logger.debug('req url = %s', req.url);
 	next();
 });
 
@@ -95,5 +97,5 @@ app.use((_req, res, _next) => {
 });
 
 server.listen(app_state.port, () => {
-	console.log('Writeurl server is listening on port: ', app_state.port);
+	app_state.logger.info('Writeurl server is listening on port: %d', app_state.port);
 });
