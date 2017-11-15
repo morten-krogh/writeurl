@@ -72,8 +72,6 @@ var make_share = function (form) {
 
 function form_handler(app_state, req, res, _next) {
 
-	console.log('form_handler');
-
 	parse_form(req, function (form) {
 		var feedback, share, msg;
 

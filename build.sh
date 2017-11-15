@@ -6,6 +6,7 @@ usage()
 {
     cat << EOF
     Available modes are:
+        browser
         browser-debug
         browser-release
         writeurl-debug
@@ -47,16 +48,28 @@ BUILD_DIR_TSAN=${WUL_HOME}/build/tsan
 EXTRA_CFLAGS_TSAN="-g -DDEBUG -fsanitize=thread"
 EXTRA_LD_FLAGS_TSAN="-fsanitize=thread"
 
-
 MODE="$1"
 [ $# -gt 0 ] && shift
 
+browser_debug () {
+    WUL_HOME=${WUL_HOME} ${WUL_HOME}/scripts/build-browser-debug.sh
+}
+
+browser_release () {
+    WUL_HOME=${WUL_HOME} ${WUL_HOME}/scripts/build-browser-release.sh
+}
+
+
 case $MODE in
+    "browser")
+        browser_debug
+        browser_release
+        ;;
     "browser-debug")
-        WUL_HOME=${WUL_HOME} ${WUL_HOME}/scripts/build-browser-debug.sh
+        browser_debug
         ;;
     "browser-release")
-        WUL_HOME=${WUL_HOME} ${WUL_HOME}/scripts/build-browser-release.sh
+        browser_release
         ;;
     "writeurl-release")
         WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_RELEASE} EXTRA_CFLAGS=${EXTRA_CFLAGS_RELEASE} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_RELEASE} make -j 8 writeurl

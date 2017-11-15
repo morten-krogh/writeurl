@@ -77,8 +77,8 @@ nbe.config = (function () {
 		parse_pathname : parse_pathname,
 		local_storage : true,
 		ws_url : 'ws://' + host + '/operations',
-		share_url : 'http://' + host + ':8050',
-		feedback_url : 'http://' + host + ':8050',
+		share_url : 'http://' + host + '/share',
+		feedback_url : 'http://' + host + '/feedback',
 		publish_url : 'http://' + host + '/publish',
 		file_upload_url : 'http://' + host + ':8051'
 	};
