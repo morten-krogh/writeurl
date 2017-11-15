@@ -1,25 +1,48 @@
 'use strict';
 
+const fs = require('fs');
 const http = require('http');
 const url = require('url');
 const vhost = require('vhost');
 const express = require('express');
+const yaml = require('js-yaml');
 const make_store = require('./operations-router/mod_store.js');
 const make_operations_handler = require('./operations-router/router.js');
 const make_form_handler = require('./xhr/form_handler.js');
 
-
 const app = express();
 const server = http.createServer(app);
 
-const doc_dir = '/Users/mkrogh/doc_dir';
+function  print_usage() {
+	const node_cmd = process.argv[0];
+	const writeurl_server = process.argv[1];
+	console.error('Usage:', node_cmd, writeurl_server, 'config-path');
+}
+
+if (process.argv.length != 3) {
+	print_usage();
+	process.exit(1);
+}
+
+let config;
+
+try {
+	const config_path = process.argv[2];
+	const config_content = fs.readFileSync(config_path);
+	config = yaml.safeLoad(config_content);
+} catch (e) {
+	console.error('The config file does not exists or is not a valid yaml file');
+	process.exit(1);
+}
+
+
 const app_state = {
-	port: 9000,
-	doc_dir: doc_dir,
-	release_build_dir: '/Users/mkrogh/writeurl/build/release/browser',
-	debug_build_dir: '/Users/mkrogh/writeurl/build/debug/browser',
-	store: make_store(doc_dir),
-	publish_dir: '/Users/mkrogh/publish_dir'
+	port: config.port,
+	doc_dir: config.doc_dir,
+	release_build_dir: config.release_build_dir,
+	debug_build_dir: config.debug_build_dir,
+	store: make_store(config.doc_dir),
+	publish_dir: config.publish_dir
 };
 
 const operations_handler = make_operations_handler(app_state);
