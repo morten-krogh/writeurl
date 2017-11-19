@@ -59,6 +59,7 @@ app.use(function (_req, res, next) {
 });
 
 server.on('upgrade', (req, socket, head) => {
+	app_state.logger.info({req: req}, 'upgrade');
 	const path = url.parse(req.url).pathname;
 	if (path == '/operations') {
 		operations_handler(req, socket, head);

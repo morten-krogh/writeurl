@@ -27,7 +27,8 @@ function log(state, type, ws, ws_id) {
 function make_operations_handler(app_state) {
 
 	const wss = new WebSocket.Server({
-		noServer: true
+		noServer: true,
+		perMessageDeflate: true
 	});
 
 	const state = {
