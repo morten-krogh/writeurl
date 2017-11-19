@@ -8,6 +8,7 @@
   },
   "scripts": {},
   "dependencies": {
+    "compression": "^1.7.1",
     "dtrace-provider": "^0.8.5",
     "express": "github:expressjs/express#5.0",
     "express-pino-logger": "^2.0.0",

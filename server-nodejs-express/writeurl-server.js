@@ -5,6 +5,7 @@ const http = require('http');
 const url = require('url');
 const vhost = require('vhost');
 const express = require('express');
+const compression = require('compression');
 const yaml = require('js-yaml');
 const make_store = require('./operations-router/mod_store.js');
 const make_operations_handler = require('./operations-router/router.js');
@@ -54,6 +55,7 @@ const operations_handler = make_operations_handler(app_state);
 const form_handler = make_form_handler(app_state);
 const express_pino = make_express_pino(app_state.logger);
 
+app.use(compression());
 app.use(express_pino);
 
 app.use(function (_req, res, next) {
