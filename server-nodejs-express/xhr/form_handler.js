@@ -77,6 +77,7 @@ function form_handler(app_state, req, res, _next) {
 
 		if (typeof(form) === 'object' && form.type === 'feedback') {
 			feedback = make_feedback(form);
+			app_state.logger.info({feedback: feedback}, 'feedback');
 			mail.sendmail(feedback.to, feedback.from, feedback.subject, feedback.content);
 			response.body(req, res, 200, response_header, JSON.stringify('feedback received'), false);
 		} else if (typeof(form) === 'object' && form.type === 'share' && Object.prototype.toString.call(form.emails) === '[object Array]') {
