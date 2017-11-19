@@ -1,10 +1,17 @@
 port: 9000
 
-release_build_dir: /Users/mkrogh/writeurl/build/release/browser
-debug_build_dir: /Users/mkrogh/writeurl/build/debug/browser
+release:
+  public: /Users/mkrogh/writeurl/build/release/browser
 
-doc_dir: /Users/mkrogh/writeurl-test-dir/doc_dir
-publish_dir: /Users/mkrogh/writeurl-test-dir/publish_dir
+debug:
+  host: debug.writeurl.localhost
+  public: /Users/mkrogh/writeurl/build/debug/browser
+
+documents:
+  path: /Users/mkrogh/writeurl-test-dir/doc_dir
+
+publish:
+  public: /Users/mkrogh/writeurl-test-dir/publish_dir
 
 # Pino logger
 # Output goes to stdout.
@@ -13,6 +20,6 @@ logger:
   level: trace
 
 # virtual hosts for other web sites shared with Writeurl.
-hosts:
-  - virtual_host: amberbio.localhost
+virtual_hosts:
+  - host: amberbio.localhost
     public: /Users/mkrogh/writeurl-test-dir/amberbio

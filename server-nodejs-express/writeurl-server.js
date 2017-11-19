@@ -38,14 +38,9 @@ try {
 	process.exit(1);
 }
 
-
 const app_state = {
-	port: config.port,
-	doc_dir: config.doc_dir,
-	release_build_dir: config.release_build_dir,
-	debug_build_dir: config.debug_build_dir,
-	store: make_store(config.doc_dir),
-	publish_dir: config.publish_dir,
+	config: config,
+	store: make_store(config.documents.path),
 	logger: make_logger(config)
 };
 
@@ -77,8 +72,6 @@ app.post('*', form_handler);
 
 // static files
 
-const debug_host = 'debug.writeurl.localhost';
-
 const options = {
 	dotfiles: 'ignore',
 	etag: false,
@@ -90,26 +83,32 @@ const options = {
 	setHeaders: null
 };
 
-app.use('/publish', express.static(app_state.publish_dir, options));
-
-app.use(vhost(debug_host, express.static(app_state.debug_build_dir, options)));
-app.use(vhost(debug_host, (_req, res, _next) => {
-	res.sendFile(app_state.debug_build_dir + '/html/index.html');
-}));
-
 // static files for other virtual hosts shared with Writeurl.
-for (const host of config.hosts) {
-	app.use(vhost(host.virtual_host, express.static(host.public)));
-	app_state.logger.info({host: host}, 'virtual host');
+for (const virtual_host of config.virtual_hosts) {
+	app_state.logger.info({virtual_host: virtual_host}, 'virtual host');
+	app.use(vhost(virtual_host.host, express.static(virtual_host.public, options)));
+	app.use(vhost(virtual_host.host, (_req, res, _next) => {
+		res.sendFile(virtual_host.public + '/index.html');
+	}));
 }
 
-// release_host and anything else.
-// const release_host = 'release.writeurl.localhost';
-app.use(express.static(app_state.release_build_dir, options));
+
+// static files for writeurl debug
+
+app.use(vhost(config.debug.host, express.static(config.debug.public,  options)));
+app.use(vhost(config.debug.host, (_req, res, _next) => {
+	res.sendFile(config.debug.public + '/html/index.html');
+}));
+
+// publish directory
+app.use('/publish', express.static(config.publish.public, options));
+
+// release_host and any other host.
+app.use(express.static(config.release.public, options));
 app.use((_req, res, _next) => {
-	res.sendFile(app_state.release_build_dir + '/index.html');
+	res.sendFile(config.release.public + '/index.html');
 });
 
-server.listen(app_state.port, () => {
-	app_state.logger.info({port: app_state.port}, 'Writeurl server is listening');
+server.listen(config.port, () => {
+	app_state.logger.info({port: config.port}, 'Writeurl server is listening');
 });
