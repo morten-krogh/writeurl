@@ -95,6 +95,12 @@ app.use(vhost(debug_host, (_req, res, _next) => {
 	res.sendFile(app_state.debug_build_dir + '/html/index.html');
 }));
 
+// static files for other virtual hosts shared with Writeurl.
+for (const host of config.hosts) {
+	app.use(vhost(host.virtual_host, express.static(host.public)));
+	app_state.logger.info({host: host}, 'virtual host');
+}
+
 // release_host and anything else.
 // const release_host = 'release.writeurl.localhost';
 app.use(express.static(app_state.release_build_dir, options));

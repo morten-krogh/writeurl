@@ -11,3 +11,8 @@ publish_dir: /Users/mkrogh/writeurl-test-dir/publish_dir
 logger:
   # levels: silent, fatal, error, warn, info, debug, trace
   level: trace
+
+# virtual hosts for other web sites shared with Writeurl.
+hosts:
+  - virtual_host: amberbio.localhost
+    public: /Users/mkrogh/writeurl-test-dir/amberbio
