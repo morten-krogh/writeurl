@@ -1,0 +1,13 @@
+port: 9000
+
+release_build_dir: /Users/mkrogh/writeurl/build/release/browser
+debug_build_dir: /Users/mkrogh/writeurl/build/debug/browser
+
+doc_dir: /Users/mkrogh/writeurl-test-dir/doc_dir
+publish_dir: /Users/mkrogh/writeurl-test-dir/publish_dir
+
+# Pino logger
+# Output goes to stdout.
+logger:
+  # levels: silent, fatal, error, warn, info, debug, trace
+  level: trace

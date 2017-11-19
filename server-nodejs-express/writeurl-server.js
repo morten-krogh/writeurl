@@ -10,6 +10,7 @@ const make_store = require('./operations-router/mod_store.js');
 const make_operations_handler = require('./operations-router/router.js');
 const make_form_handler = require('./xhr/form_handler.js');
 const make_logger = require('./logger.js');
+const make_express_pino = require('express-pino-logger');
 
 const app = express();
 const server = http.createServer(app);
@@ -47,11 +48,16 @@ const app_state = {
 	logger: make_logger(config)
 };
 
+app_state.logger.info({config: config}, 'Writeurl server started');
+
 const operations_handler = make_operations_handler(app_state);
 const form_handler = make_form_handler(app_state);
+const express_pino = make_express_pino(app_state.logger);
 
-app.use(function (req, _res, next) {
-	app_state.logger.debug('req url = %s', req.url);
+app.use(express_pino);
+
+app.use(function (_req, res, next) {
+	res.setHeader('X-Powered-By', 'Writeurl server');
 	next();
 });
 
@@ -97,5 +103,5 @@ app.use((_req, res, _next) => {
 });
 
 server.listen(app_state.port, () => {
-	app_state.logger.info('Writeurl server is listening on port: %d', app_state.port);
+	app_state.logger.info({port: app_state.port}, 'Writeurl server is listening');
 });
