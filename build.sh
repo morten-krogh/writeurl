@@ -17,6 +17,7 @@ usage()
         test-release
         test-asan
         test-tsan
+        eslint
         clean
 EOF
 }
@@ -59,6 +60,9 @@ browser_release () {
     WUL_HOME=${WUL_HOME} ${WUL_HOME}/scripts/build-browser-release.sh
 }
 
+eslint () {
+    WUL_HOME=${WUL_HOME} ${WUL_HOME}/scripts/eslint.sh
+}
 
 case $MODE in
     "browser")
@@ -94,6 +98,9 @@ case $MODE in
         ;;
     "test-tsan")
         WUL_HOME=${WUL_HOME} BUILD_DIR=${BUILD_DIR_TSAN} EXTRA_CFLAGS=${EXTRA_CFLAGS_TSAN} EXTRA_LDFLAGS=${EXTRA_LD_FLAGS_TSAN} make -j 8 test
+        ;;
+    "eslint")
+        eslint
         ;;
     "clean")
         echo "rm -rf ${WUL_HOME}/build"
