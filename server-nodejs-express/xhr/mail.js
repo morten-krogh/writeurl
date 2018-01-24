@@ -19,6 +19,6 @@ exports.sendmail = function (to, from, subject, content) {
 		'',
 		content].join('\n');
 
-	sendmail_process = child_process.spawn('sendmail', ['-t']);
+	sendmail_process = child_process.spawn('/usr/sbin/sendmail', ['-t']);
 	sendmail_process.stdin.end(sendmail_msg);
 };
