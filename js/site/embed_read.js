@@ -13,7 +13,7 @@ nbe.site.embed_read = function (el, ids) {
 
 	el = typeof(el) === 'string' ? document.getElementById(el) : el;
 
-	ws_url = 'ws://www.writeurl.com:8043';
+	ws_url = 'ws://www.writeurl.com/operations';
 
 	ids.write = null;
 
