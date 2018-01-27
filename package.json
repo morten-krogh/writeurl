@@ -21,7 +21,7 @@
   "devDependencies": {
     "eslint": "^4.10.0",
     "mime": "1.2.4",
-    "uglify-js": "1.3.5"
+    "uglify-js": "2.6.0"
   },
   "author": "Writeurl",
   "license": "UNLICENSED"
