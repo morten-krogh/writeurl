@@ -13,7 +13,7 @@ nbe.site.embed_write = function (el, ids) {
 
 	el = typeof(el) === 'string' ? document.getElementById(el) : el;
 
-	ws_url = 'ws://www.writeurl.com:8043';
+	ws_url = 'ws://www.writeurl.com/operations';
 
 	el_panel = document.createElement('div');
 	el.appendChild(el_panel);

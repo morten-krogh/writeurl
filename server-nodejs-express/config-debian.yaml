@@ -1,0 +1,23 @@
+port: 9000
+
+release:
+  public: /home/www/writeurl/build/release/browser
+
+debug:
+  host: debug.writeurl.localhost
+  public: /home/www/writeurl/build/debug/browser
+
+documents:
+  path: /home/www/writeurl-production-dir/doc
+
+publish:
+  public: /home/www/writeurl-production-dir/publish
+
+# Pino logger
+# Output goes to stdout.
+logger:
+  # levels: silent, fatal, error, warn, info, debug, trace
+  level: trace
+
+# virtual hosts for other web sites shared with Writeurl.
+virtual_hosts:

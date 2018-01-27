@@ -81,6 +81,7 @@ function form_handler(app_state, req, res, _next) {
 			mail.sendmail(feedback.to, feedback.from, feedback.subject, feedback.content);
 			response.body(req, res, 200, response_header, JSON.stringify('feedback received'), false);
 		} else if (typeof(form) === 'object' && form.type === 'share' && Object.prototype.toString.call(form.emails) === '[object Array]') {
+			/*
 			share = make_share(form);
 			form.emails.forEach(function (email) {
 				if (mail.validate(email)) {
@@ -88,6 +89,8 @@ function form_handler(app_state, req, res, _next) {
 				}
 			});
 			response.body(req, res, 200, response_header, JSON.stringify('email sent'), false);
+			*/
+			response.body(req, res, 200, response_header, JSON.stringify('not allowed'), false);
 		} else if (typeof(form) === 'object' && form.type === 'publish') {
 			msg = publish(app_state, form);
 			response.body(req, res, 200, response_header, JSON.stringify(msg), false);

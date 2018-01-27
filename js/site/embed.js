@@ -4,7 +4,7 @@
 	el_text, el_title, el_panel : elements for insertion of text, title and panel. If they are null, there is no insertion.
 	ids = {id, read, write}, if ids.write is null, the editor is read only, otherwise writeable.
 	new_doc : is the document new
-	ws_url : the rul of the web socket to the server.
+	ws_url : the url of the web socket to the server.
 	local_storage : boolean designating whether local storage is to be used.
 	html_title : whtehr the title should be used as title of the full html document.
 	callback : get key value pairs.

@@ -23,7 +23,7 @@ const publish = function (app_state, form) {
 
 	if ('id' in form && is_id(form.id) && 'write' in form && is_id(form.write) && 'html' in form &&
 		typeof(form.html) === 'string' && verify_write(app_state.store, form.id, form.write)) {
-		pathname = app_state.publish_dir + '/' + form.id + '.html';
+		pathname = app_state.config.publish.public + '/' + form.id + '.html';
 		fs.writeFileSync(pathname, form.html);
 		return 'published';
 	} else {

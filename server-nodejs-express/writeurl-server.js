@@ -85,7 +85,7 @@ const options = {
 };
 
 // static files for other virtual hosts shared with Writeurl.
-for (const virtual_host of config.virtual_hosts) {
+for (const virtual_host of config.virtual_hosts || []) {
 	app_state.logger.info({virtual_host: virtual_host}, 'virtual host');
 	app.use(vhost(virtual_host.host, express.static(virtual_host.public, options)));
 	app.use(vhost(virtual_host.host, (_req, res, _next) => {
