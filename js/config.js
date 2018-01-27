@@ -3,9 +3,11 @@
 // urls:  /text/id/read/write/new
 
 nbe.config = (function () {
-	var host, home_pathname, valid_id, parse_pathname, publish_pathname, read_pathname,  write_pathname, urls, new_url;
+	var host, protocol, ws_protocol, home_pathname, valid_id, parse_pathname, publish_pathname, read_pathname,  write_pathname, urls, new_url;
 
 	host = window.location.host;
+	protocol = window.location.protocol;
+	ws_protocol = protocol == 'http:' ? 'ws:' : 'wss:';
 
 	home_pathname = '/';
 
@@ -47,7 +49,7 @@ nbe.config = (function () {
 	urls = function (ids) {
 		var domain;
 
-		domain = 'http://' + host;
+		domain = protocol + '//' + host;
 
 		return {
 			publish : domain + publish_pathname(ids),
@@ -76,10 +78,10 @@ nbe.config = (function () {
 		new_url : new_url,
 		parse_pathname : parse_pathname,
 		local_storage : true,
-		ws_url : 'ws://' + host + '/operations',
-		share_url : 'http://' + host + '/xhr/share',
-		feedback_url : 'http://' + host + '/xhr/feedback',
-		publish_url : 'http://' + host + '/xhr/publish',
-		file_upload_url : 'http://' + host + ':8051'
+		ws_url : ws_protocol + '//' + host + '/operations',
+		share_url : protocol + '//' + host + '/xhr/share',
+		feedback_url : protocol + '//' + host + '/xhr/feedback',
+		publish_url : protocol + '//' + host + '/xhr/publish',
+		file_upload_url : protocol + '//' + host + ':8051'
 	};
 }());
