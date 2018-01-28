@@ -173,7 +173,9 @@ The online Writeurl service uses nginx as a reverse proxy and systemd under Linu
 
 
 
-An example nginx.conf file is located at ```documentation/nginx.conf```
+An example nginx.conf file is located at 
+
+https://github.com/morten-krogh/writeurl/blob/master/documentation/nginx.conf
 
   
 
