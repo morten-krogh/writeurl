@@ -8,7 +8,7 @@ Writeurl is a client server system. The frontend code is written in pure
 
 javascript using no frameworks. The backend is a node.js application.
 
-The client and server communicate through a websocket connection. The client stores local
+The client and server communicate through a WebSocket connection. The client stores local
 
 changes in the browser's local storage. The editor can be used in offline mode. Changes are
 
@@ -216,6 +216,18 @@ The server can be restarted from a backup by just placing the backup directories
 pointed to by `documents` and `publish` in the config file.
 
 
+
+### Embedding
+
+
+
+Writeurl can be embedded as described in 
+
+https://github.com/morten-krogh/writeurl/blob/master/html/embed/index.html
+
+This page is available on the online service as well
+
+https://www.writeurl.com/embed
 
 
 
