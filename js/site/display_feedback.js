@@ -14,7 +14,7 @@ nbe.site.display_feedback = function () {
 	el_feedback = kite.browser.dom.ec('div', 'nbe_window feedback');
 	kite.browser.dom.ea('div', el_feedback).innerHTML = '!';
 	kite.browser.dom.ea('h1', el_feedback).innerHTML = 'Feedback';
-	kite.browser.dom.ea('p', el_feedback).innerHTML = 'Your opinion is very valuable to us, please let us know what you think.';
+	kite.browser.dom.ea('p', el_feedback).innerHTML = 'Your opinion is very valuable to us, please let us know what you think.<br>Report issues at <a href="https://github.com/morten-krogh/writeurl/issues/new">github</a> or use the form below.';
 
 	kite.browser.dom.ea('h3', el_feedback).innerHTML = 'Name';
 
