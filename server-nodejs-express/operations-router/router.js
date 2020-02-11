@@ -56,6 +56,11 @@ function make_operations_handler(app_state) {
 			mod_client.close(state, ws_id);
 		};
 
+        ws.onerror = function() {
+            log(state, 'error', ws, ws_id);
+            mod_client.close(state, ws_id);
+        };
+
 	});
 
 	const operations_handler = function(req, socket, head) {

@@ -54,7 +54,8 @@ const make_feedback =  function (form) {
 	};
 };
 
-var make_share = function (form) {
+/*
+const make_share = function (form) {
 	let content;
 
 	if (are_strings(form, ['access', 'url', 'message', 'title'])) {
@@ -69,11 +70,12 @@ var make_share = function (form) {
 		content : content
 	};
 };
+*/
 
 function form_handler(app_state, req, res, _next) {
 
 	parse_form(req, function (form) {
-		var feedback, share, msg;
+		var feedback, msg;
 
 		if (typeof(form) === 'object' && form.type === 'feedback') {
 			feedback = make_feedback(form);
