@@ -17,7 +17,7 @@ function log(state, type, ws, ws_id) {
 			msg = 'connection close, ws_id : ' + ws_id + ', date : ' + new Date() + nclients + ', document id : ' + id;
 		}
 	} catch (e) {
-		msg = 'log error';
+		msg = 'log error, type = ' + type;
 	}
 
 	console.log(msg);
@@ -56,11 +56,10 @@ function make_operations_handler(app_state) {
 			mod_client.close(state, ws_id);
 		};
 
-        ws.onerror = function() {
-            log(state, 'error', ws, ws_id);
-            mod_client.close(state, ws_id);
-        };
-
+		ws.onerror = function(event) {
+			console.log('websocket error', event.code, ' ws_id:', ws_id);
+			mod_client.close(state, ws_id);
+		};
 	});
 
 	const operations_handler = function(req, socket, head) {
