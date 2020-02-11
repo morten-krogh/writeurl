@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "eslint": "^4.10.0",
-    "mime": "1.2.4",
+    "mime": "1.4.1",
     "uglify-js": "2.6.0"
   },
   "author": "Writeurl",
