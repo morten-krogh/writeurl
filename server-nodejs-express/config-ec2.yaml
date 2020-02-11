@@ -1,0 +1,23 @@
+port: 9000
+
+release:
+  public: /home/ec2-user/writeurl/build/release/browser
+
+debug:
+  host: debug.writeurl.localhost
+  public: /home/ec2-user/writeurl/build/debug/browser
+
+documents:
+  path: /data/writeurl/doc
+
+publish:
+  public: /data/writeurl/publish
+
+# Pino logger
+# Output goes to stdout.
+logger:
+  # levels: silent, fatal, error, warn, info, debug, trace
+  level: info
+
+# virtual hosts for other web sites shared with Writeurl.
+virtual_hosts:
