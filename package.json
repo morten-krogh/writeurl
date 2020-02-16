@@ -7,7 +7,8 @@
     "url": "git@ida.amberbio.com:writeurl.git"
   },
   "scripts": {
-    "eslint": "eslint js"
+    "eslint": "eslint js",
+    "server-mkrogh": "node server/writeurl-server.js server/config-mkrogh.yaml"
 
   },
   "dependencies": {
