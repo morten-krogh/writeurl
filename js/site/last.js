@@ -65,17 +65,18 @@
 		}
 	}
 
-	if (window.applicationCache) {
-		window.applicationCache.addEventListener('updateready', function (event) {
-			window.applicationCache.swapCache();
-			window.location.reload();
-		}, false);
-	}
-
 	// iOS Safari hide browser address bar
 	/*
 	setTimeout(function () {
 		window.scrollTo(0, 0);
 	}, 0);
 	*/
+
+    
+    // Register the service worker for offline caching.
+    if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/serviceworker.js').then(registration => {
+                console.log('service worker registered');
+            });
+    }
 }());
