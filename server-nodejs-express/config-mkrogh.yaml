@@ -1,13 +1,13 @@
 port: 9000
 
 documents:
-  path: /data/writeurl/doc
+  path: /Users/mkrogh/data-writeurl/doc
 
 publish:
-  public: /data/writeurl/publish
+  public: /Users/mkrogh/data-writeurl/publish
 
 # Pino logger
 # Output goes to stdout.
 logger:
   # levels: silent, fatal, error, warn, info, debug, trace
-  level: info
+  level: trace

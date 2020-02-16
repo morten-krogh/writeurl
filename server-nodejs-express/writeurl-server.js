@@ -70,46 +70,6 @@ server.on('upgrade', (req, socket, head) => {
 
 app.post('*', form_handler);
 
-
-// static files
-
-const options = {
-	dotfiles: 'ignore',
-	etag: false,
-	extensions: ['html', 'index.html'],
-	fallthrough: true,
-	index: 'index.html',
-	maxAge: 0,
-	redirect: false,
-	setHeaders: null
-};
-
-// static files for other virtual hosts shared with Writeurl.
-for (const virtual_host of config.virtual_hosts || []) {
-	app_state.logger.info({virtual_host: virtual_host}, 'virtual host');
-	app.use(vhost(virtual_host.host, express.static(virtual_host.public, options)));
-	app.use(vhost(virtual_host.host, (_req, res, _next) => {
-		res.sendFile(virtual_host.public + '/index.html');
-	}));
-}
-
-
-// static files for writeurl debug
-
-app.use(vhost(config.debug.host, express.static(config.debug.public,  options)));
-app.use(vhost(config.debug.host, (_req, res, _next) => {
-	res.sendFile(config.debug.public + '/html/index.html');
-}));
-
-// publish directory
-app.use('/publish', express.static(config.publish.public, options));
-
-// release_host and any other host.
-app.use(express.static(config.release.public, options));
-app.use((_req, res, _next) => {
-	res.sendFile(config.release.public + '/index.html');
-});
-
 server.listen(config.port, () => {
 	app_state.logger.info({port: config.port}, 'Writeurl server is listening');
 });
