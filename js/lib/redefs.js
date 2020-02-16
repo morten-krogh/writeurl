@@ -1,16 +1,5 @@
 'use strict';
 
-// console.log
-
-(function () {
-	if (typeof console === "undefined") {
-		console = {};
-	}
-	if (typeof console.log === "undefined") {
-		console.log = function () {};
-	}
-}());
-
 // classList
 if (typeof document !== "undefined" && !("classList" in document.createElement("a"))) {
 	(function (view) {

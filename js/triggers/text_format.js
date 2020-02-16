@@ -1,7 +1,7 @@
 'use strict';
 
 nbe.triggers.text_format = function (editor, type, value) {
-	var nodes, start, end, loc_after, ops_split, ops_middle, ops_lines, ops, loc;
+	var nodes, start, end, loc_after, ops_split, ops_middle, ops_lines, ops;
 
 	nbe.state.set_format(type, value, editor.format);
 	if (editor.location === null || editor.location.collapsed) {
@@ -89,13 +89,11 @@ nbe.triggers.text_format = function (editor, type, value) {
 
 	if (start.container === end.container) {
 		ops = ops_split(start.container, start.offset, end.offset);
-		loc = {container : start.container, offset : end.offset - start.offset};
 	} else {
 		ops = ops_split(start.container, start.offset, 'infinite');
 		ops = ops.concat(ops_split(end.container, 0, end.offset));
 		ops = ops.concat(ops_middle(start.container, end.container));
 		ops = ops.concat(ops_lines(start.container, end.container));
-		loc = end;
 	}
 
 	return {ops : ops, loc_after : loc_after};

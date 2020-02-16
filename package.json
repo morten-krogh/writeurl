@@ -6,7 +6,10 @@
     "type": "git",
     "url": "git@ida.amberbio.com:writeurl.git"
   },
-  "scripts": {},
+  "scripts": {
+    "eslint": "eslint js"
+
+  },
   "dependencies": {
     "compression": "^1.7.1",
     "dtrace-provider": "^0.8.5",

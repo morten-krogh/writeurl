@@ -6,7 +6,7 @@ nbe.site.supported_front = function (supported) {
 	el_new_button = document.getElementById('new_doc');
 
 	if (supported) {
-		el_new_button.addEventListener('click', function (e) {
+		el_new_button.addEventListener('click', function (_e) {
 			window.open(nbe.config.new_url(), '_blank');
 		}, false);
 	} else {

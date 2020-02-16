@@ -1,10 +1,8 @@
 'use strict';
 
 nbe.triggers.observer = function (editor, mutations) {
-	var nodes, dom, added_nodes, removed_nodes, mutated_nodes, add_to_array, remove_from_array, add_node, remove_node, mutate_node, add_line, lines, oploc;
+	var added_nodes, removed_nodes, mutated_nodes, add_to_array, remove_from_array, add_node, remove_node, mutate_node, add_line, lines, oploc;
 
-	nodes = editor.state.nodes;
-	dom = editor.dom;
 	added_nodes = [];
 	removed_nodes = [];
 	mutated_nodes = [];
