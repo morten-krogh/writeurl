@@ -74,7 +74,8 @@
 
     // Register the service worker for offline caching.
     if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/serviceworker.js').then(registration => {});
-            navigator.serviceWorker.addEventListener('controllerchange', () => {});
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/serviceworker.js');
+        });
     }
 }());

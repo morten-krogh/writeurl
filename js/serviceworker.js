@@ -228,7 +228,7 @@ const urlstocache = [
     '/img/text_editor.svg',
 ];
 
-const version = 8;
+const version = 9;
 
 self.addEventListener('install', event => {
     console.log('service worker install', version);
