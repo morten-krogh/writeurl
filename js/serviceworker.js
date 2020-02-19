@@ -2,6 +2,7 @@ const CACHE_NAME = 'writeurl-cache-v1';
 
 const urlstocache = [
     '/',
+    '/embed/index.html',
     '/index.html',
     '/favicon.ico',
     '/publish/faq',
@@ -227,17 +228,34 @@ const urlstocache = [
     '/img/text_editor.svg',
 ];
 
+const version = 8;
+
 self.addEventListener('install', event => {
-        console.log('service worker install');
-        event.waitUntil(
-                caches.open(CACHE_NAME).then(cache => {
-                    return cache.addAll(urlstocache);
-                    })
-                );
-        });
+    console.log('service worker install', version);
+    event.waitUntil(
+        caches.open(CACHE_NAME).then(cache => {
+            return cache.addAll(urlstocache);
+        })
+    );
+});
+
+self.addEventListener('activate', event => {
+    console.log('activate ', version);
+    event.waitUntil(
+        caches.keys().then(keys => { return Promise.all(
+            keys.map(key => {
+                if (key != CACHE_NAME) {
+                    console.log('delete cache', key);
+                    return caches.delete(key);
+                }
+            }));}
+    ).then(() => {
+      console.log('V2 now ready to handle fetches!');
+    }));
+});
 
 self.addEventListener('fetch', event => {
-    console.log('service worker fetch event', event.request.url);
+    console.log('service worker fetch event', version);
     event.respondWith(caches.match(event.request).then(response => {
         if (response) {
             return  response;

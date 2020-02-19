@@ -78,5 +78,9 @@
             navigator.serviceWorker.register('/serviceworker.js').then(registration => {
                 console.log('service worker registered');
             });
+
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                console.log('controllerchange');
+            });
     }
 }());
