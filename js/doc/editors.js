@@ -1,4 +1,4 @@
-'use strict';
+import { TitleEditor } from '../title.js';
 
 nbe.doc.editors = function (doc) {
 	var editors, add, remove, notify;
@@ -24,9 +24,8 @@ nbe.doc.editors = function (doc) {
 			editor = nbe.editor.create(editor_id, options, doc);
 			editor.init(state);
 		} else if (editor_type === 'title') {
-			const state = doc.state.title.copy();
-			editor = nbe.title.create(editor_id, options, doc);
-			editor.init(state);
+			const title_state = doc.state.title.copy();
+			editor = new TitleEditor(editor_id, options, doc, title_state);
 			editor.add_external_ops(ops_editor, false);
 		} else if (editor_type === 'publish') {
 			const state = nbe.publish.state_copy(doc.state.publish);

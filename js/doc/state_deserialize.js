@@ -1,4 +1,4 @@
-import { TitleState } from '../title/title.js';
+import { TitleState } from '../title.js';
 
 nbe.doc.state_deserialize = function (value) {
 	var parsed;

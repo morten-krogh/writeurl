@@ -181,11 +181,6 @@ import './inputs/edit_link.js';
 import './inputs/insert_image.js';
 import './inputs/edit_image.js';
 
-import './title/create.js';
-//import './title/state_copy.js';
-//import './title/state_init.js';
-//import './title/state_update.js';
-
 import './publish/create.js';
 import './publish/state_copy.js';
 import './publish/state_init.js';
