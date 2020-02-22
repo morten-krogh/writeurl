@@ -10,7 +10,6 @@ const urlstocache = [
     '/css/embed.css',
     '/css/publish.css',
     '/js/site/first.js',
-    '/js/lib/redefs.js',
     '/js/site/panel.js',
     '/js/site/status_panel.js',
     '/js/site/display_demo.js',
