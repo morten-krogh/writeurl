@@ -228,10 +228,10 @@ const urlstocache = [
     '/img/text_editor.svg',
 ];
 
-const version = 9;
+//const version = 9;
 
 self.addEventListener('install', event => {
-    console.log('service worker install', version);
+    //console.log('service worker install', version);
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
             return cache.addAll(urlstocache);
@@ -240,27 +240,27 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('activate', event => {
-    console.log('activate ', version);
+    //console.log('activate ', version);
     event.waitUntil(
         caches.keys().then(keys => { return Promise.all(
             keys.map(key => {
                 if (key != CACHE_NAME) {
-                    console.log('delete cache', key);
+                    //console.log('delete cache', key);
                     return caches.delete(key);
                 }
             }));}
     ).then(() => {
-      console.log('V2 now ready to handle fetches!');
+      //console.log('V2 now ready to handle fetches!');
     }));
 });
 
 self.addEventListener('fetch', event => {
-    console.log('service worker fetch event', version);
+    //console.log('service worker fetch event', version);
     event.respondWith(caches.match(event.request).then(response => {
         if (response) {
             return  response;
         }
-        console.log('No cache for ', event.request.url);
+        //console.log('No cache for ', event.request.url);
         return caches.match('/');
     }));
 });
