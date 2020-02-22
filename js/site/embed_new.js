@@ -1,4 +1,4 @@
-'use strict';
+import { rnd_string } from '../lib/rnd_string.js';
 
 /*
 	Helper function to call embed.
@@ -23,9 +23,9 @@ nbe.site.embed_new = function (el) {
 	el.appendChild(el_text);
 
 	ids = {
-		id : nbe.lib.rnd_string(20),
-		read : nbe.lib.rnd_string(20),
-		write : nbe.lib.rnd_string(20)
+		id : rnd_string(20),
+		read : rnd_string(20),
+		write : rnd_string(20)
 	};
 
 	nbe.site.embed(el_text, el_title, el_panel, ids, true, ws_url, true, false, function () {});

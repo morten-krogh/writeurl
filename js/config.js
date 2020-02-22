@@ -1,3 +1,5 @@
+import { rnd_string } from './lib/rnd_string.js';
+
 'use strict';
 
 // urls:  /text/id/read/write/new
@@ -62,9 +64,9 @@ nbe.config = (function () {
 		var ids;
 
 		ids = {
-			id : nbe.lib.rnd_string(20),
-			read : nbe.lib.rnd_string(20),
-			write : nbe.lib.rnd_string(20)
+			id : rnd_string(20),
+			read : rnd_string(20),
+			write :rnd_string(20)
 		};
 
 		return urls(ids).write + '/new';

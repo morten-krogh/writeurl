@@ -1,9 +1,9 @@
-'use strict';
+import { rnd_string } from './rnd_string.js';
 
 nbe.lib.new_id = function () {
 	var stem, counter;
 
-	stem = nbe.lib.rnd_string(12);
+	stem = rnd_string(12);
 	counter = 0;
 
 	return function () {

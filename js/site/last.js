@@ -75,7 +75,7 @@
     // Register the service worker for offline caching.
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/serviceworker.js');
+            //navigator.serviceWorker.register('/serviceworker.js');
         });
     }
 }());

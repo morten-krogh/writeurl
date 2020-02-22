@@ -1,6 +1,5 @@
 
 import './site/first.js';
-import './lib/redefs.js';
 import './site/panel.js';
 import './site/status_panel.js';
 import './site/display_demo.js';
@@ -23,10 +22,6 @@ import './config.js';
 
 import './lib/clone.js';
 import './lib/xhr.js';
-import './lib/rnd_random_org.js';
-import './lib/rnd_crypto.js';
-import './lib/rnd_math_random.js';
-import './lib/rnd_string.js';
 import './lib/partial_copy.js';
 import './lib/get_attributes.js';
 import './lib/set_attributes.js';
