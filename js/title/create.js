@@ -28,8 +28,8 @@ nbe.title.create = function (editor_id, options, doc) {
 
 			new_value = el_editor.value;
 			if (new_value !== value) {
-				set_value(new_value);
 				op = {editor_class : 'title', before : value, after : new_value};
+				set_value(new_value);
 				doc.add_ops(editor_id, [op]);
 			}
 		};
