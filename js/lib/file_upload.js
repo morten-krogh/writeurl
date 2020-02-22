@@ -19,7 +19,7 @@ nbe.lib.file_upload = function (file, callback) {
 	} else {
 		reader = new FileReader();
 
-		reader.onload = function (event) {
+		reader.onload = function (_event) {
 			nbe.lib.xhr('POST', nbe.config.file_upload_url, {'X-File-Ending' : ending}, reader.result, 0, function (responseText) {
 				callback(JSON.parse(responseText));
 			}, function () {

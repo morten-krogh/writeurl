@@ -20,7 +20,9 @@ nbe.lib.rnd_random_org = (function () {
 				sent = false;
 				try {
 					chars = chars + resp.split('\n').join('');
-				} catch (e) {}
+				} catch (e) {
+                    chars = '';
+                }
 			}, function () {
 				sent = false;
 			}, function () {

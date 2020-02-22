@@ -3,10 +3,6 @@
 nbe.doc.ws = function (url, callback_msg, callback_status) {
 	var closed, msg1, msg2, msg_status, send, close, connect, conn;
 
-	if (typeof(WebSocket) === 'undefined' && typeof(MozWebSocket) !== 'function') {
-		return null;
-	}
-
 	closed = false;
 	msg1 = null;
 	msg2 = null;
@@ -29,10 +25,7 @@ nbe.doc.ws = function (url, callback_msg, callback_status) {
 	};
 
 	connect = function () {
-		//console.log('connect, url = ', url);
-
-		conn = typeof(WebSocket) !== 'undefined' ?  new WebSocket(url) : new MozWebSocket(url);
-		//console.log('connect', new Date(), conn);
+		conn = new WebSocket(url);
 
 		conn.onopen = function () {
 			callback_status('network', 'connected');

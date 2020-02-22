@@ -1,8 +1,8 @@
 'use strict';
 
-var kite = {browser : {}};
+window.kite = {browser : {}};
 
-var nbe = {
+window.nbe = {
 	browser : {icon : {}},
 	dynamic : {},
 	css : {},

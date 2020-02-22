@@ -1,6 +1,6 @@
 'use strict';
 
-nbe.notify.left_margin = function (editor, format) {
+nbe.notify.left_margin = function (editor, _format) {
 	var dec, inc, lines;
 
 	dec = 'off';

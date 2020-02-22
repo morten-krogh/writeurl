@@ -16,13 +16,13 @@ nbe.site.display_export = function () {
 
 	el_word = kite.browser.dom.ea('button', el_section);
 	el_word.textContent = 'Word';
-	el_word.addEventListener('click', function (e) {
+	el_word.addEventListener('click', function (_e) {
 		nbe.lib.save_as(new Blob([nbe.doc.html(nbe.dynamic.doc)], {type : 'application/vnd.ms-word'}), nbe.dynamic.get_title() + '.doc');
 	}, false);
 
 	el_html = kite.browser.dom.ea('button', el_section);
 	el_html.textContent = 'HTML';
-	el_html.addEventListener('click', function (e) {
+	el_html.addEventListener('click', function (_e) {
 		nbe.lib.save_as(new Blob([nbe.doc.html(nbe.dynamic.doc)], {type : 'text/html'}), nbe.dynamic.get_title() + '.html');
 	}, false);
 
@@ -30,7 +30,7 @@ nbe.site.display_export = function () {
 
 	el_close = kite.browser.dom.ea('button', el_export);
 	el_close.textContent = 'Close';
-	el_close.addEventListener('click', function (e) {
+	el_close.addEventListener('click', function (_e) {
 		export_window.close();
 	}, false);
 

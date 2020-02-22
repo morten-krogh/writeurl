@@ -26,7 +26,7 @@ kite.browser.ui.Window_core = function () {
 	prev_width = document.documentElement.clientWidth;
 	prev_height = document.documentElement.clientHeight;
 
-	this.check_dimensions_position = function (e) {
+	this.check_dimensions_position = function (_e) {
 		if (prev_width !== document.documentElement.clientWidth || prev_height !== document.documentElement.clientHeight) {
 			that.position();
 			prev_width = document.documentElement.clientWidth;
@@ -35,7 +35,7 @@ kite.browser.ui.Window_core = function () {
 	};
 
 	// Default action, run in position()
-	this.action = function (el_target, target_position) {
+	this.action = function (_el_target, _target_position) {
 		return true;
 	};
 };
@@ -216,7 +216,7 @@ kite.browser.ui.Window_core.prototype.insert_close_button = function () {
 	var that = this;
 	this.close_button = kite.browser.dom.eac('img', kite.browser.dom.eac('div', this.header, 'close_div'), 'close_button');
 	this.close_button.src = '/public/inlund/img/close.png';
-	this.close_button.addEventListener('click', function (e) {
+	this.close_button.addEventListener('click', function (_e) {
 		that.terminate();
 	}, false);
 };
@@ -248,7 +248,7 @@ kite.browser.ui.Dialog = function () {
 
 	that.container.className = 'container_dark';
 	that.cover = kite.browser.dom.ec('div', 'dialog_cover');
-	that.cover.addEventListener('click', function (e) {
+	that.cover.addEventListener('click', function (_e) {
 		kite.browser.animation.shake(that.element, null);
 	}, false);
 
@@ -337,7 +337,7 @@ kite.browser.ui.Pop_up = function () {
 	el_arrow = kite.browser.dom.ea('img', el_arrow_container);
 	el_arrow.src = '/public/inlund/img/pop_up_arrow.png';
 
-	that.action = function (el_target, target_position) {
+	that.action = function (_el_target, target_position) {
 		that.element.style.top = target_position.top + 'px';
 		kite.browser.animation.Slide_up(that.element, {duration : 100, padding: 1, callback : function () {
 			that.size();

@@ -7,7 +7,7 @@ nbe.site.display_feedback = function () {
 	feedback_window.set_title('Feedback');
 
 	el_button = document.getElementById('feedback');
-	el_button.addEventListener('click', function (e) {
+	el_button.addEventListener('click', function (_e) {
 		feedback_window.open();
 	}, false);
 
@@ -34,11 +34,11 @@ nbe.site.display_feedback = function () {
 
 	el_send = kite.browser.dom.ea('button', el_buttons);
 	el_send.innerHTML = 'Send';
-	el_send.addEventListener('click', function (e) {
+	el_send.addEventListener('click', function (_e) {
 		if (el_message.value) {
 			if (!el_email_address.value || (el_email_address.value && nbe.lib.valid_email(el_email_address.value))) {
 				var body = {type : 'feedback', name : el_name.value, mail : el_email_address.value, message : el_message.value};
-				nbe.lib.xhr('POST', nbe.config.feedback_url, {}, JSON.stringify(body), 0, function (response) {
+				nbe.lib.xhr('POST', nbe.config.feedback_url, {}, JSON.stringify(body), 0, function (_response) {
 					el_name.value = '';
 					el_email_address.value = '';
 					el_message.value = '';
@@ -48,7 +48,7 @@ nbe.site.display_feedback = function () {
 						kite.browser.animation.Fade_out(el_send_message, {duration : 4000});
 					}, 2000);
 				}, function () {}, function () {
-				 // error
+                    // error
 					el_send_message.innerHTML = 'Server error, please try again.';
 					el_send_message.className = 'message_failure';
 					setTimeout(function () {
@@ -75,7 +75,7 @@ nbe.site.display_feedback = function () {
 
 	el_close = kite.browser.dom.ea('button', el_buttons);
 	el_close.innerHTML = 'Close';
-	el_close.addEventListener('click', function (e) {
+	el_close.addEventListener('click', function (_e) {
 		feedback_window.close();
 	}, false);
 

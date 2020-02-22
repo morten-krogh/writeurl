@@ -127,7 +127,7 @@ if (typeof document !== "undefined" && !("classList" in document.createElement("
 if (window.Element && !window.addEventListener) {
 	var attach, remove;
 
-	attach = function (type, listener, useCapture) {
+	attach = function (type, listener, _useCapture) {
 		this.attachEvent('on' + type, function () {
 			var event;
 
@@ -138,7 +138,7 @@ if (window.Element && !window.addEventListener) {
 		});
 	};
 
-	remove = function (type, listener, useCapture) {
+	remove = function (type, listener, _useCapture) {
 		this.detachEvent('on' + type, listener);
 	};
 

@@ -33,7 +33,7 @@ nbe.inputs.color_menu = function (trigger, default_color, default_label, colors,
 
 	el_default = kite.browser.dom.eac('div', element, 'wu-color_default');
 
-	rgb_input = function (e) {
+	rgb_input = function (_e) {
 		var new_value;
 
 		if (el_r.value !== '' && el_g.value !== '' && el_b.value !== '') {
@@ -105,7 +105,7 @@ nbe.inputs.color_menu = function (trigger, default_color, default_label, colors,
 		value = new_value;
 	};
 
-	return {display : function (parent, offset_element, new_value) {
+	return {display : function (_parent, offset_element, new_value) {
 		var rgb, offset;
 
 		is_open = true;

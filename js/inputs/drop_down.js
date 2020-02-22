@@ -30,7 +30,7 @@ nbe.inputs.drop_down = function (type, title, menu_content, button_content, pare
 	if (display_input) {
 		element.appendChild(el_input);
 		el_input.type = 'text';
-		input_handler = function (e) {
+		input_handler = function (_e) {
 			var new_value = el_input.value.replace(/\s/g, '');
 
 			if (isNaN(new_value)) {
@@ -49,7 +49,7 @@ nbe.inputs.drop_down = function (type, title, menu_content, button_content, pare
 		}, false);
 	}
 
-	document.body.addEventListener('click', function (e) {
+	document.body.addEventListener('click', function (_e) {
 		if (el_menu.parentNode && close) {
 			el_panel.removeChild(el_menu);
 		}

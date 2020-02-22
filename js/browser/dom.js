@@ -21,7 +21,7 @@ kite.browser.dom.ea = function (type, append_to) {
 	return element;
 };
 
-kite.browser.dom.input = function (type, id, name, value, classname, placeholder, append_to) {
+kite.browser.dom.input = function (_type, _id, _name, _value, _classname, _placeholder, append_to) {
 	var element, properties, i, p;
 
 	element = document.createElement('input');

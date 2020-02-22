@@ -5,11 +5,11 @@ kite.browser.ui.Move_resize_core = function (element, options) {
 
 	// Default options
 	this.drag = {
-		element:					element,
-		container:				element.parentNode,
-		direction:				null,
-		padding:					0,
-		step_size:				1
+		element: element,
+		container: element.parentNode,
+		direction: null,
+		padding: 0,
+		step_size: 1
 	};
 
 	this.change_options(options);
@@ -43,7 +43,7 @@ kite.browser.ui.Move_resize_core.prototype.drag_start = function (e, options) {
 	this.drag.cursor_start_x = cursor.x;
 	this.drag.cursor_start_y = cursor.y;
 
-	stop = function (e) {
+	stop = function (_e) {
 		document.removeEventListener("mousemove", that.go, false);
 		document.removeEventListener("mouseup", stop, false);
 		if (options.stop_callback) {

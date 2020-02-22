@@ -40,7 +40,7 @@ nbe.site.display_share = function (ids) {
 
 		el_publish_message = kite.browser.dom.ea('span', section.element);
 
-		el_html.addEventListener('click', function (event) {
+		el_html.addEventListener('click', function (_e) {
 			nbe.dynamic.publish.publish(function (response) {
 
 				if (response === 'published') {
@@ -102,14 +102,14 @@ nbe.site.display_share = function (ids) {
 		el_message = kite.browser.dom.ea('textarea', el_email);
 		el_email_send = kite.browser.dom.eac('button', el_email, 'send');
 		el_email_send.textContent = 'Send';
-		el_email_send.addEventListener('click', function (e) {
+		el_email_send.addEventListener('click', function (_e) {
 			var body, emails;
 
 			emails = nbe.lib.share_emails(el_email_address.value);
 
 			if (emails.invalid.length === 0 && emails.valid.length !== 0) {
 				body = {type : 'share', emails : emails.valid, message : el_message.value, access : access, url : nbe.config.urls(ids)[access], title : nbe.dynamic.get_title()};
-				nbe.lib.xhr('POST', nbe.config.share_url, {}, JSON.stringify(body), 0, function (response) {
+				nbe.lib.xhr('POST', nbe.config.share_url, {}, JSON.stringify(body), 0, function (_response) {
 					el_email_address.value = '';
 					el_email_message.textContent = 'The invitation has been sent.';
 					el_email_message.className = 'message_success';
@@ -131,7 +131,7 @@ nbe.site.display_share = function (ids) {
 
 	el_close = kite.browser.dom.ea('button', el_share);
 	el_close.textContent = 'Close';
-	el_close.addEventListener('click', function (e) {
+	el_close.addEventListener('click', function (_e) {
 		share_window.close();
 	}, false);
 

@@ -9,14 +9,14 @@ nbe.site.status_panel = function (ids) {
 
 	el_share_button = kite.browser.dom.eac('button', element, 'circle_button');
 	el_share_button.textContent = 'Share';
-	el_share_button.addEventListener('click', function (e) {
+	el_share_button.addEventListener('click', function (_e) {
 		share.display(ids);
 	}, false);
 
 	display_export = nbe.site.display_export(ids);
 
 	el_export_button = nbe.browser.icon.exporticon(element);
-	el_export_button.addEventListener('click', function (e) {
+	el_export_button.addEventListener('click', function (_e) {
 		display_export.display();
 	}, false);
 

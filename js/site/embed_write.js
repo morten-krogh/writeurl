@@ -22,6 +22,5 @@ nbe.site.embed_write = function (el, ids) {
 	el_text = document.createElement('div');
 	el.appendChild(el_text);
 
-	console.log(ids);
 	nbe.site.embed(el_text, el_title, el_panel, ids, false, ws_url, true, false, function () {});
 };

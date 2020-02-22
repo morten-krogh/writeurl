@@ -1,6 +1,6 @@
 'use strict';
 
-nbe.paste.br = function (state, node) {
+nbe.paste.br = function (state, _node) {
 	var line;
 
 	line = {type : 'line', val : {}, children : []};

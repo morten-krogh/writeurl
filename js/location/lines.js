@@ -1,12 +1,11 @@
 'use strict';
 
 nbe.location.lines = function (editor) {
-	var lines, nodes, start, end, node_line_start, node_line_end, children, index_start, index_end;
+	var lines, start, end, node_line_start, node_line_end, children, index_start, index_end;
 
 	lines = [];
 
 	if (editor.location) {
-		nodes = editor.state.nodes;
 		start = editor.location.start;
 		end = editor.location.collapsed ? start : editor.location.end;
 

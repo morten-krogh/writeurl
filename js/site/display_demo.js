@@ -3,7 +3,7 @@
 nbe.site.display_demo = function () {
 	var doc, ops, editor_write, editor_read;
 
-	doc = nbe.doc.create({id : 'demo', read : null, write : null, new_doc : true}, false, null, function (key, value) {});
+	doc = nbe.doc.create({id : 'demo', read : null, write : null, new_doc : true}, false, null, function (_key, _value) {});
 
 	ops = [
                 {domop : 'append', id : 'line2', parent : 'root', type : 'line', val : {}},

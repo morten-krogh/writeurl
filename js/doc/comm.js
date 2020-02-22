@@ -13,7 +13,7 @@ nbe.doc.comm = function (doc, server_url, callback_status) {
 			doc.local_storage.write();
 			send_sync();
 		} else {
-			console.log('The id is already taken');
+			alert('The id is already taken');
 		}
 	};
 

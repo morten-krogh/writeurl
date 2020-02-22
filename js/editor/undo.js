@@ -37,7 +37,7 @@ nbe.editor.undo = function (editor) {
 		notify_buttons();
 	};
 
-	trigger = function (type, value) {
+	trigger = function (_type, value) {
 		var oploc, oploc_inv;
 
 		if (value === 'undo' && undoes.length !== 0) {

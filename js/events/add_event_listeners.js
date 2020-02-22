@@ -5,12 +5,12 @@ nbe.events.add_event_listeners = function (editor) {
 
 	el_editor = editor.el_editor;
 
-	el_editor.addEventListener('click', function (event) {
+	el_editor.addEventListener('click', function (_event) {
 		//console.log('click');
 		nbe.location.get_format(editor);
 	}, false);
 
-	el_editor.addEventListener('touchend', function (event) {
+	el_editor.addEventListener('touchend', function (_event) {
 		setTimeout(function () {
 			nbe.location.get_format(editor);
 		}, 0);
@@ -64,35 +64,35 @@ nbe.events.add_event_listeners = function (editor) {
 		}
 	}, false);
 
-	el_editor.addEventListener('mousedown', function (event) {
+	el_editor.addEventListener('mousedown', function (_event) {
 		// console.log('mousedown');
 	}, false);
 
-	el_editor.addEventListener('mouseup', function (event) {
+	el_editor.addEventListener('mouseup', function (_event) {
 		nbe.location.get_format(editor);
 	}, false);
 
-	el_editor.addEventListener('mouseout', function (event) {
+	el_editor.addEventListener('mouseout', function (_event) {
 	}, false);
 
-	el_editor.addEventListener('focus', function (event) {
+	el_editor.addEventListener('focus', function (_event) {
 		//console.log('focus');
 		editor.focus = true;
 	}, false);
 
-	el_editor.addEventListener('blur', function (event) {
+	el_editor.addEventListener('blur', function (_event) {
 		editor.focus = false;
 	}, false);
 
-	el_editor.addEventListener('select', function (event) {
+	el_editor.addEventListener('select', function (_event) {
 		editor.trigger('select', null);
 	}, false);
 
-	el_editor.addEventListener('paste', function (event) {
+	el_editor.addEventListener('paste', function (_event) {
 		editor.trigger('paste', null);
 	}, false);
 
-	el_editor.addEventListener('cut', function (event) {
+	el_editor.addEventListener('cut', function (_event) {
 		editor.trigger('cut', null);
 	}, false);
 
