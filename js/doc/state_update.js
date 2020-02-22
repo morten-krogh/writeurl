@@ -19,6 +19,6 @@ nbe.doc.state_update = function (state, operations) {
 	});
 
 	nbe.state.update(null, state.text, null, ops.text);
-	nbe.title.state_update(state.title, ops.title);
+    state.title.update(ops.title);
 	nbe.publish.state_update(state.publish, ops.publish);
 };

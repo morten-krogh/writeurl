@@ -1,9 +1,9 @@
-'use strict';
+import { TitleState } from '../title/title.js';
 
 nbe.doc.state_init = function () {
 	return {
 		text : nbe.state.deserialize(nbe.state.initial()),
-		title : nbe.title.state_init(),
+		title : new TitleState(),
 		publish : nbe.publish.state_init()
 	};
 };

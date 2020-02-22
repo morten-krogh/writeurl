@@ -1,4 +1,4 @@
-'use strict';
+import { TitleState } from '../title/title.js';
 
 nbe.doc.state_deserialize = function (value) {
 	var parsed;
@@ -7,7 +7,7 @@ nbe.doc.state_deserialize = function (value) {
 
 	return {
 		text : nbe.state.deserialize(parsed.text),
-		title : parsed.title,
+		title : new TitleState(parsed.title.value),
 		publish : parsed.publish
 	};
 };
