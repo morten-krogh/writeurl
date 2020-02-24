@@ -1,4 +1,5 @@
 import { TitleEditor } from '../title.js';
+import { PublishEditor } from '../publish.js';
 
 nbe.doc.editors = function (doc) {
 	var editors, add, remove, notify;
@@ -28,9 +29,8 @@ nbe.doc.editors = function (doc) {
 			editor = new TitleEditor(editor_id, options, doc, title_state);
 			editor.add_external_ops(ops_editor, false);
 		} else if (editor_type === 'publish') {
-			const state = nbe.publish.state_copy(doc.state.publish);
-			editor = nbe.publish.create(editor_id, doc);
-			editor.init(state);
+			const publish_state = doc.state.publish.copy();
+			editor = new PublishEditor(editor_id, doc, publish_state);
 			editor.add_external_ops(ops_editor, false);
 		}
 

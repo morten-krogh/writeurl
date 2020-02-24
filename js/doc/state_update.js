@@ -1,24 +1,20 @@
 'use strict';
 
 nbe.doc.state_update = function (state, operations) {
-	var ops;
-
-	ops = {
+	const ops = {
 		text : [],
 		title : [],
 		publish : []
 	};
 
-	operations.forEach(function (operation) {
-		operation.ops.forEach(function (op) {
-			var editor_class;
-
-			editor_class = 'editor_class' in op ? op.editor_class : 'text';
+    for (const operation of operations) {
+        for (const op of operation.ops) {
+			const editor_class = 'editor_class' in op ? op.editor_class : 'text';
 			ops[editor_class].push(op);
-		});
-	});
+		}
+	}
 
 	nbe.state.update(null, state.text, null, ops.text);
     state.title.update(ops.title);
-	nbe.publish.state_update(state.publish, ops.publish);
+    state.publish.update(ops.publish);
 };
