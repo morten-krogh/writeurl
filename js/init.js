@@ -153,7 +153,6 @@ import './paste/remaining.js';
 import './browser/dom.js';
 import './browser/ui.js';
 import './browser/move_resize.js';
-import './browser/animation.js';
 import './browser/icon.js';
 
 import './inputs/color_menu.js';
