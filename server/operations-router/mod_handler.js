@@ -45,7 +45,7 @@ var type_unknown = function (state, ws, msg) {
 				reply = {type : 'unknown', text : 'noexist'};
 			}
 		} else {
-			reply = {text : 'noexist'};
+			reply = {type: 'unknown', text : 'noexist'};
 		}
 		ws.send(JSON.stringify(reply));
 	} else {

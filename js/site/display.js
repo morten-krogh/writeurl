@@ -391,6 +391,11 @@ function status_panel(ids) {
 	return {set_status : set_status, display : display};
 }
 
+function doc_noexist(_doc) {
+	const el_message = kite.browser.dom.eac('div', document.body, 'full_screen_message');
+	kite.browser.dom.ea('div', el_message).textContent = 'The document is not known to the server.';
+}
+
 export { 
     TryingToConnect, 
     display_url_error,
@@ -398,4 +403,5 @@ export {
     display_editor,
     display_demo,
     status_panel,
+    doc_noexist,
 };

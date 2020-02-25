@@ -1,7 +1,6 @@
 
 import './site/first.js';
 import './site/panel.js';
-import './site/doc_noexist.js';
 import './site/supported_front.js';
 import './site/scroller.js';
 import './site/embed.js';

@@ -11,7 +11,6 @@ const urlstocache = [
     '/css/publish.css',
     '/js/site/first.js',
     '/js/site/panel.js',
-    '/js/site/doc_noexist.js',
     '/js/site/wrong_password.js',
     '/js/site/loading.js',
     '/js/site/supported_doc.js',

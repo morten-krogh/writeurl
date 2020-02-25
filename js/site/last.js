@@ -5,6 +5,7 @@ import {
     display_editor,
     display_url_error,
     status_panel,
+    doc_noexist,
 } from './display.js';
 
 (function () {
@@ -35,6 +36,7 @@ import {
 		document.getElementById('faq').target = '_blank';
 
 		const callback_status = function (key, value) {
+            console.log(key, value);
 			if (key === 'doc') {
 				trying_to_connect.off();
 				if (value === 'exist') {
@@ -44,7 +46,7 @@ import {
 						status_panel_obj.display(document.getElementById('panel'));
 					}
 				} else if (value === 'noexist') {
-					nbe.site.doc_noexist(doc);
+					doc_noexist(doc);
 				}
 			} else if (key === 'password') {
 				if (value === 'wrong password') {
