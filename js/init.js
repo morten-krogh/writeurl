@@ -1,12 +1,6 @@
 
 import './site/first.js';
 import './site/panel.js';
-import './site/status_panel.js';
-import './site/display_demo.js';
-import './site/display_editor.js';
-import './site/display_share.js';
-import './site/display_feedback.js';
-import './site/display_export.js';
 import './site/doc_noexist.js';
 import './site/supported_front.js';
 import './site/scroller.js';
@@ -147,6 +141,7 @@ import './paste/text.js';
 import './paste/br.js';
 import './paste/remaining.js';
 
+import './browser/animation.js';
 import './browser/dom.js';
 import './browser/ui.js';
 import './browser/move_resize.js';

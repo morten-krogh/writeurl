@@ -1,6 +1,4 @@
-'use strict';
-
-nbe.site.panel = function (el_panel_container, editor) {
+function insert_panel(el_panel_container, editor) {
 	var defval, left_margin_initial_value, is_visible, buttons, el_panel, toggle_panel, el_toggle_panel, el_font, font_family_spec, el_format, el_color, el_paragraph, el_insert, key, button_undo, el_hide_format_panel;
 
 	defval = nbe.state.formats.default_values;
@@ -87,4 +85,6 @@ nbe.site.panel = function (el_panel_container, editor) {
 	el_hide_format_panel = kite.browser.dom.eac('button', el_panel, 'hide circle_button');
 	el_hide_format_panel.textContent = 'Close';
 	el_hide_format_panel.addEventListener('click', toggle_panel, false);
-};
+}
+
+export { insert_panel };

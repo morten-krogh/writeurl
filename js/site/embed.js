@@ -1,4 +1,4 @@
-'use strict';
+import { insert_panel } from './panel.js';
 
 /*
 	el_text, el_title, el_panel : elements for insertion of text, title and panel. If they are null, there is no insertion.
@@ -34,7 +34,7 @@ nbe.site.embed = function (el_text, el_title, el_panel, ids, new_doc, ws_url, lo
 				dom_id_to_el(el_title).appendChild(title_editor.el_editor);
 			}
 			if (el_panel) {
-				nbe.site.panel(dom_id_to_el(el_panel), editor);
+				insert_panel(dom_id_to_el(el_panel), editor);
 			}
 		}
 	};

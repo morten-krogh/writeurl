@@ -1,18 +1,23 @@
-import { TryingToConnect, display_url_error } from './display_message.js';
-
-'use strict';
+import { 
+	display_feedback,
+    display_demo,
+    TryingToConnect, 
+    display_editor,
+    display_url_error,
+    status_panel,
+} from './display.js';
 
 (function () {
 	const ids = nbe.config.parse_pathname(window.location.pathname);
 
-	nbe.site.display_feedback();
+	display_feedback();
 
 	if (ids.prefix === 'new') {
 		window.location = nbe.config.new_url();
 	} else if ((ids.prefix !== 'text'  && ids.prefix !== 'scroller') || ids.id === null || ids.read === null || (ids.new_doc && ids.write === null)) {
         window.history.replaceState('', '', nbe.config.home_pathname);
 		document.getElementById('frontpage').style.display = 'inline';
-		nbe.site.display_demo();
+		display_demo();
 		nbe.site.supported_front();
 	} else {
 		if (ids.new_doc) {
@@ -21,23 +26,22 @@ import { TryingToConnect, display_url_error } from './display_message.js';
 
 		const trying_to_connect = new TryingToConnect();
 		trying_to_connect.on();
-        let status_panel;
+        let status_panel_obj;
 		if (ids.write !== null) {
-			status_panel = nbe.site.status_panel(ids);
+			status_panel_obj = status_panel(ids);
 		}
 
 		document.getElementById('home').target = '_blank';
 		document.getElementById('faq').target = '_blank';
 
 		const callback_status = function (key, value) {
-            console.log(key, value);
 			if (key === 'doc') {
 				trying_to_connect.off();
 				if (value === 'exist') {
 					doc.comm.notify();
-					nbe.site.display_editor(doc);
+					display_editor(doc);
 					if (ids.write !== null) {
-						status_panel.display(document.getElementById('panel'));
+						status_panel_obj.display(document.getElementById('panel'));
 					}
 				} else if (value === 'noexist') {
 					nbe.site.doc_noexist(doc);
@@ -48,7 +52,7 @@ import { TryingToConnect, display_url_error } from './display_message.js';
 				}
 			} else if (key === 'network' || key === 'nunsaved') {
 				if (ids.write !== null) {
-					status_panel.set_status(key, value);
+					status_panel_obj.set_status(key, value);
 				}
 			}
 		};
