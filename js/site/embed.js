@@ -1,4 +1,4 @@
-import { insert_panel } from './panel.js';
+import { insert_panel } from './display.js';
 
 /*
 	el_text, el_title, el_panel : elements for insertion of text, title and panel. If they are null, there is no insertion.
