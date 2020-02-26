@@ -1,11 +1,5 @@
 
-import './site/first.js';
-import './site/supported_front.js';
-import './site/scroller.js';
-import './site/embed.js';
-import './site/embed_read.js';
-import './site/embed_write.js';
-import './site/embed_new.js';
+import './first.js';
 
 import './config.js';
 
@@ -172,4 +166,4 @@ import './inputs/edit_image.js';
 
 import './css/publish.js';
 
-import './site/last.js';
+import './last.js';

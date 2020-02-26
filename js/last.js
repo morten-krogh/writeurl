@@ -6,7 +6,8 @@ import {
     display_url_error,
     status_panel,
     doc_noexist,
-} from './display.js';
+    supported_front,
+} from './site.js';
 
 (function () {
 	const ids = nbe.config.parse_pathname(window.location.pathname);
@@ -19,7 +20,7 @@ import {
         window.history.replaceState('', '', nbe.config.home_pathname);
 		document.getElementById('frontpage').style.display = 'inline';
 		display_demo();
-		nbe.site.supported_front();
+		supported_front();
 	} else {
 		if (ids.new_doc) {
 			window.history.replaceState('', '', nbe.config.write_pathname(ids));
@@ -36,7 +37,6 @@ import {
 		document.getElementById('faq').target = '_blank';
 
 		const callback_status = function (key, value) {
-            console.log(key, value);
 			if (key === 'doc') {
 				trying_to_connect.off();
 				if (value === 'exist') {
