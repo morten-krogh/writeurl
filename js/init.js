@@ -27,28 +27,7 @@ import './doc/state_update.js';
 import './doc/state_serialize.js';
 import './doc/state_deserialize.js';
 
-import './state/initial.js';
-import './state/init.js';
-import './state/clean.js';
-import './state/update.js';
-import './state/element.js';
-import './state/mutate_element.js';
-import './state/formats.js';
-import './state/line_font_size.js';
-import './state/reset_counter.js';
-import './state/copy_text_format.js';
-import './state/copy_line_format.js';
-import './state/line_val_merge.js';
-import './state/cmp_value_format.js';
-import './state/cmp_text_format.js';
-import './state/set_format.js';
-import './state/line_classes.js';
-import './state/invert_ops.js';
-import './state/invert_oploc.js';
-import './state/left_margin.js';
-import './state/serialize.js';
-import './state/deserialize.js';
-import './state/state_copy.js';
+import './state.js';
 
 import './location.js';
 
