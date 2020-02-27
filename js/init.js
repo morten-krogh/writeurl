@@ -133,11 +133,7 @@ import './paste/text.js';
 import './paste/br.js';
 import './paste/remaining.js';
 
-import './browser/animation.js';
-import './browser/dom.js';
-import './browser/ui.js';
-import './browser/move_resize.js';
-import './browser/icon.js';
+import './browser.js';
 
 import './inputs/color_menu.js';
 import './inputs/input.js';
