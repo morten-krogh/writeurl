@@ -66,25 +66,7 @@ import './events/add_event_listeners.js';
 import './events/observer.js';
 import './events/subtree.js';
 
-import './triggers/trigger.js';
-import './triggers/format.js';
-import './triggers/format_collapsed.js';
-import './triggers/text_format.js';
-import './triggers/line_format.js';
-import './triggers/left_margin.js';
-import './triggers/text.js';
-import './triggers/text_collapsed.js';
-import './triggers/del.js';
-import './triggers/tab.js';
-import './triggers/newline.js';
-import './triggers/img.js';
-import './triggers/link.js';
-import './triggers/paste.js';
-import './triggers/cut.js';
-import './triggers/select.js';
-import './triggers/insertion.js';
-import './triggers/observer.js';
-import './triggers/subtree.js';
+import './trigger.js';
 
 import './editor/create.js';
 import './editor/undo.js';
