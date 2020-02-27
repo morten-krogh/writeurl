@@ -118,7 +118,6 @@ div.editor_container {
 body.read_editor div.editor_container {
 	top : 0;
 }
-
 article, header, section, aside, footer {
 	display : block;
 }
@@ -488,9 +487,7 @@ and (max-width : 460px) {
 		float : none;
 		width : auto;
 	}
-}
-
-.wu-title-container {
+}.wu-title-container {
 	height : 30px;
 }
 
@@ -503,7 +500,6 @@ input.wu-title {
 	padding : 5px 5px 5px 0;
 	border-bottom : 2px solid rgb(220,220,220);
 }
-
 .wu-editor {
 	white-space : pre-wrap;
 	word-wrap : break-word;
@@ -522,25 +518,207 @@ input.wu-title {
 .wu-root {
 	background-color : white;
 	min-height : 400px;
+}/* Line styles */
+
+.wu-line, .wu-line > span {
+	line-height : 160%;
 }
 
-.wu-format-panel {
-	font-size : 16px;
-	font-weight : normal;
-	overflow : hidden;
-	z-index : 2;
-	position : relative;
+.wu-line.wu-right {
+	text-align : right;
 }
 
-.wu-format-panel > div {
-	float : left;
-	margin-right : 14px;
+.wu-line.wu-center {
+	text-align : center;
 }
 
-.wu-toggle {
-	display : none;
+.wu-line.wu-justify {
+	text-align : justify;
 }
 
+/* Line spacing */
+
+.wu-line_spacing_05, .wu-line_spacing_05 > span {
+	line-height : 50%;
+}
+
+.wu-line_spacing_06, .wu-line_spacing_06 > span {
+	line-height : 60%;
+}
+
+.wu-line_spacing_07, .wu-line_spacing_07 > span {
+	line-height : 70%;
+}
+
+.wu-line_spacing_08, .wu-line_spacing_08 > span {
+	line-height : 80%;
+}
+
+.wu-line_spacing_09, .wu-line_spacing_09 > span {
+	line-height : 90%;
+}
+
+.wu-line_spacing_10, .wu-line_spacing_10 > span {
+	line-height : 100%;
+}
+
+.wu-line_spacing_11, .wu-line_spacing_11 > span {
+	line-height : 110%;
+}
+
+.wu-line_spacing_12, .wu-line_spacing_12 > span {
+	line-height : 120%;
+}
+
+.wu-line_spacing_13, .wu-line_spacing_13 > span {
+	line-height : 130%;
+}
+
+.wu-line_spacing_14, .wu-line_spacing_14 > span {
+	line-height : 140%;
+}
+
+.wu-line_spacing_15, .wu-line_spacing_15 > span {
+	line-height : 150%;
+}
+
+.wu-line_spacing_16, .wu-line_spacing_16 > span {
+	line-height : 160%;
+}
+
+.wu-line_spacing_17, .wu-line_spacing_17 > span {
+	line-height : 170%;
+}
+
+.wu-line_spacing_18, .wu-line_spacing_18 > span {
+	line-height : 180%;
+}
+
+.wu-line_spacing_19, .wu-line_spacing_19 > span {
+	line-height : 190%;
+}
+
+.wu-line_spacing_20, .wu-line_spacing_20 > span {
+	line-height : 200%;
+}
+
+/* Lists */
+
+.wu-disc, .wu-square {
+	display : list-item;
+	list-style : inside;
+}
+
+.wu-lower-alpha, .wu-lower-roman , .wu-lower-roman, .wu-upper-alpha, .wu-upper-roman {
+	display : block;
+}
+
+.wu-disc {
+	list-style-type : disc;
+}
+
+.wu-lower-alpha:before {
+	counter-increment : item;
+	content : counter(item, lower-alpha) ". "
+}
+
+.wu-lower-roman:before {
+	counter-increment : item;
+	content : counter(item, lower-roman) ". "
+}
+
+.wu-square {
+	list-style-type : square;
+}
+
+.wu-upper-alpha:before {
+	counter-increment : item;
+	content : counter(item, upper-alpha) ". "
+}
+
+.wu-upper-roman:before {
+	counter-increment : item;
+	content : counter(item, upper-roman) ". "
+}
+
+.wu-ordered {
+	display : block;
+}
+
+.wu-ordered:before {
+	counter-increment : item;
+	content : counter(item) ". "
+}
+
+.wu-reset-counter {
+	counter-reset : item;
+}
+
+/* Heading */
+
+.wu-line.wu-heading1, .wu-line.wu-heading1 span {
+	display: block;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	font-size: 135%;
+}
+
+.wu-line.wu-heading2, .wu-line.wu-heading2 span {
+	display: block;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	font-size: 130%;
+}
+
+.wu-line.wu-heading3, .wu-line.wu-heading3 span {
+	display: block;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	font-size: 125%;
+}
+
+.wu-line.wu-heading4, .wu-line.wu-heading4 span {
+	display: block;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	font-size: 120%;
+}
+
+.wu-line.wu-heading5, .wu-line.wu-heading5 span {
+	display: block;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	font-size: 115%;
+}
+
+.wu-line.wu-heading6, .wu-line.wu-heading6 span {
+	display: block;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	font-size: 110%;
+}
+
+.wu-line.wu-heading1 span, .wu-line.wu-heading2 span, .wu-line.wu-heading3 span, .wu-line.wu-heading4 span, .wu-line.wu-heading5 span, .wu-line.wu-heading6 span {
+	display : inline-block;
+}
+
+/* Text styles */
+
+.wu-text.wu-bold {
+	font-weight : bold;
+}
+
+.wu-text.wu-underline {
+	text-decoration : underline;
+}
+
+.wu-text.wu-italic {
+	font-style : italic;
+}
+
+.wu-text.wu-strikethrough {
+	text-decoration : line-through;
+}
 /****************************************************
   Format panel
 ****************************************************/
@@ -606,7 +784,6 @@ div.status_panel div, div.status_panel svg, div.status_panel button {
 	display : block;
 	float : left;
 }
-
 .wu-format-panel {
 	font-size : 16px;
 	font-weight : normal;
@@ -1019,7 +1196,6 @@ div.status_panel div, div.status_panel svg, div.status_panel button {
 	position : absolute;
 	right : 100%;
 }
-
 .button {
   background-color: white;
   text-align: center;
@@ -1102,7 +1278,6 @@ button.circle_button {
 a.circle_button:hover, button.circle_button:hover {
 	background-color : rgb(95,95,95);
 }
-
 div.nbe_window button {
 	font-size : 14px;
 }
@@ -1283,7 +1458,6 @@ div.nbe_window.feedback button:first-child {
 	float : left;
 	margin-right : 20px;
 }
-
 div.window {
 	position: fixed;
 	top: 50px;
@@ -1536,7 +1710,6 @@ div.switch_control {
 	font-size: 10px;
 	text-transform: uppercase;
 }
-
 @media print {
 	html {
 		height : 100%;
@@ -1560,7 +1733,6 @@ div.switch_control {
 		top : 0 !important;
 	}
 }
-
 /* Panel doesn't fit horizontally */
 @media only screen
 and (max-width : 1348px) {
