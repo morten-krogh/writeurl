@@ -1,82 +1,69 @@
 import { rnd_string } from './lib/rnd_string.js';
 
-function display_share(ids) {
-	var share_window, el_share, display_url, section, el_publish_message, el_close;
-
-	share_window = new kite.browser.ui.Window();
-	share_window.set_title('Share');
-
-	el_share = kite.browser.dom.ec('div', 'nbe_window share');
-	kite.browser.dom.ea('img', el_share).src = '/img/fork.svg';
-	kite.browser.dom.ea('h1', el_share).textContent = 'Share';
-	kite.browser.dom.ea('p', el_share).textContent = 'Share the write URL with collaborators or share the read or publish URLs with readers.';
-
-	display_url = function (heading, text, url) {
-		var el_section, el_heading, el_url;
-
-		el_section = kite.browser.dom.ea('div', el_share);
-		el_heading = kite.browser.dom.ea('h2', el_section);
+class ShareSection {
+    constructor(el_share, heading, text, url) {
+		this.el_section = kite.browser.dom.ea('div', el_share);
+		const el_heading = kite.browser.dom.ea('h2', this.el_section);
 		el_heading.textContent = heading;
 		kite.browser.dom.ea('span', el_heading).textContent = text;
-		el_url = kite.browser.dom.ea('a', el_section);
-		el_url.textContent = url;
-		el_url.href = url;
-		el_url.target = '_blank';
+		this.el_url = kite.browser.dom.ea('a', this.el_section);
+		this.el_url.textContent = url;
+		this.el_url.href = url;
+		this.el_url.target = '_blank';
+    }
+}
 
-		return {element : el_section, url : el_url};
-	};
+class Share {
+    constructor(ids) {
+        this.share_window = new kite.browser.ui.Window();
+        this.share_window.set_title('Share');
 
-	display_url('Write URL', '(Collaborators can edit the document with this URL)', nbe.config.urls(ids).write);
-	display_url('Read URL', '(Readers can view the document and see changes as you type)', nbe.config.urls(ids).read);
-	section = display_url('Publish URL', '(Readers can view the published version of this document)', nbe.config.urls(ids).publish);
+        this.el_share = kite.browser.dom.ec('div', 'nbe_window share');
+        kite.browser.dom.ea('img', this.el_share).src = '/img/fork.svg';
+        kite.browser.dom.ea('h1', this.el_share).textContent = 'Share';
+        kite.browser.dom.ea('p', this.el_share).textContent = 'Share the write URL with collaborators or share the read or publish URLs with readers.';
+        new ShareSection(this.el_share, 'Write URL', '(Collaborators can edit the document with this URL)', nbe.config.urls(ids).write);
+        new ShareSection(this.el_share, 'Read URL', '(Readers can view the document and see changes as you type)', nbe.config.urls(ids).read);
+        this.publish_section = new ShareSection(this.el_share, 'Publish URL', '(Readers can view the published version of this document)', nbe.config.urls(ids).publish);
 
-	(function () {
-		var el_html;
+        const el_html = kite.browser.dom.ea('button', this.publish_section.el_section);
+        el_html.textContent = 'Publish';
+        this.el_publish_message = kite.browser.dom.ea('span', this.publish_section.el_section);
+        el_html.addEventListener('click', _e => {
+                nbe.dynamic.publish.publish(response => {
+                    if (response === 'published') {
+                        this.el_publish_message.textContent = 'The document is published!';
+                        this.el_publish_message.className = 'message_success';
+                        this.publish_section.el_url.className = 'visible';
+                    } else if (response === 'not published') {
+                        this.el_publish_message.textContent = 'Error, please try again.';
+                        this.el_publish_message.className = 'message_failure';
+                    } else { // null
+                        this.el_publish_message.textContent = 'Network error.';
+                        this.el_publish_message.className = 'message_failure';
+                    }
+                });
+        }, false);
 
-		el_html = kite.browser.dom.ea('button', section.element);
-		el_html.textContent = 'Publish';
+        const el_close = kite.browser.dom.ea('button', this.el_share);
+        el_close.textContent = 'Close';
+        el_close.addEventListener('click', _e => {
+            this.share_window.close();
+        }, false);
 
-		//nbe.dynamic.publish.get_time(); // null or new Date(time)
+        this.share_window.set_content(this.el_share);
+    }
 
-		el_publish_message = kite.browser.dom.ea('span', section.element);
-
-		el_html.addEventListener('click', function (_e) {
-			nbe.dynamic.publish.publish(function (response) {
-
-				if (response === 'published') {
-					el_publish_message.textContent = 'The document is published!';
-					el_publish_message.className = 'message_success';
-					section.url.className = 'visible';
-				} else if (response === 'not published') {
-					el_publish_message.textContent = 'Error, please try again.';
-					el_publish_message.className = 'message_failure';
-				} else { // null
-					el_publish_message.textContent = 'Network error.';
-					el_publish_message.className = 'message_failure';
-				}
-			});
-		}, false);
-	}());
-
-	el_close = kite.browser.dom.ea('button', el_share);
-	el_close.textContent = 'Close';
-	el_close.addEventListener('click', function (_e) {
-		share_window.close();
-	}, false);
-
-	share_window.set_content(el_share);
-
-	return {display : function () {
-		//el_email_message.textContent = '';
-		el_publish_message.textContent = '';
-		section.element.appendChild(nbe.dynamic.publish.msg);
+    display() {
+		this.el_publish_message.textContent = '';
+		this.publish_section.el_section.appendChild(nbe.dynamic.publish.msg);
 		if (nbe.dynamic.publish.get_time() === null) {
-			section.url.className = 'hidden';
+			this.publish_section.el_url.className = 'hidden';
 		} else {
-			section.url.className = 'visible';
+			this.publish_section.el_url.className = 'visible';
 		}
-		share_window.open();
-	}};
+		this.share_window.open();
+	}
 }
 
 class TryingToConnect {
@@ -346,7 +333,7 @@ function status_panel(ids) {
 
 	element = kite.browser.dom.ec('div', 'status_panel');
 
-	share = display_share(ids);
+	share = new Share(ids);
 
 	el_share_button = kite.browser.dom.eac('button', element, 'circle_button');
 	el_share_button.textContent = 'Share';
