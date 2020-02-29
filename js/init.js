@@ -42,8 +42,7 @@ import './trigger.js';
 import './editor/create.js';
 import './editor/undo.js';
 
-import './notify/inputs.js';
-import './notify/left_margin.js';
+import './notify.js';
 
 import './paste.js';
 
