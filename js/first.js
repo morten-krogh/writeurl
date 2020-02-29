@@ -18,7 +18,6 @@ window.nbe = {
 	triggers : {},
 	ops : {},
 	editor : {},
-	paste : {},
 	title : {},
 	publish : {}
 };

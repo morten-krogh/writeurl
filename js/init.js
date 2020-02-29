@@ -53,16 +53,7 @@ import './editor/undo.js';
 import './notify/inputs.js';
 import './notify/left_margin.js';
 
-import './paste/clipboard.js';
-import './paste/insertion.js';
-import './paste/traverse.js';
-import './paste/div.js';
-import './paste/span.js';
-import './paste/link.js';
-import './paste/img.js';
-import './paste/text.js';
-import './paste/br.js';
-import './paste/remaining.js';
+import './paste.js';
 
 import './browser.js';
 
