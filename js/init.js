@@ -31,15 +31,7 @@ import './state.js';
 
 import './location.js';
 
-import './ops/append.js';
-import './ops/insert_before.js';
-import './ops/insert_after.js';
-import './ops/remove.js';
-import './ops/text.js';
-import './ops/link.js';
-import './ops/line.js';
-import './ops/root.js';
-import './ops/modified.js';
+import './ops.js';
 
 import './events/add_event_listeners.js';
 import './events/observer.js';
