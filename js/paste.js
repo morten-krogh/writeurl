@@ -1,3 +1,5 @@
+import { clone } from './lib.js';
+
 nbe.paste = {};
 
 nbe.paste.br = function (state, _node) {
@@ -31,7 +33,7 @@ nbe.paste.clipboard = function (callback) {
 nbe.paste.div = function (state, node) {
 	const format = state.format;
 
-	const format_div = nbe.lib.clone(format);
+	const format_div = clone(format);
 
 	const add_class = function (key, names) {
 		for (let i = 0; i < names.length; i++) {
@@ -185,7 +187,7 @@ nbe.paste.link = function (state, node) {
 
 nbe.paste.remaining = function (state, node) {
 	const format = state.format;
-	const format_remaining = nbe.lib.clone(format);
+	const format_remaining = clone(format);
 
 	switch (node.nodeName) {
 	case 'STRONG':
@@ -216,7 +218,7 @@ nbe.paste.remaining = function (state, node) {
 nbe.paste.span = function (state, node) {
 	const format = state.format;
 
-	const format_span = nbe.lib.clone(format);
+	const format_span = clone(format);
 
 	const add_classes = function (names) {
 		for (let i = 0; i < names.length; i++) {

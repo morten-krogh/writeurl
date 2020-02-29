@@ -1,4 +1,4 @@
-'use strict';
+import { clone } from './lib.js';
 
 nbe.triggers.cut = function (editor) {
 	editor.mutation.disconnect();
@@ -10,7 +10,6 @@ nbe.triggers.cut = function (editor) {
 		editor.mutation.observe();
 	}, 0);
 };
-'use strict';
 
 nbe.triggers.del = function (editor) {
 	var location, node, loc_start, start, end;
@@ -35,7 +34,6 @@ nbe.triggers.del = function (editor) {
 
 	return nbe.ops.root(editor, start, end, null);
 };
-'use strict';
 
 nbe.triggers.format = function (editor, type, value) {
 	nbe.state.set_format(type, value, editor.format);
@@ -49,7 +47,6 @@ nbe.triggers.format = function (editor, type, value) {
 		return nbe.triggers.line_format(editor, type, value);
 	}
 };
-'use strict';
 
 nbe.triggers.format_collapsed = function (editor, type, value) {
 	var line, ops, op, text_nodes, i, text_node;
@@ -81,14 +78,13 @@ nbe.triggers.format_collapsed = function (editor, type, value) {
 
 	return {ops : ops, loc_after : editor.location};
 };
-'use strict';
 
 nbe.triggers.img = function (editor, value) {
 	var node, op, oploc, location, start, end, val, insertion;
 
 	if ('id' in value && value.id in editor.state.nodes) {
 		node = editor.state.nodes[value.id];
-		op = {domop : 'mutate', id : value.id, before : node.val, after : nbe.lib.clone(value)};
+		op = {domop : 'mutate', id : value.id, before : node.val, after : clone(value)};
 		delete op.after.id;
 		oploc = {ops : [op], loc_after : editor.location};
 	} else if (!editor.location) {
@@ -103,7 +99,7 @@ nbe.triggers.img = function (editor, value) {
 			end = nbe.location.loc_to_point(editor, location.end);
 		}
 
-		val = nbe.lib.clone(value);
+		val = clone(value);
 		insertion = [{type : 'line', val : {}, children : [{type : 'img', val : val, children : []}]}];
 
 		oploc = nbe.ops.root(editor, start, end, insertion);
@@ -111,7 +107,6 @@ nbe.triggers.img = function (editor, value) {
 
 	return oploc;
 };
-'use strict';
 
 nbe.triggers.insertion = function (editor, insertion) {
 	var location, start, end;
@@ -131,7 +126,6 @@ nbe.triggers.insertion = function (editor, insertion) {
 
 	return nbe.ops.root(editor, start, end, insertion);
 };
-'use strict';
 
 nbe.triggers.left_margin = function (editor, value) {
 	var lines, ops;
@@ -158,7 +152,6 @@ nbe.triggers.left_margin = function (editor, value) {
 
 	return {ops : ops, loc_after : editor.location};
 };
-'use strict';
 
 nbe.triggers.line_format = function (editor, type, value) {
 	var lines, ops;
@@ -191,7 +184,6 @@ nbe.triggers.line_format = function (editor, type, value) {
 
 	return {ops : ops, loc_after : editor.location};
 };
-'use strict';
 
 nbe.triggers.link = function (editor, value) {
 	var node, op, oploc, location, start, end, link, insertion;
@@ -220,7 +212,6 @@ nbe.triggers.link = function (editor, value) {
 
 	return oploc;
 };
-'use strict';
 
 nbe.triggers.newline = function (editor) {
 	var location, start, end, insertion;
@@ -242,7 +233,6 @@ nbe.triggers.newline = function (editor) {
 
 	return nbe.ops.root(editor, start, end, insertion);
 };
-'use strict';
 
 nbe.triggers.observer = function (editor, mutations) {
 	var added_nodes, removed_nodes, mutated_nodes, add_to_array, remove_from_array, add_node, remove_node, mutate_node, add_line, lines, oploc;
@@ -332,7 +322,6 @@ nbe.triggers.observer = function (editor, mutations) {
 
 	return oploc;
 };
-'use strict';
 
 nbe.triggers.paste = function (editor) {
 	var callback;
@@ -343,7 +332,6 @@ nbe.triggers.paste = function (editor) {
 
 	nbe.paste.clipboard(callback);
 };
-'use strict';
 
 nbe.triggers.select = function (editor) {
 	var last, next, offset, location;
@@ -367,7 +355,6 @@ nbe.triggers.select = function (editor) {
 
 	nbe.location.set(editor, location);
 };
-'use strict';
 
 nbe.triggers.subtree = function (editor, events) {
 	var find_line, lines, i, oploc;
@@ -395,7 +382,6 @@ nbe.triggers.subtree = function (editor, events) {
 
 	return oploc;
 };
-'use strict';
 
 nbe.triggers.tab = function (editor) {
 	var node, oploc;
@@ -413,7 +399,6 @@ nbe.triggers.tab = function (editor) {
 
 	return oploc;
 };
-'use strict';
 
 nbe.triggers.text = function (editor, text) {
 	var location, start, end, val, insertion;
@@ -435,7 +420,6 @@ nbe.triggers.text = function (editor, text) {
 		return nbe.ops.root(editor, start, end, insertion);
 	}
 };
-'use strict';
 
 nbe.triggers.text_collapsed = function (editor, text) {
 	var max_text_length, start, node, op, val, insertion;
@@ -458,7 +442,6 @@ nbe.triggers.text_collapsed = function (editor, text) {
 		return nbe.ops.root(editor, start, start, insertion);
 	}
 };
-'use strict';
 
 nbe.triggers.text_format = function (editor, type, value) {
 	var nodes, start, end, loc_after, ops_split, ops_middle, ops_lines, ops;
@@ -558,7 +541,6 @@ nbe.triggers.text_format = function (editor, type, value) {
 
 	return {ops : ops, loc_after : loc_after};
 };
-'use strict';
 
 nbe.triggers.trigger = function (editor, type, value) {
 	var oploc, loc_after;

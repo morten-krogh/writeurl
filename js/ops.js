@@ -1,3 +1,5 @@
+import { clone } from './lib.js';
+
 nbe.ops.append = function (editor, id, items) {
 	const ops = [];
 	let iditem = null;
@@ -286,7 +288,7 @@ nbe.ops.modified = function (editor, ids) {
 
 		el = editor.dom[node.id];
 		if (node.val.text !== el.textContent) {
-			op = {domop : 'mutate', id : node.id, before : node.val, after : nbe.lib.clone(node.val)};
+			op = {domop : 'mutate', id : node.id, before : node.val, after : clone(node.val)};
 			op.after.text = el.textContent;
 			ops.push(op);
 		}
@@ -346,7 +348,7 @@ nbe.ops.modified = function (editor, ids) {
 			if (prev) {
 				node = nodes[prev];
 				if (node.type === 'text') {
-					val = nbe.lib.clone(node.val);
+					val = clone(node.val);
 				}
 			}
 			if (val === null) {
@@ -354,7 +356,7 @@ nbe.ops.modified = function (editor, ids) {
 				if (next) {
 					node = nodes[next];
 					if (node.type === 'text') {
-						val = nbe.lib.clone(node.val);
+						val = clone(node.val);
 					}
 				}
 			}
@@ -506,7 +508,7 @@ nbe.ops.root = function (editor, start, end, insertion) {
 			conc(nbe.ops.line(editor, start, end, insertion[0].children));
 			new_line_id = editor.new_id();
 			split_point = nbe.location.split_merge_point(end);
-			parentval = nbe.lib.clone(line_start.val);
+			parentval = clone(line_start.val);
 			childval = nbe.state.copy_line_format(editor.format, {});
 			if (start.node === line_start) {
 				delete parentval.heading;
@@ -550,14 +552,14 @@ nbe.ops.root = function (editor, start, end, insertion) {
 nbe.ops.text = function (editor, start, end, insertion) {
 	const node = start ? start.node : end.node;
 
-	const op_mutate = {domop : 'mutate', id : node.id, before : node.val, after : nbe.lib.clone(node.val)};
+	const op_mutate = {domop : 'mutate', id : node.id, before : node.val, after : clone(node.val)};
 	let ops = [op_mutate];
 	let loc = null;
 
 	if (insertion) {
 		op_mutate.after.text = node.val.text.slice(end.offset);
 		if (start) {
-			const op_start = {domop : 'insert', id : editor.new_id(), before : node.id, type : 'text', val : nbe.lib.clone(node.val)};
+			const op_start = {domop : 'insert', id : editor.new_id(), before : node.id, type : 'text', val : clone(node.val)};
 			op_start.val.text = node.val.text.slice(0, start.offset);
 			ops.push(op_start);
 			loc = {container : op_start.id, offset : start.offset};

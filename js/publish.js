@@ -1,3 +1,5 @@
+import { xhr } from './lib.js';
+
 class PublishState {
     constructor(time) {
         this.time = time || null;
@@ -48,7 +50,7 @@ class PublishEditor  {
 			html,
 		};
 			
-		nbe.lib.xhr('POST', nbe.config.publish_url, {}, JSON.stringify(body), 0, response => {
+		xhr('POST', nbe.config.publish_url, {}, JSON.stringify(body), 0, response => {
 			const msg = JSON.parse(response);
 			if (msg == 'published') {
 				const op = {

@@ -1,4 +1,4 @@
-import { rnd_string } from './lib/rnd_string.js';
+import { rnd_string } from './lib.js';
 
 'use strict';
 

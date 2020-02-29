@@ -1,4 +1,9 @@
-import { rnd_string } from './lib/rnd_string.js';
+import { 
+    rnd_string, 
+    valid_email,
+    xhr,
+    save_blob,
+} from './lib.js';
 
 class ShareSection {
     constructor(el_share, heading, text, url) {
@@ -132,9 +137,9 @@ function display_feedback() {
 	el_send.innerHTML = 'Send';
 	el_send.addEventListener('click', function (_e) {
 		if (el_message.value) {
-			if (!el_email_address.value || (el_email_address.value && nbe.lib.valid_email(el_email_address.value))) {
+			if (!el_email_address.value || (el_email_address.value && valid_email(el_email_address.value))) {
 				var body = {type : 'feedback', name : el_name.value, mail : el_email_address.value, message : el_message.value};
-				nbe.lib.xhr('POST', nbe.config.feedback_url, {}, JSON.stringify(body), 0, function (_response) {
+				xhr('POST', nbe.config.feedback_url, {}, JSON.stringify(body), 0, function (_response) {
 					el_name.value = '';
 					el_email_address.value = '';
 					el_message.value = '';
@@ -195,13 +200,17 @@ function display_export() {
 	el_word = kite.browser.dom.ea('button', el_section);
 	el_word.textContent = 'Word';
 	el_word.addEventListener('click', function (_e) {
-		nbe.lib.save_as(new Blob([nbe.doc.html(nbe.dynamic.doc)], {type : 'application/vnd.ms-word'}), nbe.dynamic.get_title() + '.doc');
+        const filename = nbe.dynamic.get_title() + '.doc';
+        const blob = new Blob([nbe.doc.html(nbe.dynamic.doc)], {type : 'application/vnd.ms-word'});
+        save_blob(filename, blob);
 	}, false);
 
 	el_html = kite.browser.dom.ea('button', el_section);
 	el_html.textContent = 'HTML';
 	el_html.addEventListener('click', function (_e) {
-		nbe.lib.save_as(new Blob([nbe.doc.html(nbe.dynamic.doc)], {type : 'text/html'}), nbe.dynamic.get_title() + '.html');
+        const filename = nbe.dynamic.get_title() + '.html';
+        const blob = new Blob([nbe.doc.html(nbe.dynamic.doc)], {type : 'text/html'});
+        save_blob(filename, blob);
 	}, false);
 
 	kite.browser.dom.ea('p', el_export);

@@ -1,4 +1,4 @@
-'use strict';
+import { new_id } from '../lib.js';
 
 nbe.doc.create = function (ids, use_local_storage, server_url, callback_status) {
 	var doc;
@@ -20,7 +20,7 @@ nbe.doc.create = function (ids, use_local_storage, server_url, callback_status) 
 
 	doc.editors = nbe.doc.editors(doc);
 
-	doc.new_id = nbe.lib.new_id();
+	doc.new_id = new_id();
 
 	doc.add_ops = function (editor_id, ops) {
 		var operation;

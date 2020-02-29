@@ -2,16 +2,7 @@ import './first.js';
 
 import './config.js';
 
-import './lib/clone.js';
-import './lib/xhr.js';
-import './lib/partial_copy.js';
-import './lib/get_attributes.js';
-import './lib/set_attributes.js';
-import './lib/new_id.js';
-import './lib/valid_email.js';
-import './lib/share_emails.js';
-import './lib/file_upload.js';
-import './lib/save_as.js';
+import './lib.js';
 
 import './doc/create.js';
 import './doc/editors.js';

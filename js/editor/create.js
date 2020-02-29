@@ -1,4 +1,4 @@
-'use strict';
+import { new_id } from '../lib.js';
 
 nbe.editor.create = function (editor_id, options, doc) {
 	var el_editor, add_external_ops, init, editor;
@@ -45,7 +45,7 @@ nbe.editor.create = function (editor_id, options, doc) {
 
 	if (options.editable) {
 		el_editor.contentEditable = true;
-		editor.new_id = nbe.lib.new_id();
+		editor.new_id = new_id();
 		editor.inputs = nbe.notify.inputs(editor);
 		editor.undo = nbe.editor.undo(editor);
 		editor.observer = nbe.events.observer(editor);

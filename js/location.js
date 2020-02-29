@@ -1,3 +1,5 @@
+import { partial_copy } from './lib.js';
+
 nbe.location.blur = function (editor) {
 	editor.el_editor.blur();
 };
@@ -87,7 +89,7 @@ nbe.location.format_img_link = function (editor, format) {
 
 	if (node_img) {
 		format.edit_img = {id : node_img.id};
-		nbe.lib.partial_copy(node_img.val, format.edit_img, ['src', 'width', 'height', 'title']);
+		partial_copy(node_img.val, format.edit_img, ['src', 'width', 'height', 'title']);
 	}
 
 	if (node_link) {
