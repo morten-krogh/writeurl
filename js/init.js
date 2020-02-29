@@ -1,4 +1,3 @@
-
 import './first.js';
 
 import './config.js';
@@ -48,30 +47,7 @@ import './paste.js';
 
 import './browser.js';
 
-import './inputs/color_menu.js';
-import './inputs/input.js';
-import './inputs/button.js';
-import './inputs/bold.js';
-import './inputs/italic.js';
-import './inputs/underline.js';
-import './inputs/strikethrough.js';
-import './inputs/color.js';
-import './inputs/background_color.js';
-import './inputs/vertical_align.js';
-import './inputs/left_margin.js';
-import './inputs/undo.js';
-import './inputs/drop_down.js';
-import './inputs/heading.js';
-import './inputs/font_family.js';
-import './inputs/font_size.js';
-import './inputs/text_align.js';
-import './inputs/line_spacing.js';
-import './inputs/list.js';
-import './inputs/special_characters.js';
-import './inputs/insert_link.js';
-import './inputs/edit_link.js';
-import './inputs/insert_image.js';
-import './inputs/edit_image.js';
+import './inputs.js';
 
 import './css/publish.js';
 
