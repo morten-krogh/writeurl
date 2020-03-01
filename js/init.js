@@ -4,18 +4,7 @@ import './config.js';
 
 import './lib.js';
 
-import './doc/create.js';
-import './doc/editors.js';
-import './doc/local_storage.js';
-import './doc/merge.js';
-import './doc/html.js';
-import './doc/comm.js';
-import './doc/ws.js';
-import './doc/state_init.js';
-import './doc/state_copy.js';
-import './doc/state_update.js';
-import './doc/state_serialize.js';
-import './doc/state_deserialize.js';
+import './doc.js';
 
 import './state.js';
 
