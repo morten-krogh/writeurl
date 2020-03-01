@@ -27,8 +27,7 @@ import './event_listeners.js';
 
 import './trigger.js';
 
-import './editor/create.js';
-import './editor/undo.js';
+import './editor.js';
 
 import './notify.js';
 
