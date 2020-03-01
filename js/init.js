@@ -38,6 +38,4 @@ import './browser.js';
 
 import './inputs.js';
 
-import './css/publish.js';
-
 import './last.js';

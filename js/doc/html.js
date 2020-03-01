@@ -1,4 +1,4 @@
-'use strict';
+import { publish_css } from '../publish.js';
 
 nbe.doc.html = function (doc) {
 	var title_editor, text_editor, title, text, html;
@@ -23,7 +23,7 @@ nbe.doc.html = function (doc) {
 		title,
 		'</title>',
 		'<style type="text/css">',
-		nbe.css.publish,
+		publish_css,
 		'</style>',
 		'</head>',
 		'<body>',
