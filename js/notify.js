@@ -1,6 +1,6 @@
 nbe.notify = {};
 
-nbe.notify.inputs = function (editor) {
+function notify_inputs(editor) {
 	const inputs = {};
 
 	const add = function (type, input) {
@@ -23,7 +23,7 @@ nbe.notify.inputs = function (editor) {
 
 	const notify_type = function (type, value) {
 		if (type === 'left_margin' && 'left_margin' in inputs) {
-			value = nbe.notify.left_margin(editor);
+			value = notify_left_margin(editor);
 		}
 
 		for (let i = 0; i < (type in inputs ? inputs[type].length : 0) ; i++) {
@@ -40,9 +40,9 @@ nbe.notify.inputs = function (editor) {
 	};
 
 	return {add : add, remove : remove, notify : notify};
-};
+}
 
-nbe.notify.left_margin = function (editor, _format) {
+function notify_left_margin(editor, _format) {
 	let dec = 'off';
 	let inc = 'off';
 
@@ -56,4 +56,6 @@ nbe.notify.left_margin = function (editor, _format) {
 	});
 
 	return dec + ':' + inc;
-};
+}
+
+export { notify_inputs };

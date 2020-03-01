@@ -1,5 +1,6 @@
 import { new_id } from './lib.js';
 import { mutationobserver, add_event_listeners } from './event_listeners.js';
+import { notify_inputs } from './notify.js';
 
 function editor_undo(editor) {
 	var undoes, redoes, buttons, add_button, remove_button, notify_buttons, add_oploc, trigger;
@@ -104,7 +105,7 @@ function create_editor(editor_id, options, doc) {
 	if (options.editable) {
 		el_editor.contentEditable = true;
 		editor.new_id = new_id();
-		editor.inputs = nbe.notify.inputs(editor);
+		editor.inputs = notify_inputs(editor);
 		editor.undo = editor_undo(editor);
 		editor.observer = mutationobserver(editor);
 		editor.add_internal_oploc = function (oploc) {
