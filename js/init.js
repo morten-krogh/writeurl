@@ -23,9 +23,7 @@ import './location.js';
 
 import './ops.js';
 
-import './events/add_event_listeners.js';
-import './events/observer.js';
-import './events/subtree.js';
+import './event_listeners.js';
 
 import './trigger.js';
 

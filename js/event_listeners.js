@@ -1,6 +1,62 @@
-'use strict';
 
-nbe.events.add_event_listeners = function (editor) {
+function domsubtreemodified(editor) {
+	var active, events, timer, observe, disconnect;
+
+	active = false;
+	events = [];
+	timer = null;
+
+	editor.el_editor.addEventListener('DOMSubtreeModified', function (event) {
+		if (active) {
+			events.push(event);
+			if (!timer) {
+				timer = setTimeout(function () {
+					editor.trigger('subtree', events);
+					timer = null;
+					events = [];
+				}, 0);
+			}
+		}
+	}, false);
+
+	observe = function () {
+		active = true;
+	};
+
+	disconnect = function () {
+		active = false;
+	};
+
+	return {observe : observe, disconnect : disconnect, supported : true};
+}
+
+function mutationobserver(editor) {
+	var MutationObserver, supported, observer, config, observe, disconnect;
+
+	MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+
+	supported = typeof(MutationObserver) !== 'undefined';
+
+	if (supported) {
+		observer = new MutationObserver(function (mutations) {
+			editor.trigger('observer', mutations);
+		});
+	}
+
+	config = {childList: true, characterData: true, subtree : true};
+
+	observe = function () {
+		observer.observe(editor.el_editor, config);
+	};
+
+	disconnect = function () {
+		observer.disconnect();
+	};
+
+	return {observe : observe, disconnect : disconnect, supported : supported};
+}
+
+function add_event_listeners(editor) {
 	var el_editor;
 
 	el_editor = editor.el_editor;
@@ -96,8 +152,13 @@ nbe.events.add_event_listeners = function (editor) {
 		editor.trigger('cut', null);
 	}, false);
 
-	editor.mutation = nbe.events.observer(editor);
+	editor.mutation = mutationobserver(editor);
 	if (!editor.mutation.supported) {
-		editor.mutation = nbe.events.subtree(editor);
+		editor.mutation = domsubtreemodified(editor);
 	}
+}
+
+export {
+    mutationobserver,
+    add_event_listeners,
 };

@@ -1,4 +1,5 @@
 import { new_id } from '../lib.js';
+import { mutationobserver, add_event_listeners } from '../event_listeners.js';
 
 nbe.editor.create = function (editor_id, options, doc) {
 	var el_editor, add_external_ops, init, editor;
@@ -48,7 +49,7 @@ nbe.editor.create = function (editor_id, options, doc) {
 		editor.new_id = new_id();
 		editor.inputs = nbe.notify.inputs(editor);
 		editor.undo = nbe.editor.undo(editor);
-		editor.observer = nbe.events.observer(editor);
+		editor.observer = mutationobserver(editor);
 		editor.add_internal_oploc = function (oploc) {
 			doc.add_ops(editor_id, oploc.ops);
 			nbe.state.update(editor, editor.state, editor.dom, oploc.ops);
@@ -69,7 +70,7 @@ nbe.editor.create = function (editor_id, options, doc) {
 			}
 		};
 
-		nbe.events.add_event_listeners(editor);
+		add_event_listeners(editor);
 	}
 
 	return editor;
