@@ -1,5 +1,7 @@
 import { clone } from './lib.js';
 
+nbe.ops = {};
+
 nbe.ops.append = function (editor, id, items) {
 	const ops = [];
 	let iditem = null;

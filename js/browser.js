@@ -1,6 +1,8 @@
+window.kite = {browser: {}};
 kite.browser.animation = {};
 kite.browser.dom = {};
 kite.browser.ui = {};
+window.nbe.browser = {icon: {}};
 
 kite.browser.animation.Core = function (options) {
 	var option;

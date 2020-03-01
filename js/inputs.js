@@ -1,3 +1,5 @@
+nbe.inputs = {};
+
 nbe.inputs.background_color = function (trigger, title, parent, init) {
 	var button, value, element, el_symbol, color_menu, set_value;
 

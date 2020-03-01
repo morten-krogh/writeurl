@@ -2,6 +2,8 @@ import { rnd_string } from './lib.js';
 
 'use strict';
 
+window.nbe = {};
+
 // urls:  /text/id/read/write/new
 
 nbe.config = (function () {

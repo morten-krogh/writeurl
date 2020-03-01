@@ -1,5 +1,7 @@
 import { clone } from './lib.js';
 
+nbe.triggers = {};
+
 nbe.triggers.cut = function (editor) {
 	editor.mutation.disconnect();
 	setTimeout(function () {

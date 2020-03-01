@@ -1,5 +1,7 @@
 import { partial_copy } from './lib.js';
 
+nbe.location = {};
+
 nbe.location.blur = function (editor) {
 	editor.el_editor.blur();
 };

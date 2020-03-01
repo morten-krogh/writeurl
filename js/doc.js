@@ -3,6 +3,8 @@ import { PublishEditor, PublishState, publish_css } from './publish.js';
 import { create_editor } from './editor.js';
 import { new_id } from './lib.js';
 
+window.nbe.doc = {};
+
 nbe.doc.comm = function (doc, server_url, callback_status) {
 	var send_new, receive_new, send_unknown, receive_unknown, send_sync, receive_sync, receive, ws, notify;
 

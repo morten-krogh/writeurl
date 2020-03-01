@@ -1,3 +1,5 @@
+nbe.notify = {};
+
 nbe.notify.inputs = function (editor) {
 	const inputs = {};
 

@@ -60,7 +60,7 @@ import {
 		};
 
 		const doc = nbe.doc.create(ids, nbe.config.local_storage, nbe.config.ws_url, callback_status);
-		nbe.dynamic.doc = doc;
+		nbe.dynamic = { doc };
 
 		if (doc.server_status !== 'unknown') {
 			callback_status('doc', 'exist');
