@@ -12,7 +12,7 @@
     "dtrace-provider": "^0.8.5",
     "express": "github:expressjs/express#5.0",
     "express-pino-logger": "^2.0.0",
-    "js-yaml": "^3.10.0",
+    "js-yaml": "^3.13.1",
     "node-mime": "^1.0.0",
     "pino": "^4.10.2",
     "vhost": "^3.0.2",
