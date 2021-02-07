@@ -69,6 +69,9 @@ var filter_operations = function (stored_operations, operations) {
 var type_sync = function (state, ws_id, ws, msg) {
 	var id, ids, changes, stored_operations, filtered_operations;
 
+    // Disable writes. Remove again later.
+    msg.operations = [];
+
 	if (mod_lib.verify_sync(msg) && state.store.exist(msg.ids.id)) {
 		id = msg.ids.id;
 		ids = state.store.get_ids(id);
