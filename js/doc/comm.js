@@ -35,8 +35,7 @@ nbe.doc.comm = function (doc, server_url, callback_status) {
 	};
 
 	send_sync = function () {
-        const operations_local = []; // Temporary diasble doc.operations_local;
-		ws.send(JSON.stringify({type : 'sync', ids : doc.ids, noperations : doc.n_operations_server, operations : operations_local}));
+		ws.send(JSON.stringify({type : 'sync', ids : doc.ids, noperations : doc.n_operations_server, operations : doc.operations_local}));
 		callback_status('nunsaved', doc.operations_local.length);
 	};
 
